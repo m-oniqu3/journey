@@ -1,5 +1,12 @@
+import { Fragment } from "react/jsx-runtime";
+import Navbar from "./components/Navbar";
+
 function App() {
-  return <h1 className=" text-violet-500">Hello world!</h1>;
+  return (
+    <Fragment>
+      <Navbar />
+    </Fragment>
+  );
 }
 
 export default App;
