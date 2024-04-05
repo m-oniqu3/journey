@@ -12,7 +12,7 @@ function Navbar() {
         </div>
 
         <div className="flex items-center gap-4  w-full">
-          <PiMountainsFill className="w-10 h-10 text-accent" />
+          <PiMountainsFill className="w-9 h-9 text-accent" />
           <p className="hidden lg:block text-2xl font-bold text-accent">
             journey
           </p>
