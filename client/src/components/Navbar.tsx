@@ -19,11 +19,9 @@ function Navbar() {
         </div>
 
         <Searchbar className="w-full max-w-2xl mx-auto" />
-        <ButtonLink
-          route="login"
-          text="Log In"
-          className="bg-accent text-neutral"
-        />
+        <ButtonLink route="login" className="bg-accent text-neutral">
+          Log In
+        </ButtonLink>
       </nav>
     </header>
   );

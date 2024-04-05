@@ -5,6 +5,7 @@ import ErrorPage from "./error-page";
 import "./index.css";
 
 import LogIn from "@/components/account/LogIn";
+import Register from "@/components/account/Register";
 import AccountLayout from "./routes/AccountLayout";
 import RootLayout from "./routes/Root";
 
@@ -14,28 +15,16 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [
-      {
-        path: "/",
-        element: <p>home page</p>,
-      },
-      {
-        path: "/about",
-        element: <p>about page</p>,
-      },
+      { path: "/", element: <p>home page</p> },
+      { path: "/about", element: <p>about page</p> },
     ],
   },
   {
     // layout route for account routes
     element: <AccountLayout />,
     children: [
-      {
-        path: "/register",
-        element: <p>register page</p>,
-      },
-      {
-        path: "/login",
-        element: <LogIn />,
-      },
+      { path: "/register", element: <Register /> },
+      { path: "/login", element: <LogIn /> },
     ],
   },
 ]);
