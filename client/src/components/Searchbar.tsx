@@ -23,7 +23,7 @@ function Searchbar(props: Props) {
       </svg>
 
       <input
-        className="w-full pl-12 pr-4 h-12 rounded-full bg-grayscale-100 focus:outline-none placeholder:text-slate-500"
+        className="w-full pl-12 pr-4 h-11 rounded-lg bg-grayscale-100 focus:outline-none placeholder:text-slate-500"
         placeholder="Search Journey"
       />
     </form>

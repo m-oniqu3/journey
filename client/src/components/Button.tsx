@@ -8,7 +8,10 @@ function Button(props: Props) {
   const { text, className = "", type = "button" } = props;
 
   return (
-    <button type={type} className={`${className} rounded-full px-4 h-12 `}>
+    <button
+      type={type}
+      className={`${className} rounded-lg px-4 h-11 font-semibold `}
+    >
       {text}
     </button>
   );

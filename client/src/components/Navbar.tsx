@@ -1,6 +1,6 @@
+import ButtonLink from "@/components/ButtonLink";
 import { AiOutlineMenu } from "react-icons/ai";
 import { PiMountainsFill } from "react-icons/pi";
-import Button from "./Button";
 import Searchbar from "./Searchbar";
 
 function Navbar() {
@@ -19,9 +19,10 @@ function Navbar() {
         </div>
 
         <Searchbar className="w-full max-w-2xl mx-auto" />
-        <Button
+        <ButtonLink
+          route="login"
           text="Log In"
-          className="bg-accent text-neutral font-semibold"
+          className="bg-accent text-neutral"
         />
       </nav>
     </header>

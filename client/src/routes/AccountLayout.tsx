@@ -5,12 +5,14 @@ import { Fragment } from "react/jsx-runtime";
 function AccountLayout() {
   return (
     <Fragment>
-      <nav className=" wrapper h-[4.5rem] flex items-center">
-        <Link to={"/"} className=" flex items-center gap-4  w-full">
-          <PiMountainsFill className="w-9 h-9 text-accent" />
-          <p className="text-2xl font-bold text-accent">journey</p>
-        </Link>
-      </nav>
+      <header className="border-slate-200 border-b-[1px]">
+        <nav className=" wrapper h-[4.5rem] flex items-center">
+          <Link to={"/"} className=" flex items-center gap-4  w-full">
+            <PiMountainsFill className="w-9 h-9 text-accent" />
+            <p className="text-2xl font-bold text-accent">journey</p>
+          </Link>
+        </nav>
+      </header>
 
       <main className="wrapper">
         <Outlet />
