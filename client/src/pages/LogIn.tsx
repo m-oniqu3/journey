@@ -1,6 +1,5 @@
 import Button from "@/components/Button";
 import InputField from "@/components/InputField";
-import { useAuthContext } from "@/context/useAuthContext";
 import { validateEmail, validatePassword } from "@/utils/validate";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -8,7 +7,6 @@ import { Link } from "react-router-dom";
 function LogIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user } = useAuthContext();
 
   const [errors, setErrors] = useState({
     isEmailValid: false,
@@ -29,7 +27,6 @@ function LogIn() {
   return (
     <div className="wrapper h-[80dvh] grid place-items-center">
       <form className="max-w-md mx-auto space-y-6">
-        {user}
         <header className="space-y-2 ">
           <h2 className="font-bold text-2xl">Log In</h2>
           <p>

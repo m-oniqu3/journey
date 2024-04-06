@@ -1,8 +1,9 @@
-import { ReactNode, createContext, useState } from "react";
+import reducer, { Actions, State, initialState } from "@/context/reducer";
+import { ReactNode, createContext, useEffect, useReducer } from "react";
 
 interface ContextValues {
-  user: string;
-  setUser: React.Dispatch<React.SetStateAction<string>>;
+  state: State;
+  dispatch: React.Dispatch<Actions>;
 }
 
 interface ContextProviderprops {
@@ -12,10 +13,14 @@ interface ContextProviderprops {
 export const AuthContext = createContext<ContextValues | null>(null);
 
 function AuthContextProvider({ children }: ContextProviderprops) {
-  const [user, setUser] = useState("archer");
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    console.log(state);
+  }, [state]);
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ state, dispatch }}>
       {children}
     </AuthContext.Provider>
   );
