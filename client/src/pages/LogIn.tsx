@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import InputField from "@/components/InputField";
+import { login } from "@/services/authServices";
 import { validateEmail, validatePassword } from "@/utils/validate";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -8,25 +9,44 @@ function LogIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [errors, setErrors] = useState({
+  const [isValidForm, setIsValidForm] = useState(false);
+  const [status, setStatus] = useState({
     isEmailValid: false,
     isPasswordValid: false,
   });
 
   useEffect(() => {
-    setErrors((prev) => ({ ...prev, isEmailValid: validateEmail(email) }));
+    setStatus((prev) => ({ ...prev, isEmailValid: validateEmail(email) }));
   }, [email]);
 
   useEffect(() => {
-    setErrors((prev) => ({
+    setStatus((prev) => ({
       ...prev,
       isPasswordValid: validatePassword(password),
     }));
   }, [password]);
 
+  useEffect(() => {
+    setIsValidForm(status.isEmailValid && status.isPasswordValid);
+  }, [status]);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (!isValidForm) return;
+    console.log(password, email);
+
+    try {
+      const response = await login({ email, password });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className="wrapper h-[80dvh] grid place-items-center">
-      <form className="max-w-md mx-auto space-y-6">
+      <form className="max-w-md mx-auto space-y-6" onSubmit={handleSubmit}>
         <header className="space-y-2 ">
           <h2 className="font-bold text-2xl">Log In</h2>
           <p>
@@ -42,11 +62,11 @@ function LogIn() {
             label="Email"
             value={email}
             setValue={setEmail}
-            isError={!errors.isEmailValid && !!email.length}
+            isError={!status.isEmailValid && !!email.length}
           />
 
           <p className="text-red-500 font-normal text-sm h-4 relative top-1">
-            {!errors.isEmailValid && email ? "Email is invalid" : ""}
+            {!status.isEmailValid && email ? "Email is invalid" : ""}
           </p>
         </div>
 
@@ -57,11 +77,11 @@ function LogIn() {
             label="Password"
             value={password}
             setValue={setPassword}
-            isError={!errors.isPasswordValid && !!password}
+            isError={!status.isPasswordValid && !!password}
           />
 
           <p className="text-red-500 font-normal text-sm h-4 relative top-1">
-            {!errors.isPasswordValid && password ? "Password is invalid" : ""}
+            {!status.isPasswordValid && password ? "Password is invalid" : ""}
           </p>
         </div>
 
@@ -75,7 +95,13 @@ function LogIn() {
           </Link>
         </p>
 
-        <Button className="w-full bg-accent text-white">Log In</Button>
+        <Button
+          type="submit"
+          disabled={!isValidForm}
+          className="w-full bg-accent text-white disabled:opacity-40"
+        >
+          Log In
+        </Button>
       </form>
     </div>
   );
