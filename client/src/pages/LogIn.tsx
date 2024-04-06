@@ -1,11 +1,16 @@
 import Button from "@/components/Button";
 import InputField from "@/components/InputField";
+import { ActionEnum } from "@/context/reducer";
+import { useAuthContext } from "@/context/useAuthContext";
+import { api } from "@/services/api";
 import { login } from "@/services/authServices";
 import { validateEmail, validatePassword } from "@/utils/validate";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function LogIn() {
+  const navigate = useNavigate();
+  const { dispatch } = useAuthContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -39,6 +44,18 @@ function LogIn() {
     try {
       const response = await login({ email, password });
       console.log(response);
+
+      // set user and token
+      dispatch({ type: ActionEnum.SET_USER, payload: response.user });
+      dispatch({ type: ActionEnum.SET_IS_LOGGED_IN, payload: true });
+      dispatch({ type: ActionEnum.SET_TOKEN, payload: response.token });
+
+      // update api headers
+      api.defaults.headers.common["Authorization"] = `Bearer ${response.token}`;
+      api.defaults.headers.common["Content-Type"] = "application/json";
+
+      // navigate home
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
