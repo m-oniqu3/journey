@@ -4,8 +4,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ErrorPage from "./error-page";
 import "./index.css";
 
-import LogIn from "@/components/account/LogIn";
-import Register from "@/components/account/Register";
+import AuthContextProvider from "@/context/AuthContext";
+import LogIn from "@/pages/LogIn";
+import Register from "@/pages/Register";
 import AccountLayout from "./routes/AccountLayout";
 import RootLayout from "./routes/Root";
 
@@ -31,6 +32,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <AuthContextProvider>
+      <RouterProvider router={router} />
+    </AuthContextProvider>
   </React.StrictMode>
 );
