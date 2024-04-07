@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import InputField from "@/components/InputField";
 import { ActionEnum } from "@/context/reducer";
 import { useAuthContext } from "@/context/useAuthContext";
+import { RoutesEnum } from "@/routes";
 import { api } from "@/services/api";
 import { login } from "@/services/authServices";
 import { validateEmail, validatePassword } from "@/utils/validate";
@@ -10,9 +11,10 @@ import { Link, useNavigate } from "react-router-dom";
 
 function LogIn() {
   const navigate = useNavigate();
-  const { dispatch } = useAuthContext();
+  const { dispatch, state } = useAuthContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [redirectTimer, setRedirectTimer] = useState<NodeJS.Timeout>();
 
   const [isValidForm, setIsValidForm] = useState(false);
   const [status, setStatus] = useState({
@@ -21,19 +23,41 @@ function LogIn() {
   });
 
   useEffect(() => {
-    setStatus((prev) => ({ ...prev, isEmailValid: validateEmail(email) }));
-  }, [email]);
+    if (state.isLoggedIn) {
+      const timer = setTimeout(() => {
+        navigate(RoutesEnum.HOME);
+      }, 3000);
+
+      // Save the timer ID in state
+      setRedirectTimer(timer);
+
+      // cleanup function to cancel the timer if component unmounts or user navigates away
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [state, navigate]);
 
   useEffect(() => {
     setStatus((prev) => ({
       ...prev,
+      isEmailValid: validateEmail(email),
       isPasswordValid: validatePassword(password),
     }));
-  }, [password]);
+  }, [email, password]);
 
   useEffect(() => {
     setIsValidForm(status.isEmailValid && status.isPasswordValid);
   }, [status]);
+
+  function handleRedirect() {
+    // cancel the timer if it exists
+    if (redirectTimer) {
+      clearTimeout(redirectTimer);
+    }
+
+    navigate(RoutesEnum.HOME);
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -55,10 +79,19 @@ function LogIn() {
       api.defaults.headers.common["Content-Type"] = "application/json";
 
       // navigate home
-      navigate("/");
+      navigate(RoutesEnum.HOME);
     } catch (error) {
       console.log(error);
     }
+  }
+
+  if (state.isLoggedIn) {
+    return (
+      <article>
+        <p>you are already logged in and will be redirected. </p>
+        <button onClick={handleRedirect}> Go home </button>
+      </article>
+    );
   }
 
   return (

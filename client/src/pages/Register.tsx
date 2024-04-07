@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import InputField from "@/components/InputField";
+import { RoutesEnum } from "@/routes";
 import { register } from "@/services/authServices";
 import { validateEmail, validatePassword } from "@/utils/validate";
 import { useEffect, useState } from "react";
@@ -85,7 +86,10 @@ function Register() {
 
         <p>
           Already a traveler? &nbsp;
-          <Link to="/login" className="font-bold underline underline-offset-2">
+          <Link
+            to={RoutesEnum.LOGIN}
+            className="font-bold underline underline-offset-2"
+          >
             Login
           </Link>
         </p>
