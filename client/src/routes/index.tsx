@@ -1,4 +1,5 @@
 import ErrorPage from "@/error-page";
+import EditProfile from "@/pages/EditProfile";
 import LogIn from "@/pages/LogIn";
 import Profile from "@/pages/Profile";
 import Register from "@/pages/Register";
@@ -41,7 +42,7 @@ const router = createBrowserRouter([
       { path: RoutesEnum.HOME, element: <p>home page</p> },
       { path: "/about", element: <p>about page</p> },
       { path: "/profile", element: <Profile /> },
-      { path: "/profile/edit", element: <p>edit profile</p> },
+      { path: "/profile/edit", element: <EditProfile /> },
     ],
   },
   {

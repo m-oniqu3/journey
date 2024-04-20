@@ -13,7 +13,7 @@ function Searchbar(props: Props) {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="h-6 w-auto text-slate-500 absolute top-3 left-4"
+        className="h-5 w-auto text-slate-500 absolute top-3 left-4"
       >
         <path
           strokeLinecap="round"
@@ -23,7 +23,7 @@ function Searchbar(props: Props) {
       </svg>
 
       <input
-        className="w-full pl-12 pr-4 h-11 rounded-lg bg-grayscale-100 focus:outline-none placeholder:text-slate-500"
+        className="w-full pl-12 pr-4 h-11 rounded-full bg-grayscale-100 focus:outline-none placeholder:text-slate-500"
         placeholder="Search Journey"
       />
     </form>

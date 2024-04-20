@@ -12,7 +12,7 @@ function ButtonLink(props: Props) {
   return (
     <Link
       to={route}
-      className={`${className} rounded-lg px-4 h-11 font-semibold grid place-items-center`}
+      className={`${className}  px-4 h-11 font-semibold grid place-items-center`}
     >
       {children}
     </Link>

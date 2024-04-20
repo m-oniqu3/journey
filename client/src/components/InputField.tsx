@@ -1,11 +1,9 @@
-import { Dispatch } from "react";
-
 interface Props {
   name: string;
   label: string;
   placeholder?: string | undefined;
   value: string;
-  setValue: Dispatch<React.SetStateAction<string>>;
+  setValue: (value: string) => void;
   type: string;
   isError?: boolean | undefined;
 }
