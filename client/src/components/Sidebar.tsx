@@ -123,7 +123,7 @@ function Sidebar() {
 
       {openCommunity && (
         <Modal closeModal={() => setOpenCommunity(false)}>
-          <NewSpace />
+          <NewSpace close={() => setOpenCommunity(false)} />
         </Modal>
       )}
     </>
