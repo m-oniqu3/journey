@@ -59,7 +59,7 @@ function Sidebar() {
 
   console.log(openCommunity);
 
-  const renderCountries = countries.map((country, index) => {
+  const renderCountries = countries.map((country) => {
     return (
       <li
         key={country}
@@ -69,12 +69,7 @@ function Sidebar() {
           to={`/countries/${country}`}
           className="grid grid-cols-[44px,1fr,40px] gap-1 items-center font-normal "
         >
-          <img
-            src={`https://picsum.photos/seed/${index}/200`}
-            className="w-10 h-10 rounded-full object-cover
-                    "
-            alt=""
-          />
+          <div className="w-8 h-8 rounded-full bg-sky-300"></div>
 
           <span className="lowercase">{`s/${country}`}</span>
 

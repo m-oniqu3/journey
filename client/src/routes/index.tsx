@@ -1,8 +1,10 @@
 import ErrorPage from "@/error-page";
 import EditProfile from "@/pages/EditProfile";
 import LogIn from "@/pages/LogIn";
+import Logout from "@/pages/Logout";
 import Profile from "@/pages/Profile";
 import Register from "@/pages/Register";
+import Space from "@/pages/Space";
 import AccountLayout from "@/routes/AccountLayout";
 import Root from "@/routes/Root";
 import { createBrowserRouter } from "react-router-dom";
@@ -43,6 +45,7 @@ const router = createBrowserRouter([
       { path: "/about", element: <p>about page</p> },
       { path: "/profile", element: <Profile /> },
       { path: "/profile/edit", element: <EditProfile /> },
+      { path: "/s/:spaceName", element: <Space /> },
     ],
   },
   {
@@ -52,6 +55,10 @@ const router = createBrowserRouter([
       { path: RoutesEnum.REGISTER, element: <Register /> },
       { path: RoutesEnum.LOGIN, element: <LogIn /> },
     ],
+  },
+  {
+    path: "/logout",
+    element: <Logout />,
   },
 ]);
 

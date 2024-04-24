@@ -2,7 +2,11 @@ import { ActionEnum } from "@/context/reducer";
 import { useAuthContext } from "@/context/useAuthContext";
 import router from "@/routes";
 import { useEffect } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { RouterProvider } from "react-router-dom";
+
+// Create a client
+const queryClient = new QueryClient();
 
 function App() {
   const { dispatch } = useAuthContext();
@@ -17,7 +21,11 @@ function App() {
     }
   }, [dispatch]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />;
+    </QueryClientProvider>
+  );
 }
 
 export default App;

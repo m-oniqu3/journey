@@ -4,7 +4,7 @@ import { ActionEnum } from "@/context/reducer";
 import { useAuthContext } from "@/context/useAuthContext";
 import { RoutesEnum } from "@/routes";
 import { api } from "@/services/api";
-import { login } from "@/services/authServices";
+import { login } from "@/services/auth-services";
 import { validateEmail, validatePassword } from "@/utils/validate";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";

@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import InputField from "@/components/InputField";
 import { RoutesEnum } from "@/routes";
-import { register } from "@/services/authServices";
+import { register } from "@/services/auth-services";
 import { validateEmail, validatePassword } from "@/utils/validate";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";

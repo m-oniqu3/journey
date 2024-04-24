@@ -34,3 +34,9 @@ export async function createSpace(req: Request, res: Response) {
     });
   }
 }
+
+export async function getSpaceDetails(req: Request, res: Response) {
+  const space = req.locals.space;
+
+  return res.status(HttpStatusCode.OK).json({ data: space });
+}

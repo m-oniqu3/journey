@@ -21,3 +21,8 @@ export async function register(credentials: {
   );
   return response.data.data;
 }
+
+export async function logout() {
+  const response = await api.delete<{ data: string }>("auth");
+  return response;
+}

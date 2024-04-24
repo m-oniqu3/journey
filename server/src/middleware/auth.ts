@@ -1,14 +1,6 @@
 import { supabase } from "@/lib/supabaseClient";
-import { AuthError, type User } from "@supabase/supabase-js";
+import { AuthError } from "@supabase/supabase-js";
 import { type NextFunction, type Request, type Response } from "express";
-
-declare global {
-  namespace Express {
-    interface Request {
-      user: User | null;
-    }
-  }
-}
 
 export async function loadUserFromToken(
   req: Request,

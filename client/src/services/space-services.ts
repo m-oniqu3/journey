@@ -9,3 +9,8 @@ export async function createSpace(data: {
   const response = await api.post<{ data: string }>("spaces/new", data);
   return response.data;
 }
+
+export async function getSpace(name: string) {
+  const response = await api.get<{ data: string }>(`spaces/${name}`);
+  return response.data.data;
+}

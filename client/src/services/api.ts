@@ -17,3 +17,25 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    console.log("Error:", error.response.data);
+
+    if (
+      error.status === 401 &&
+      error.response.data.error.includes("Token expired")
+    ) {
+      //logout user
+      delete api.defaults.headers.common["Authorization"];
+      delete api.defaults.headers.common["Content-Type"];
+
+      window.location.href = "/logout";
+    }
+
+    return Promise.reject(error);
+  }
+);

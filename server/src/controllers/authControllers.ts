@@ -40,11 +40,9 @@ export async function login(req: Request, res: Response) {
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
-    return res
-      .status(200)
-      .json({
-        data: { user: userData, token: { access_token: token, expiry } },
-      });
+    return res.status(200).json({
+      data: { user: userData, token: { access_token: token, expiry } },
+    });
   } catch (error: unknown) {
     if (error instanceof AuthError) {
       return res.status(401).json({ error: error.message });
@@ -99,6 +97,36 @@ export async function register(req: Request, res: Response) {
     }
 
     return res.status(201).json({ data: "User created successfully" });
+  } catch (error: unknown) {
+    if (error instanceof AuthError) {
+      return res.status(401).json({ error: error.message });
+    }
+
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+export async function logout(req: Request, res: Response) {
+  try {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      throw error;
+    }
+
+    const cookies = req.cookies;
+
+    if (cookies.jrt) {
+      res.clearCookie("jrt", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+      });
+      console.log("refresh token cleared");
+    }
+
+    return res.status(200).json({ data: "Logout Successful" });
   } catch (error: unknown) {
     if (error instanceof AuthError) {
       return res.status(401).json({ error: error.message });
