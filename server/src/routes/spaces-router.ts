@@ -1,12 +1,9 @@
+import { createSpace } from "@/controllers/spaces-controller";
 import { requireAuth } from "@/middleware/auth";
 import express from "express";
 
 const router = express.Router();
 
-router.post("/new", requireAuth, async (req, res) => {
-  console.log(req.body);
-
-  res.status(200).json({ message: "Space created" });
-});
+router.post("/new", requireAuth, createSpace);
 
 export default router;

@@ -6,6 +6,6 @@ export async function createSpace(data: {
   type: SpaceType;
   userID: string;
 }) {
-  const response = await api.post("spaces/new", data);
+  const response = await api.post<{ data: string }>("spaces/new", data);
   return response.data;
 }

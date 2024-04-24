@@ -58,7 +58,7 @@ function NewSpace(props: Props) {
       // eslint-disable-next-line no-useless-escape
       const format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
 
-      if (!format.test(name) || name.length < 3 || !user) return;
+      if (format.test(name) || name.length < 3 || !user?.id) return;
 
       const data = { name, type: selectedType, userID: user.id };
 
@@ -66,6 +66,7 @@ function NewSpace(props: Props) {
 
       setName("");
       setSelectedType(SpaceType.Public);
+      props.close();
 
       console.log(response);
     } catch (error) {
