@@ -1,9 +1,9 @@
 import { api } from "@/services/api";
-import { SpaceType } from "@/types/space";
+import { Space, SpacePrivacy } from "@/types/space";
 
 export async function createSpace(data: {
   name: string;
-  type: SpaceType;
+  type: SpacePrivacy;
   userID: string;
 }) {
   const response = await api.post<{ data: string }>("spaces/new", data);
@@ -11,6 +11,6 @@ export async function createSpace(data: {
 }
 
 export async function getSpace(name: string) {
-  const response = await api.get<{ data: string }>(`spaces/${name}`);
+  const response = await api.get<{ data: Space }>(`spaces/${name}`);
   return response.data.data;
 }

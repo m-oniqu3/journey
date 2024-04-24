@@ -19,7 +19,7 @@ function Button(props: Props) {
     <button
       type={type}
       disabled={disabled}
-      className={`${className} rounded-lg px-4 h-11 font-semibold `}
+      className={`${className}  px-4 h-11 font-semibold `}
       onClick={onClick}
     >
       {children}

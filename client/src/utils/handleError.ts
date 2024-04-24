@@ -2,7 +2,6 @@ import { isAxiosError } from "axios";
 
 export function handleError(error: unknown) {
   let message = "";
-  console.log("Handle Error:", error);
 
   if (isAxiosError(error)) {
     if (error.response) {
@@ -13,6 +12,7 @@ export function handleError(error: unknown) {
   } else {
     message = "Something went wrong. Could not get space details";
   }
+  console.log("Error message:", message);
 
   return message;
 }

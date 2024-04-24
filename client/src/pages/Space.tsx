@@ -1,3 +1,4 @@
+import SpaceHeader from "@/components/space/SpaceHeader";
 import { getSpace } from "@/services/space-services";
 import { handleError } from "@/utils/handleError";
 import { useQuery } from "react-query";
@@ -9,7 +10,7 @@ function Space() {
   const { error, isError, isLoading, data } = useQuery({
     queryKey: ["space", spaceName],
     queryFn: () => getSpaceDetails(spaceName),
-    retry: 1,
+    retry: false,
   });
 
   async function getSpaceDetails(name: string) {
@@ -27,7 +28,18 @@ function Space() {
   if (!isLoading && isError && error)
     return <div>Error: {(error as Error).message}</div>;
 
-  return <div>{JSON.stringify(data)}</div>;
+  if (!data) return <div>Space not found</div>;
+
+  return (
+    <div>
+      <SpaceHeader
+        name={data.name}
+        banner={data.banner}
+        avatar={data.avatar}
+        members_count={data.members_count}
+      />
+    </div>
+  );
 }
 
 export default Space;

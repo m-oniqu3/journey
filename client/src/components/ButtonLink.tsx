@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 interface Props {
-  children: string;
+  children: React.ReactNode;
   className?: string;
   route: string;
 }
@@ -10,10 +10,7 @@ function ButtonLink(props: Props) {
   const { children, className = "", route } = props;
 
   return (
-    <Link
-      to={route}
-      className={`${className}  px-4 h-11 font-semibold grid place-items-center`}
-    >
+    <Link to={route} className={`${className}  px-4 h-11 font-semibold  `}>
       {children}
     </Link>
   );

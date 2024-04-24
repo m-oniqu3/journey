@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import { useAuthContext } from "@/context/useAuthContext";
 import { createSpace } from "@/services/space-services";
-import { SpaceType } from "@/types/space";
+import { SpacePrivacy } from "@/types/space";
 import { useState } from "react";
 import { CiGlobe } from "react-icons/ci";
 import { GoLock } from "react-icons/go";
@@ -9,25 +9,25 @@ import { IoEyeOutline } from "react-icons/io5";
 import { PiMountainsFill } from "react-icons/pi";
 import { VscClose, VscLoading } from "react-icons/vsc";
 
-const spaceTypes = [
+const SpacePrivacys = [
   {
     icon: <CiGlobe className="h-7 w-7" />,
     title: "Public",
     description: "Anyone can join, view, and participate in the space.",
-    value: SpaceType.Public,
+    value: SpacePrivacy.Public,
   },
   {
     icon: <IoEyeOutline className="h-7 w-7" />,
     title: "Restricted",
     description:
       "Anyone can view the space, but only approved members can participate.",
-    value: SpaceType.Restricted,
+    value: SpacePrivacy.Restricted,
   },
   {
     icon: <GoLock className="h-7 w-7" />,
     title: "Private",
     description: "Only members can view and participate in the space.",
-    value: SpaceType.Private,
+    value: SpacePrivacy.Private,
   },
 ];
 
@@ -37,7 +37,7 @@ type Props = {
 
 function NewSpace(props: Props) {
   const [characters, setCharacters] = useState(25);
-  const [selectedType, setSelectedType] = useState(spaceTypes[0].value);
+  const [selectedType, setSelectedType] = useState(SpacePrivacys[0].value);
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const {
@@ -65,7 +65,7 @@ function NewSpace(props: Props) {
       const response = await createSpace(data);
 
       setName("");
-      setSelectedType(SpaceType.Public);
+      setSelectedType(SpacePrivacy.Public);
       props.close();
 
       console.log(response);
@@ -76,7 +76,7 @@ function NewSpace(props: Props) {
     }
   }
 
-  const renderedSpaceTypes = spaceTypes.map((type) => {
+  const renderedSpacePrivacys = SpacePrivacys.map((type) => {
     const isSelected = selectedType === type.value;
     const style = isSelected ? "bg-gray-100 " : "";
 
@@ -154,7 +154,7 @@ function NewSpace(props: Props) {
       </div>
 
       <h2 className="font-bold my-4">Type</h2>
-      <ul>{renderedSpaceTypes}</ul>
+      <ul>{renderedSpacePrivacys}</ul>
 
       <hr />
 

@@ -9,16 +9,19 @@ export async function checkSpaceExists(
 ) {
   try {
     const name = req.params.name as string;
-    // Get space details
+
+    // Initialize req.locals if it's not already defined
+    if (!req.locals) {
+      req.locals = {};
+    }
 
     const { data, error } = await supabase
       .from("spaces")
       .select("*")
-      .eq("name", name)
-      .single();
+      .eq("name", name);
 
     // If the space does not exist, send a 404 Not Found response
-    if (!data) {
+    if (!data || data.length === 0) {
       return res
         .status(HttpStatusCode.NOT_FOUND)
         .json({ error: "Space not found" });
@@ -26,9 +29,7 @@ export async function checkSpaceExists(
 
     if (error) throw error;
 
-    req.locals.space = data;
-
-    console.log("Space details:", data);
+    req.locals.space = data[0];
 
     return next();
   } catch (error) {

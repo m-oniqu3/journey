@@ -23,8 +23,6 @@ api.interceptors.response.use(
     return response;
   },
   async (error) => {
-    console.log("Error:", error.response.data);
-
     if (
       error.status === 401 &&
       error.response.data.error.includes("Token expired")

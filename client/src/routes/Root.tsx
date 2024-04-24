@@ -8,13 +8,12 @@ export default function Root() {
       <Navbar className="h-[4.5rem]" />
 
       <main
-        className="wrapper grid grid-cols-1 lg:grid-cols-[270px,1fr] gap-4  "
+        className="grid grid-cols-1 lg:grid-cols-[270px,1fr] "
         style={{ height: "calc(100vh - 4.5rem)" }}
       >
         <Sidebar />
-        <div className="mt-4">
-          <Outlet />
-        </div>
+
+        <Outlet />
       </main>
     </div>
   );
