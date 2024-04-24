@@ -53,10 +53,7 @@ function reducer(state: State, action: Actions) {
     case ActionEnum.SET_TOKEN:
       // save to local storage
       if (action.payload) {
-        localStorage.setItem(
-          "journey-token",
-          JSON.stringify(action.payload.access_token)
-        );
+        localStorage.setItem("journey-token", action.payload.access_token);
       } else {
         localStorage.removeItem("journey-token");
       }

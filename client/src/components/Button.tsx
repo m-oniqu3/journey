@@ -3,7 +3,7 @@ type Props = {
   className?: string;
   type?: "button" | "submit" | "reset" | undefined;
   disabled?: boolean | undefined;
-  onClick: () => void;
+  onClick?: () => void | undefined;
 };
 
 function Button(props: Props) {
@@ -12,7 +12,7 @@ function Button(props: Props) {
     className = "",
     type = "button",
     disabled = false,
-    onClick,
+    onClick = () => {},
   } = props;
 
   return (

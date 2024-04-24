@@ -1,28 +1,33 @@
 import Button from "@/components/Button";
-import InputField from "@/components/InputField";
-import { useEffect, useState } from "react";
+import { useAuthContext } from "@/context/useAuthContext";
+import { createSpace } from "@/services/space-services";
+import { SpaceType } from "@/types/space";
+import { useState } from "react";
 import { CiGlobe } from "react-icons/ci";
 import { GoLock } from "react-icons/go";
 import { IoEyeOutline } from "react-icons/io5";
 import { PiMountainsFill } from "react-icons/pi";
-import { VscClose } from "react-icons/vsc";
+import { VscClose, VscLoading } from "react-icons/vsc";
 
 const spaceTypes = [
   {
     icon: <CiGlobe className="h-7 w-7" />,
     title: "Public",
     description: "Anyone can join, view, and participate in the space.",
+    value: SpaceType.Public,
   },
   {
     icon: <IoEyeOutline className="h-7 w-7" />,
     title: "Restricted",
     description:
       "Anyone can view the space, but only approved members can participate.",
+    value: SpaceType.Restricted,
   },
   {
     icon: <GoLock className="h-7 w-7" />,
     title: "Private",
     description: "Only members can view and participate in the space.",
+    value: SpaceType.Private,
   },
 ];
 
@@ -32,47 +37,82 @@ type Props = {
 
 function NewSpace(props: Props) {
   const [characters, setCharacters] = useState(25);
-  const [selectedType, setSelectedType] = useState(spaceTypes[0].title);
+  const [selectedType, setSelectedType] = useState(spaceTypes[0].value);
   const [name, setName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const {
+    state: { user },
+  } = useAuthContext();
 
-  useEffect(() => {
-    setCharacters(25 - name.length);
-  }, [name]);
+  function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setName(e.target.value);
+    setCharacters(25 - e.target.value.length);
+  }
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    try {
+      setIsLoading((state) => !state);
+
+      // eslint-disable-next-line no-useless-escape
+      const format = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+
+      if (!format.test(name) || name.length < 3 || !user) return;
+
+      const data = { name, type: selectedType, userID: user.id };
+
+      const response = await createSpace(data);
+
+      setName("");
+      setSelectedType(SpaceType.Public);
+
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading((state) => !state);
+    }
+  }
 
   const renderedSpaceTypes = spaceTypes.map((type) => {
-    const isSelected = selectedType === type.title;
+    const isSelected = selectedType === type.value;
     const style = isSelected ? "bg-gray-100 " : "";
 
     return (
-      <div
+      <li
         key={type.title}
-        className={`grid grid-cols-[40px,1fr,40px] gap-2 items-start p-4 rounded-xl my-4 hover:bg-gray-100 ${style}`}
+        className={`grid grid-cols-[40px,1fr,40px] gap-2 items-start p-4 rounded-xl my-4  hover:bg-gray-100 ${style} `}
       >
         <span className="grid place-items-center h-full">{type.icon}</span>
 
-        <label htmlFor={type.title} className="flex flex-col gap-1">
+        <label
+          htmlFor={type.title}
+          className="cursor-pointer flex flex-col gap-1"
+        >
           <h3 className="font-medium">{type.title}</h3>
           <p className="text-[0.9rem]">{type.description}</p>
         </label>
 
-        <div className="grid place-items-center h-full">
-          <input
-            type="radio"
-            name="type"
-            value={type.title}
-            id={type.title}
-            className="cursor-pointer"
-            checked={isSelected}
-            onClick={() => setSelectedType(type.title)}
-          />
-        </div>
-      </div>
+        <input
+          type="radio"
+          name={type.title}
+          value={type.value}
+          id={type.title}
+          className="cursor-pointer grid self-center "
+          checked={isSelected}
+          onChange={() => setSelectedType(type.value)}
+        />
+      </li>
     );
   });
 
   return (
-    <form className="bg-white rounded-xl p-8 w-full max-w-xl">
-      <header className="space-y-2 relative">
+    <form
+      className="bg-white rounded-xl p-8 w-full max-w-xl"
+      onSubmit={handleSubmit}
+    >
+      <header className="space-y-2 mb-8 relative">
         <h1 className="text-2xl font-bold flex items-center gap-4">
           <span>
             <PiMountainsFill className="w-9 h-9 text-accent" />
@@ -94,12 +134,14 @@ function NewSpace(props: Props) {
       </header>
 
       <div className="space-y-2">
-        <InputField
+        <input
           name="name"
-          label="Name"
           type="text"
           value={name}
-          setValue={setName}
+          onChange={handleNameChange}
+          placeholder="Name your space"
+          maxLength={25}
+          className="input"
         />
 
         <p className="flex items-center justify-between">
@@ -111,7 +153,7 @@ function NewSpace(props: Props) {
       </div>
 
       <h2 className="font-bold my-4">Type</h2>
-      {renderedSpaceTypes}
+      <ul>{renderedSpaceTypes}</ul>
 
       <hr />
 
@@ -119,8 +161,18 @@ function NewSpace(props: Props) {
         <Button onClick={props.close} className="bg-grayscale-100">
           Cancel
         </Button>
-        <Button onClick={() => {}} className="bg-accent text-white">
-          Create space
+        <Button
+          type="submit"
+          className="bg-accent text-white flex items-center gap-2"
+        >
+          {isLoading ? (
+            <>
+              <VscLoading className="animate-spin w-6 h-6" />
+              Creating
+            </>
+          ) : (
+            "Create Space"
+          )}
         </Button>
       </div>
     </form>

@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import express from "express";
 import "module-alias/register";
+import { loadUserFromToken } from "./middleware/auth";
 import router from "./routes";
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT || 3001;
 
+app.use(loadUserFromToken);
 app.use("/api", router);
 
 app.listen(PORT, () => {

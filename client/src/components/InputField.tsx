@@ -30,9 +30,7 @@ function InputField(props: Props) {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder={placeholder}
-        className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-slate-300 block w-full p-3${
-          isError ? "border-red-500" : ""
-        }`}
+        className={`input ${isError ? "border-red-500" : ""}`}
       />
     </div>
   );
