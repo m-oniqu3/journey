@@ -16,13 +16,11 @@ function Logout() {
       delete api.defaults.headers.common["Content-Type"];
 
       try {
-        dispatch({ type: ActionEnum.SET_USER, payload: null });
-        dispatch({ type: ActionEnum.SET_IS_LOGGED_IN, payload: false });
-        dispatch({ type: ActionEnum.SET_TOKEN, payload: null });
         const res = await logout();
-        console.log(res.data.data);
-
-        navigate("/login");
+        if (res.status === 200) {
+          dispatch({ type: ActionEnum.LOGOUT });
+          navigate("/login");
+        }
       } catch (error) {
         console.log(error);
       }

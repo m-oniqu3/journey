@@ -66,7 +66,7 @@ function Sidebar() {
         className="px-2 py-1 hover:bg-grayscale-100 rounded-xl hover:px-2"
       >
         <Link
-          to={`/countries/${country}`}
+          to={`/s/${country.toLowerCase()}`}
           className="grid grid-cols-[44px,1fr,40px] gap-1 items-center font-normal "
         >
           <div className="w-8 h-8 rounded-full bg-sky-300"></div>

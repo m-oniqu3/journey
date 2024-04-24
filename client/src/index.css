@@ -12,9 +12,7 @@
 body {
     font-family: "Manrope", sans-serif;
     font-weight: 300;
-
 }
-
 
 /* scrollbar */
 ::-webkit-scrollbar {
@@ -40,5 +38,36 @@ body {
 
     .wrapper {
         @apply w-[92%] mx-auto md:w-[96%]
+    }
+
+
+}
+
+@layer utilities {
+    .page-layout {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .page-layout .main {
+        height: 100%;
+    }
+
+    .page-layout .sidebar {
+        display: none;
+    }
+
+
+    /* media */
+    @screen md {
+        .page-layout {
+            grid-template-columns: 3fr 1fr;
+            gap: 2rem;
+        }
+
+        .page-layout .sidebar {
+            display: block;
+        }
+
     }
 }

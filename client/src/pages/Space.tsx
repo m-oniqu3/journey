@@ -30,14 +30,21 @@ function Space() {
 
   if (!data) return <div>Space not found</div>;
 
+  const space = {
+    name: data.name,
+    avatar: data.avatar,
+    members_count: data.members_count,
+    banner: data.banner,
+  };
   return (
     <div>
-      <SpaceHeader
-        name={data.name}
-        banner={data.banner}
-        avatar={data.avatar}
-        members_count={data.members_count}
-      />
+      <SpaceHeader space={space} />
+
+      <div className="wrapper page-layout">
+        <div className="main-content bg-green-200"> main content </div>
+
+        <div className="sidebar bg-green-400"> sidebar </div>
+      </div>
     </div>
   );
 }

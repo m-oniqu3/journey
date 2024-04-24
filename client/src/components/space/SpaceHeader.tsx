@@ -4,38 +4,41 @@ import { RiMoreLine } from "react-icons/ri";
 import { VscAdd } from "react-icons/vsc";
 
 type Props = {
-  name: string;
-  banner: string;
-  avatar: string;
-  members_count: number;
+  space: {
+    name: string;
+    banner: string;
+    avatar: string;
+    members_count: number;
+  };
 };
 
 function SpaceHeader(props: Props) {
+  const { name, avatar, members_count } = props.space;
   return (
-    <header>
-      <div className="bg-teal-400 h-16 w-full" />
+    <header className="md:mt-2">
+      <div className="bg-teal-400 h-16 w-full md:wrapper md:h-28 md:rounded-lg" />
 
-      <div className="wrapper mt-6">
-        <figure className="flex items-center gap-4">
+      <div className="wrapper mt-6 md:flex md:items-center md:justify-between md:gap-8 md:px-8 md:relative md:-top-10">
+        <figure className="flex items-center gap-4 ">
           <img
             src={
-              props.avatar ||
+              avatar ||
               "https://images.unsplash.com/photo-1680422273918-5f1d443272a5?q=80&w=3135&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             }
-            alt={props.name}
-            className="h-14 w-14  rounded-full border-4 border-white shadow-sm"
+            alt={name}
+            className="h-14 w-14 rounded-full border-4 border-white shadow-sm md:h-24 md:w-24 md:relative md:-top-10"
           />
 
           <figcaption className="">
-            <h2 className="text-xl font-bold">{`s/${props.name}`}</h2>
-            <p className="text-sm font-normal text-gray-500">
-              {props.members_count}{" "}
-              {props.members_count === 1 ? "member" : "members"}
+            <h2 className="text-xl font-bold md:text-4xl">{`s/${name}`}</h2>
+            <p className="text-sm font-normal text-gray-500 md:hidden">
+              {members_count}
+              {members_count === 1 ? "member" : "members"}
             </p>
           </figcaption>
         </figure>
 
-        <div className="flex items-center gap-4 mt-4">
+        <div className="flex items-center gap-4 mt-4 md:mt-0">
           <ButtonLink
             route="/spaces/create"
             className="bg-white  border-[1px] border-gray-500 text-black rounded-full w-fit flex items-center gap-2 "

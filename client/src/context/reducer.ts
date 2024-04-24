@@ -4,6 +4,8 @@ export enum ActionEnum {
   SET_USER = "SET_USER",
   SET_IS_LOGGED_IN = "SET_IS_LOGGED_IN",
   SET_TOKEN = "SET_TOKEN",
+
+  LOGOUT = "LOGOUT",
 }
 
 export interface State {
@@ -14,7 +16,7 @@ export interface State {
 
 interface SetUserAction {
   type: ActionEnum.SET_USER;
-  payload: User | null;
+  payload: User;
 }
 
 interface SetIsLoggedInAction {
@@ -24,10 +26,18 @@ interface SetIsLoggedInAction {
 
 interface SetTokenAction {
   type: ActionEnum.SET_TOKEN;
-  payload: { access_token: string; expiry: number } | null;
+  payload: { access_token: string; expiry: number };
 }
 
-export type Actions = SetUserAction | SetIsLoggedInAction | SetTokenAction;
+interface LogoutAction {
+  type: ActionEnum.LOGOUT;
+}
+
+export type Actions =
+  | SetUserAction
+  | SetIsLoggedInAction
+  | SetTokenAction
+  | LogoutAction;
 
 export const initialState: State = {
   user: null,
@@ -38,27 +48,20 @@ export const initialState: State = {
 function reducer(state: State, action: Actions) {
   switch (action.type) {
     case ActionEnum.SET_USER:
-      // save to local storage
-      if (action.payload) {
-        localStorage.setItem("journey-user", JSON.stringify(action.payload));
-      } else {
-        localStorage.removeItem("journey-user");
-      }
-
-      return Object.assign({}, state, { user: action.payload });
+      localStorage.setItem("journey-user", JSON.stringify(action.payload));
+      return { ...state, user: action.payload };
 
     case ActionEnum.SET_IS_LOGGED_IN:
-      return Object.assign({}, state, { isLoggedIn: action.payload });
+      return { ...state, isLoggedIn: action.payload };
 
     case ActionEnum.SET_TOKEN:
-      // save to local storage
-      if (action.payload) {
-        localStorage.setItem("journey-token", action.payload.access_token);
-      } else {
-        localStorage.removeItem("journey-token");
-      }
-
+      localStorage.setItem("journey-token", action.payload.access_token);
       return Object.assign({}, state, { token: action.payload });
+
+    case ActionEnum.LOGOUT:
+      localStorage.removeItem("journey-user");
+      localStorage.removeItem("journey-token");
+      return { ...initialState };
 
     default:
       return state;

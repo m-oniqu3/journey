@@ -32,7 +32,7 @@ export async function loadUserFromToken(
     if (error instanceof AuthError) {
       console.log("middleware", error.name, error.message, error.status);
 
-      if (error.status === 401) {
+      if (error.message.includes("token is expired ")) {
         console.log("Token expired");
 
         return res.status(401).json({ error: "Token expired" });
