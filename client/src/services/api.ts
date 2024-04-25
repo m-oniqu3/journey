@@ -8,6 +8,7 @@ export const api = axios.create({
 api.interceptors.request.use(
   async (config) => {
     const token = localStorage.getItem("journey-token");
+
     console.log("token", token);
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
@@ -29,18 +30,22 @@ api.interceptors.response.use(
 
     // Check if the error is related to a token expiration
     if (
-      (error.response &&
-        error.response.status === 401 &&
-        error.response.data.error &&
-        error.response.data.error.includes("Token expired")) ||
-      error.response.data.error.includes("Unauthorized")
+      error.response &&
+      error.response.status === 401 &&
+      error.response.data.error &&
+      error.response.data.error.includes("Token expired")
     ) {
       console.log("Token expired. Logging out...");
 
-      // Remove Authorization header and redirect to logout page
       delete api.defaults.headers.common["Authorization"];
       delete api.defaults.headers.common["Content-Type"];
-      window.location.href = "/logout";
+
+      localStorage.removeItem("journey-user");
+      localStorage.removeItem("journey-token");
+
+      window.location.href = "/logout"; // Redirect to the logout page
+
+      return Promise.reject(error);
     }
 
     // Pass the error to the next error handler

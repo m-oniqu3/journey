@@ -1,10 +1,12 @@
 import Button from "@/components/Button";
 import ButtonLink from "@/components/ButtonLink";
+import useSpaceData from "@/hooks/useSpaceData";
 import { RiMoreLine } from "react-icons/ri";
 import { VscAdd } from "react-icons/vsc";
 
 type Props = {
   space: {
+    id: number;
     name: string;
     banner: string;
     avatar: string;
@@ -13,18 +15,19 @@ type Props = {
 };
 
 function SpaceHeader(props: Props) {
-  const { name, avatar, members_count } = props.space;
+  const { name, avatar, members_count, id } = props.space;
+  const { userSpaces } = useSpaceData();
+
+  const isJoined = !!userSpaces[name];
+
   return (
     <header className="md:mt-2">
-      <div className="bg-teal-400 h-16 w-full md:wrapper md:h-28 md:rounded-lg" />
+      <div className="bg-gray-100 h-16 w-full md:wrapper md:h-28 md:rounded-lg" />
 
       <div className="wrapper mt-6 md:flex md:items-center md:justify-between md:gap-8 md:px-8 md:relative md:-top-10">
         <figure className="flex items-center gap-4 ">
           <img
-            src={
-              avatar ||
-              "https://images.unsplash.com/photo-1680422273918-5f1d443272a5?q=80&w=3135&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            }
+            src={avatar || `https://picsum.photos/seed/${id}/200`}
             alt={name}
             className="h-14 w-14 rounded-full border-4 border-white shadow-sm md:h-24 md:w-24 md:relative md:-top-10"
           />
@@ -51,7 +54,7 @@ function SpaceHeader(props: Props) {
             onClick={() => {}}
             className="bg-accent text-neutral rounded-full"
           >
-            Join
+            {isJoined ? "Joined" : "Join"}
           </Button>
 
           <button

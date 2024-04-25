@@ -23,6 +23,7 @@ export async function register(credentials: {
 }
 
 export async function logout() {
+  delete api.defaults.headers.common["Authorization"];
   const response = await api.delete<{ data: string }>("auth");
   return response;
 }

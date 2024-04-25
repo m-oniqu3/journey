@@ -5,28 +5,29 @@ import { logout } from "@/services/auth-services";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Logout() {
+function LogOut() {
   const { dispatch } = useAuthContext();
   const navigate = useNavigate();
 
   useEffect(() => {
     async function logoutUser() {
-      //clear axios headers
-      delete api.defaults.headers.common["Authorization"];
-      delete api.defaults.headers.common["Content-Type"];
-
       try {
-        const res = await logout();
-        if (res.status === 200) {
-          dispatch({ type: ActionEnum.LOGOUT });
-          navigate("/login");
-        }
+        //clear axios headers
+        delete api.defaults.headers.common["Authorization"];
+        delete api.defaults.headers.common["Content-Type"];
+
+        await logout();
+        dispatch({ type: ActionEnum.LOGOUT });
+
+        navigate("/login");
       } catch (error) {
         console.log(error);
       }
     }
     logoutUser();
   }, [dispatch, navigate]);
+
+  return null;
 }
 
-export default Logout;
+export default LogOut;

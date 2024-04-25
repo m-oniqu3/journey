@@ -15,3 +15,8 @@ export type Space = {
   created_at: string;
   creator: string;
 };
+
+export type UserSpaces = Record<
+  string,
+  { id: number; name: string; avatar: string; isCreator: boolean }
+>;

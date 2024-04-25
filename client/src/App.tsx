@@ -20,6 +20,11 @@ function App() {
   //check for user when app mounts
   useEffect(() => {
     const user = localStorage.getItem("journey-user");
+    const token = localStorage.getItem("journey-token");
+
+    if (!token) {
+      dispatch({ type: ActionEnum.LOGOUT });
+    }
 
     if (user) {
       dispatch({ type: ActionEnum.SET_USER, payload: JSON.parse(user) });

@@ -1,7 +1,7 @@
 import ErrorPage from "@/error-page";
 import EditProfile from "@/pages/EditProfile";
 import LogIn from "@/pages/LogIn";
-import Logout from "@/pages/Logout";
+import LogOut from "@/pages/Logout";
 import Profile from "@/pages/Profile";
 import Register from "@/pages/Register";
 import Space from "@/pages/Space";
@@ -58,7 +58,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/logout",
-    element: <Logout />,
+    element: <LogOut />,
   },
 ]);
 

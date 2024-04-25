@@ -10,6 +10,7 @@ export async function loadUserFromToken(
   req.user = null;
 
   const authHeader = req.headers.authorization;
+  console.log("authHeader", authHeader);
 
   if (!authHeader) return next();
 

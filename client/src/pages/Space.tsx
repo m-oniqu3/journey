@@ -28,9 +28,10 @@ function Space() {
   if (!isLoading && isError && error)
     return <div>Error: {(error as Error).message}</div>;
 
-  if (!data) return <div>Space not found</div>;
+  if (!isLoading && !data) return <div>Space not found</div>;
 
   const space = {
+    id: data.id,
     name: data.name,
     avatar: data.avatar,
     members_count: data.members_count,
