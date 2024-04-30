@@ -16,7 +16,7 @@ type Props = {
 
 function SpaceHeader(props: Props) {
   const { name, avatar, members_count, id } = props.space;
-  const { userSpaces } = useSpaceData();
+  const { userSpaces, handleJoinLeaveSpace } = useSpaceData();
 
   const isJoined = !!userSpaces[name];
 
@@ -51,7 +51,7 @@ function SpaceHeader(props: Props) {
           </ButtonLink>
 
           <Button
-            onClick={() => {}}
+            onClick={() => handleJoinLeaveSpace(isJoined, name)}
             className="bg-accent text-neutral rounded-full"
           >
             {isJoined ? "Joined" : "Join"}

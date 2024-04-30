@@ -1,5 +1,6 @@
 import Modal from "@/components/Modal";
 import NewSpace from "@/components/NewSpace";
+import useSpaceData from "@/hooks/useSpaceData";
 import { useState } from "react";
 import { AiOutlineHome } from "react-icons/ai";
 import { CiStar } from "react-icons/ci";
@@ -27,51 +28,29 @@ const links = [
   },
 ];
 
-//create an array with 20 countries from all around the world
-const countries = [
-  "USA",
-  "Canada",
-  "Germany",
-  "France",
-  "Italy",
-  "Spain",
-  "Portugal",
-  "Brazil",
-  "Argentina",
-  "Australia",
-  "NewZealand",
-  "Japan",
-  "SouthKorea",
-  "China",
-  "India",
-  "SouthAfrica",
-  "Nigeria",
-  "Egypt",
-  "Kenya",
-  "Morocco",
-];
 function Sidebar() {
   const [openCommunity, setOpenCommunity] = useState(false);
+  const { userSpaces } = useSpaceData();
+
+  const spaces = Object.values(userSpaces);
 
   function handleOpenCommunity() {
     setOpenCommunity((state) => !state);
   }
 
-  console.log(openCommunity);
-
-  const renderCountries = countries.map((country) => {
+  const renderSpaces = spaces.map((space) => {
     return (
       <li
-        key={country}
+        key={space.id}
         className="px-2 py-1 hover:bg-grayscale-100 rounded-xl hover:px-2"
       >
         <Link
-          to={`/s/${country.toLowerCase()}`}
+          to={`/s/${space.name}`}
           className="grid grid-cols-[44px,1fr,40px] gap-1 items-center font-normal "
         >
           <div className="w-8 h-8 rounded-full bg-sky-300"></div>
 
-          <span className="lowercase">{`s/${country}`}</span>
+          <span className="lowercase">{`s/${space.name}`}</span>
 
           <CiStar className="h-6 w-6" />
         </Link>
@@ -112,7 +91,7 @@ function Sidebar() {
             Create a space
           </li>
 
-          {renderCountries}
+          {renderSpaces}
         </ul>
       </aside>
 

@@ -136,3 +136,55 @@ export async function logout(req: Request, res: Response) {
     return res.status(500).json({ error: "Internal server error" });
   }
 }
+
+// refresh token
+export async function refresh(req: Request, res: Response) {
+  try {
+    console.log("attempting to refresh token");
+    const refresh_token = req.cookies.jrt;
+
+    console.log("refresh token", refresh_token);
+
+    if (!refresh_token) {
+      return res.status(401).json({ error: "No refresh token found" });
+    }
+
+    const { data, error } = await supabase.auth.refreshSession({
+      refresh_token,
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    if (!data || !data.session) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const token = data.session.access_token;
+    const refresh = data.session.refresh_token;
+
+    const user = { id: data.session.user.id, email: data.session.user.email };
+
+    // set the refresh token as a cookie
+    res.cookie("jrt", refresh, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    console.log(user, token);
+
+    return res.status(200).json({ data: { user, token } });
+  } catch (error: any) {
+    if (error instanceof AuthError) {
+      console.log("auth error", error.message);
+      return res.status(401).json({ error: error.message });
+    }
+
+    return res
+      .status(500)
+      .json({ error: error.message ?? "Internal server error" });
+  }
+}

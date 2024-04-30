@@ -19,3 +19,17 @@ export async function getUsersSpaces(userID: string) {
   const response = await api.get<{ data: UserSpaces }>(`spaces/user/${userID}`);
   return response.data.data;
 }
+
+export async function joinSpace(space: string, userID: string) {
+  const response = await api.post<{ data: string }>(`spaces/join/${space}`, {
+    userID,
+  });
+  return response.data;
+}
+
+export async function leaveSpace(space: string, userID: string) {
+  const response = await api.post<{ data: string }>(`spaces/leave/${space}`, {
+    userID,
+  });
+  return response.data;
+}

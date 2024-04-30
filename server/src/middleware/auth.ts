@@ -2,15 +2,86 @@ import { supabase } from "@/lib/supabaseClient";
 import { AuthError } from "@supabase/supabase-js";
 import { type NextFunction, type Request, type Response } from "express";
 
+// export async function loadUserFromToken(
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) {
+//   req.user = null;
+
+//   const authHeader = req.headers.authorization;
+
+//   if (!authHeader) return next();
+
+//   const brokenHeader = authHeader.split(" ");
+//   if (brokenHeader.length !== 2) return next();
+//   const token = brokenHeader[1];
+
+//   try {
+//     //verify token with supabase
+//     const { data, error } = await supabase.auth.getUser(token);
+
+//     if (error) throw error;
+
+//     const user = data.user;
+//     console.log("user from token", user.email);
+
+//     if (user) {
+//       req.user = user;
+
+//       // check if the session is expired
+//       const { data: session, error: sessionerror } =
+//         await supabase.auth.getSession();
+
+//       if (sessionerror) {
+//         console.log("Error getting session", sessionerror);
+//         throw sessionerror;
+//       }
+
+//       if (session.session) return next();
+
+//       //try to refresh the session
+
+//       const { error: refresherror } = await supabase.auth.setSession({
+//         access_token: token,
+//         refresh_token: req.cookies.refresh_token,
+//       });
+
+//       if (refresherror) {
+//         console.log("Error refreshing session", refresherror);
+//         throw refresherror;
+//       }
+//     }
+
+//     next();
+//   } catch (error) {
+//     if (error instanceof AuthError) {
+//       console.log("middleware", error.name, error.message, error.status);
+
+//       if (error.message.includes("token is expired ")) {
+//         console.log("Token expired");
+
+//         return res.status(401).json({ error: "Token expired" });
+//       }
+//     }
+
+//     console.log(
+//       "Error in loadUserFromToken middleware. Could not load user from token"
+//     );
+//   }
+// }
+
+// this middleware checks for the authorization header
 export async function loadUserFromToken(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
+  console.log("loadUser");
+
   req.user = null;
 
   const authHeader = req.headers.authorization;
-  console.log("authHeader", authHeader);
 
   if (!authHeader) return next();
 
@@ -24,25 +95,51 @@ export async function loadUserFromToken(
 
     if (error) throw error;
 
-    if (data) {
-      req.user = data.user;
-    }
+    const user = data.user;
+    console.log("user from token", user.email);
 
+    // attach user to request
+    if (user) {
+      req.user = user;
+      console.log("authenticated", user.aud);
+
+      // check if the session is expired
+      const { data: session, error: sessionerror } =
+        await supabase.auth.getSession();
+
+      if (sessionerror) {
+        console.log("Error getting session", sessionerror);
+        throw sessionerror;
+      }
+
+      if (session.session) return next();
+
+      //try to refresh the session
+
+      const { error: refresherror } = await supabase.auth.setSession({
+        access_token: token,
+        refresh_token: req.cookies.refresh_token,
+      });
+
+      if (refresherror) {
+        console.log("Error refreshing session", refresherror);
+        throw refresherror;
+      }
+    }
     next();
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof AuthError) {
       console.log("middleware", error.name, error.message, error.status);
 
-      if (error.message.includes("token is expired ")) {
+      // Check if the error indicates that the token is expired
+      if (error.status === 401) {
         console.log("Token expired");
 
         return res.status(401).json({ error: "Token expired" });
       }
     }
 
-    console.log(
-      "Error in loadUserFromToken middleware. Could not load user from token"
-    );
+    console.log("Error getting user from token");
   }
 }
 
