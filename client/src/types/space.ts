@@ -20,3 +20,10 @@ export type UserSpaces = Record<
   string,
   { id: number; name: string; avatar: string; isCreator: boolean }
 >;
+
+export type SpaceSummary = {
+  id: number;
+  name: string;
+  avatar: string;
+  isCreator: boolean;
+};

@@ -1,13 +1,18 @@
 import { api } from "@/services/api";
-import { Space, SpacePrivacy, type UserSpaces } from "@/types/space";
+import {
+  Space,
+  SpacePrivacy,
+  SpaceSummary,
+  type UserSpaces,
+} from "@/types/space";
 
 export async function createSpace(data: {
   name: string;
   type: SpacePrivacy;
   userID: string;
 }) {
-  const response = await api.post<{ data: string }>("spaces/new", data);
-  return response.data;
+  const response = await api.post<{ data: SpaceSummary }>("spaces/new", data);
+  return response.data.data;
 }
 
 export async function getSpace(name: string) {
@@ -25,15 +30,8 @@ export async function getUsersSpaces(userID: string) {
   return response.data.data;
 }
 
-type JoinSpaceResponse = {
-  id: number;
-  name: string;
-  avatar: string;
-  isCreator: boolean;
-};
-
 export async function joinSpace(space: string, userID: string) {
-  const response = await api.post<{ data: JoinSpaceResponse }>(
+  const response = await api.post<{ data: SpaceSummary }>(
     `spaces/join/${space}`,
     { userID }
   );

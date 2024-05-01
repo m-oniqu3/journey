@@ -14,13 +14,18 @@ export async function createSpace(req: Request, res: Response) {
     const { data, error } = await supabase
       .from("spaces")
       .insert([{ name, privacy_type: type, creator: userID, members_count: 1 }])
-      .select("id")
+      .select("id, name, avatar")
       .single();
 
     if (error) throw error;
 
-    // join the user to the space
+    if (!data) {
+      return res
+        .status(HttpStatusCode.BAD_REQUEST)
+        .json({ error: "Could not create space" });
+    }
 
+    // join the user to the space
     const result = await supabase
       .from("user-spaces")
       .insert([{ user_id: userID, space_id: data.id }])
@@ -28,9 +33,20 @@ export async function createSpace(req: Request, res: Response) {
 
     if (result.error) throw result.error;
 
-    return res
-      .status(HttpStatusCode.CREATED)
-      .json({ data: "Space created successfully" });
+    if (!data) {
+      return res
+        .status(HttpStatusCode.BAD_REQUEST)
+        .json({ error: "Could not create space" });
+    }
+
+    const space = {
+      id: data.id,
+      name,
+      avatar: data.avatar || "",
+      isCreator: true,
+    };
+
+    return res.status(HttpStatusCode.CREATED).json({ data: space });
   } catch (error) {
     console.error("Error creating space:", error);
 

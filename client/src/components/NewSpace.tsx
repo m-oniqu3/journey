@@ -1,5 +1,7 @@
 import Button from "@/components/Button";
+import { SpacesEnum } from "@/context/spaces-reducer";
 import { useAuthContext } from "@/context/useAuthContext";
+import { useSpacesContext } from "@/context/useSpacesContext";
 import { createSpace } from "@/services/space-services";
 import { SpacePrivacy } from "@/types/space";
 import { useState } from "react";
@@ -8,7 +10,6 @@ import { GoLock } from "react-icons/go";
 import { IoEyeOutline } from "react-icons/io5";
 import { PiMountainsFill } from "react-icons/pi";
 import { VscClose, VscLoading } from "react-icons/vsc";
-import { useQueryClient } from "react-query";
 
 const SpacePrivacys = [
   {
@@ -45,7 +46,7 @@ function NewSpace(props: Props) {
     state: { user },
   } = useAuthContext();
 
-  const queryClient = useQueryClient();
+  const { dispatch } = useSpacesContext();
 
   function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
     setName(e.target.value);
@@ -67,8 +68,8 @@ function NewSpace(props: Props) {
 
       const response = await createSpace(data);
 
-      // refetch user spaces
-      queryClient.invalidateQueries(["userSpaces", user?.id ?? ""]);
+      // update user spaces
+      dispatch({ type: SpacesEnum.JOIN_SPACE, payload: response });
 
       setName("");
       setSelectedType(SpacePrivacy.Public);
