@@ -1,20 +1,16 @@
 import { type User } from "@/types/auth";
-import { type UserSpaces } from "@/types/space";
 
 export enum ActionEnum {
   SET_USER = "SET_USER",
   SET_IS_LOGGED_IN = "SET_IS_LOGGED_IN",
   SET_TOKEN = "SET_TOKEN",
-
   LOGOUT = "LOGOUT",
-  SET_USER_SPACES = "SET_USER_SPACES",
 }
 
 export interface State {
   user: User | null;
   isLoggedIn: boolean;
   token: { access_token: string; expiry: number } | null;
-  // userSpaces: UserSpaces;
 }
 
 interface SetUserAction {
@@ -36,23 +32,16 @@ interface LogoutAction {
   type: ActionEnum.LOGOUT;
 }
 
-interface SetUserSpacesAction {
-  type: ActionEnum.SET_USER_SPACES;
-  payload: UserSpaces;
-}
-
 export type Actions =
   | SetUserAction
   | SetIsLoggedInAction
   | SetTokenAction
-  | LogoutAction
-  | SetUserSpacesAction;
+  | LogoutAction;
 
 export const initialState: State = {
   user: null,
   token: null,
   isLoggedIn: false,
-  // userSpaces: {},
 };
 
 function reducer(state: State, action: Actions) {
@@ -72,9 +61,6 @@ function reducer(state: State, action: Actions) {
       localStorage.removeItem("journey-user");
       localStorage.removeItem("journey-token");
       return { ...initialState };
-
-    // case ActionEnum.SET_USER_SPACES:
-    //   return { ...state, userSpaces: action.payload };
 
     default:
       return state;

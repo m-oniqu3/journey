@@ -8,6 +8,7 @@ import { GoLock } from "react-icons/go";
 import { IoEyeOutline } from "react-icons/io5";
 import { PiMountainsFill } from "react-icons/pi";
 import { VscClose, VscLoading } from "react-icons/vsc";
+import { useQueryClient } from "react-query";
 
 const SpacePrivacys = [
   {
@@ -44,6 +45,8 @@ function NewSpace(props: Props) {
     state: { user },
   } = useAuthContext();
 
+  const queryClient = useQueryClient();
+
   function handleNameChange(e: React.ChangeEvent<HTMLInputElement>) {
     setName(e.target.value);
     setCharacters(25 - e.target.value.length);
@@ -63,6 +66,9 @@ function NewSpace(props: Props) {
       const data = { name, type: selectedType, userID: user.id };
 
       const response = await createSpace(data);
+
+      // refetch user spaces
+      queryClient.invalidateQueries(["userSpaces", user?.id ?? ""]);
 
       setName("");
       setSelectedType(SpacePrivacy.Public);

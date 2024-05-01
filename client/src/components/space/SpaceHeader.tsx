@@ -1,8 +1,9 @@
 import Button from "@/components/Button";
 import ButtonLink from "@/components/ButtonLink";
 import useSpaceData from "@/hooks/useSpaceData";
-import { RiLoader5Fill, RiMoreLine } from "react-icons/ri";
-import { VscAdd } from "react-icons/vsc";
+import { useEffect, useState } from "react";
+import { RiMoreLine } from "react-icons/ri";
+import { VscAdd, VscLoading } from "react-icons/vsc";
 
 type Props = {
   space: {
@@ -18,6 +19,12 @@ function SpaceHeader(props: Props) {
   const { name, avatar, members_count, id } = props.space;
   const { userSpaces, handleJoinLeaveSpace, isJoiningSpace, isLeavingSpace } =
     useSpaceData();
+
+  const [isChecking, setIsChecking] = useState(true);
+
+  useEffect(() => {
+    if (userSpaces) setIsChecking(false);
+  }, [userSpaces]);
 
   const isJoined = userSpaces ? !!userSpaces[name] : false;
 
@@ -44,7 +51,7 @@ function SpaceHeader(props: Props) {
 
         <div className="flex items-center gap-4 mt-4 md:mt-0">
           <ButtonLink
-            route="/spaces/create"
+            route={`/s/${name}/submit`}
             className="bg-white  border-[1px] border-gray-500 text-black rounded-full w-fit flex items-center gap-2 "
           >
             <VscAdd className="h-6 w-6" />
@@ -55,8 +62,8 @@ function SpaceHeader(props: Props) {
             onClick={() => handleJoinLeaveSpace(isJoined, name)}
             className="bg-accent text-neutral rounded-full w-24 flex justify-center items-center "
           >
-            {isJoiningSpace || isLeavingSpace ? (
-              <RiLoader5Fill className="animate-spin h-8 w-8" />
+            {isJoiningSpace || isLeavingSpace || isChecking ? (
+              <VscLoading className="animate-spin w-6 h-6" />
             ) : isJoined ? (
               "Joined"
             ) : (

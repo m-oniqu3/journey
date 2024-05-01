@@ -19,7 +19,6 @@ function useSpaceData() {
   const queryClient = useQueryClient();
 
   async function fetchUserSpaces() {
-    console.log("fetching user spaces");
     try {
       if (!user) return;
 
@@ -36,8 +35,6 @@ function useSpaceData() {
     queryKey: ["userSpaces", user ? user.id : ""],
     queryFn: fetchUserSpaces,
     onSuccess: (data) => {
-      console.log("data", data);
-
       if (data) setUserSpaces(data);
     },
   });
@@ -71,7 +68,6 @@ function useSpaceData() {
 
     try {
       const response = await joinSpace(space, userID);
-      console.log(response);
       return response;
     } catch (error) {
       const message = handleError(error);
@@ -85,7 +81,6 @@ function useSpaceData() {
 
     try {
       const response = await leaveSpace(space, userID);
-      console.log(response);
       return response;
     } catch (error) {
       const message = handleError(error);

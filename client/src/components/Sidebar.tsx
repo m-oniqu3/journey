@@ -48,7 +48,10 @@ function Sidebar() {
           to={`/s/${space.name}`}
           className="grid grid-cols-[44px,1fr,40px] gap-1 items-center font-normal "
         >
-          <div className="w-8 h-8 rounded-full bg-sky-300"></div>
+          <img
+            src={space.avatar || `https://picsum.photos/seed/${space.id}/200`}
+            className="w-10 h-10 rounded-full"
+          />
 
           <span className="lowercase">{`s/${space.name}`}</span>
 
