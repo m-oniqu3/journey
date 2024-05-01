@@ -1,7 +1,6 @@
 import Button from "@/components/Button";
 import ButtonLink from "@/components/ButtonLink";
 import useSpaceData from "@/hooks/useSpaceData";
-import { useEffect, useState } from "react";
 import { RiMoreLine } from "react-icons/ri";
 import { VscAdd, VscLoading } from "react-icons/vsc";
 
@@ -20,18 +19,18 @@ function SpaceHeader(props: Props) {
   const { userSpaces, handleJoinLeaveSpace, isJoiningSpace, isLeavingSpace } =
     useSpaceData();
 
-  const [isChecking, setIsChecking] = useState(true);
+  const isJoined = name in userSpaces;
 
-  useEffect(() => {
-    if (userSpaces) setIsChecking(false);
-  }, [userSpaces]);
-
-  const isJoined = userSpaces ? !!userSpaces[name] : false;
+  const joinButtonContent = (() => {
+    if (isJoiningSpace || isLeavingSpace)
+      return <VscLoading className="animate-spin w-6 h-6" />;
+    if (isJoined) return "Joined";
+    return "Join";
+  })();
 
   return (
     <header className="md:mt-2">
       <div className="bg-gray-100 h-16 w-full md:wrapper md:h-28 md:rounded-lg" />
-
       <div className="wrapper mt-6 md:flex md:items-center md:justify-between md:gap-8 md:px-8 md:relative md:-top-10">
         <figure className="flex items-center gap-4 ">
           <img
@@ -62,13 +61,7 @@ function SpaceHeader(props: Props) {
             onClick={() => handleJoinLeaveSpace(isJoined, name)}
             className="bg-accent text-neutral rounded-full w-24 flex justify-center items-center "
           >
-            {isJoiningSpace || isLeavingSpace || isChecking ? (
-              <VscLoading className="animate-spin w-6 h-6" />
-            ) : isJoined ? (
-              "Joined"
-            ) : (
-              "Join"
-            )}
+            {joinButtonContent}
           </Button>
 
           <button

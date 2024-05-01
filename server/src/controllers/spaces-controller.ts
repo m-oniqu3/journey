@@ -128,16 +128,26 @@ export async function joinSpace(req: Request, res: Response) {
         .status(HttpStatusCode.BAD_REQUEST)
         .json({ error: "Could not join space" });
     }
-    // increment the members count in the spaces table
 
-    const { error: updateError } = await supabase
+    // increment the members count in the spaces table
+    const { data: updateSpaceData, error: updateSpaceError } = await supabase
       .from("spaces")
       .update({ members_count: space.members_count + 1 })
-      .eq("id", space.id);
+      .eq("id", space.id)
+      .eq("creator", space.creator)
+      .select()
+      .single();
 
-    if (updateError) throw updateError;
+    if (updateSpaceError) throw updateSpaceError;
 
-    return res.status(HttpStatusCode.CREATED).json({ data: "Joined space" });
+    const joinedSpace = {
+      id: updateSpaceData.id,
+      name: updateSpaceData.name,
+      avatar: updateSpaceData.avatar || "",
+      isCreator: updateSpaceData.creator === userID,
+    };
+
+    return res.status(HttpStatusCode.CREATED).json({ data: joinedSpace });
   } catch (error) {
     console.error("Error joining space:", error);
 

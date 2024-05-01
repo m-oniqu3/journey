@@ -25,11 +25,19 @@ export async function getUsersSpaces(userID: string) {
   return response.data.data;
 }
 
+type JoinSpaceResponse = {
+  id: number;
+  name: string;
+  avatar: string;
+  isCreator: boolean;
+};
+
 export async function joinSpace(space: string, userID: string) {
-  const response = await api.post<{ data: string }>(`spaces/join/${space}`, {
-    userID,
-  });
-  return response.data;
+  const response = await api.post<{ data: JoinSpaceResponse }>(
+    `spaces/join/${space}`,
+    { userID }
+  );
+  return response.data.data;
 }
 
 export async function leaveSpace(space: string, userID: string) {
