@@ -15,6 +15,11 @@ export async function getSpace(name: string) {
   return response.data.data;
 }
 
+export async function getAllSpaces() {
+  const response = await api.get<{ data: Space[] }>("spaces");
+  return response.data.data;
+}
+
 export async function getUsersSpaces(userID: string) {
   const response = await api.get<{ data: UserSpaces }>(`spaces/user/${userID}`);
   return response.data.data;

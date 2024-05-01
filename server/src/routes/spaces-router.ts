@@ -1,5 +1,6 @@
 import {
   createSpace,
+  getAllSpaces,
   getSpaceDetails,
   getUsersSpaces,
   joinSpace,
@@ -11,6 +12,7 @@ import express from "express";
 
 const router = express.Router();
 
+router.get("/", requireAuth, getAllSpaces);
 router.post("/new", requireAuth, createSpace);
 router.get("/user/:userID", requireAuth, getUsersSpaces);
 router.post("/join/:name", requireAuth, checkSpaceExists, joinSpace);

@@ -1,3 +1,4 @@
+import AllSpaces from "@/components/space/AllSpaces";
 import ErrorPage from "@/error-page";
 import EditProfile from "@/pages/EditProfile";
 import LogIn from "@/pages/LogIn";
@@ -6,8 +7,10 @@ import LogOut from "@/pages/LogOut";
 import Profile from "@/pages/Profile";
 import Register from "@/pages/Register";
 import Space from "@/pages/Space";
+import Submit from "@/pages/Submit";
 import AccountLayout from "@/routes/AccountLayout";
 import Root from "@/routes/Root";
+import SecondaryLayout from "@/routes/SecondaryLayout";
 import { createBrowserRouter } from "react-router-dom";
 
 export enum RoutesEnum {
@@ -47,7 +50,7 @@ const router = createBrowserRouter([
       { path: "/profile", element: <Profile /> },
       { path: "/profile/edit", element: <EditProfile /> },
       { path: "/s/:spaceName", element: <Space /> },
-      { path: "/s/:spaceName/submit", element: <p>create a post</p> },
+      { path: "/s/:spaceName/submit", element: <Submit /> },
     ],
   },
   {
@@ -59,9 +62,11 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/logout",
-    element: <LogOut />,
+    element: <SecondaryLayout />,
+
+    children: [{ path: "/spaces", element: <AllSpaces /> }],
   },
+  { path: "/logout", element: <LogOut /> },
 ]);
 
 export default router;

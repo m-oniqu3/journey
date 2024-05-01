@@ -41,7 +41,7 @@ function SpaceHeader(props: Props) {
           />
 
           <figcaption className="">
-            <h2 className="text-xl font-bold md:text-4xl">{`s/${name}`}</h2>
+            <h2 className="text-xl font-extrabold md:text-4xl">{`s/${name}`}</h2>
             <p className="text-sm font-normal text-gray-500 md:hidden">
               {members_count}
               {members_count === 1 ? "member" : "members"}

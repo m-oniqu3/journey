@@ -1,4 +1,5 @@
 import SpaceHeader from "@/components/space/SpaceHeader";
+import SpaceSidebar from "@/components/space/SpaceSidebar";
 import { getSpace } from "@/services/space-services";
 import { handleError } from "@/utils/handleError";
 import { useQuery } from "react-query";
@@ -42,9 +43,11 @@ function Space() {
       <SpaceHeader space={space} />
 
       <div className="wrapper page-layout">
-        <div className="main-content bg-green-200"> main content </div>
+        <div className="main-content "> main content </div>
 
-        <div className="sidebar bg-green-400"> sidebar </div>
+        <div className="sidebar">
+          <SpaceSidebar name={spaceName} />
+        </div>
       </div>
     </div>
   );

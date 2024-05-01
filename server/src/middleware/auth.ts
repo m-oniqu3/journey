@@ -115,10 +115,9 @@ export async function loadUserFromToken(
       if (session.session) return next();
 
       //try to refresh the session
-
       const { error: refresherror } = await supabase.auth.setSession({
         access_token: token,
-        refresh_token: req.cookies.refresh_token,
+        refresh_token: req.cookies.jrt,
       });
 
       if (refresherror) {

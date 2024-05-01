@@ -96,6 +96,8 @@ function Sidebar() {
 
           {renderSpaces}
         </ul>
+
+        <Link to="/spaces">spaces</Link>
       </aside>
 
       {openCommunity && (

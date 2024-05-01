@@ -184,3 +184,28 @@ export async function leaveSpace(req: Request, res: Response) {
     });
   }
 }
+
+export async function getAllSpaces(_req: Request, res: Response) {
+  try {
+    const { data, error } = await supabase
+      .from("spaces")
+      .select()
+      .order("members_count", { ascending: false });
+
+    if (error) throw error;
+
+    return res.status(HttpStatusCode.OK).json({ data });
+  } catch (error) {
+    console.error("Error getting all spaces:", error);
+
+    if (error.code) {
+      return res
+        .status(HttpStatusCode.BAD_REQUEST)
+        .json({ error: error.message });
+    }
+
+    return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
+      error: "Internal server error. Could not get spaces",
+    });
+  }
+}

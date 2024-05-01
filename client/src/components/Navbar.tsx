@@ -26,12 +26,12 @@ function Navbar(props: Props) {
           <AiOutlineMenu className="h-6 w-auto" />
         </div>
 
-        <div className="flex items-center gap-4 w-full">
+        <Link to="/" className="flex items-center gap-4 w-full">
           <PiMountainsFill className="w-9 h-9 text-accent" />
           <p className="hidden lg:block text-2xl font-bold text-accent">
             journey
           </p>
-        </div>
+        </Link>
 
         <Searchbar className="w-full max-w-lg mx-auto" />
 

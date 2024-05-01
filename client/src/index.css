@@ -59,7 +59,7 @@ body {
 
 
     /* media */
-    @screen md {
+    @screen xl {
         .page-layout {
             grid-template-columns: 3fr 1fr;
             gap: 2rem;
