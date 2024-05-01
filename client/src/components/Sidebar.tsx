@@ -32,7 +32,7 @@ function Sidebar() {
   const [openCommunity, setOpenCommunity] = useState(false);
   const { userSpaces } = useSpaceData();
 
-  const spaces = Object.values(userSpaces);
+  const spaces = userSpaces ? Object.values(userSpaces) : [];
 
   function handleOpenCommunity() {
     setOpenCommunity((state) => !state);

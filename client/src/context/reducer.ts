@@ -14,7 +14,7 @@ export interface State {
   user: User | null;
   isLoggedIn: boolean;
   token: { access_token: string; expiry: number } | null;
-  userSpaces: UserSpaces;
+  // userSpaces: UserSpaces;
 }
 
 interface SetUserAction {
@@ -52,7 +52,7 @@ export const initialState: State = {
   user: null,
   token: null,
   isLoggedIn: false,
-  userSpaces: {},
+  // userSpaces: {},
 };
 
 function reducer(state: State, action: Actions) {
@@ -73,8 +73,8 @@ function reducer(state: State, action: Actions) {
       localStorage.removeItem("journey-token");
       return { ...initialState };
 
-    case ActionEnum.SET_USER_SPACES:
-      return { ...state, userSpaces: action.payload };
+    // case ActionEnum.SET_USER_SPACES:
+    //   return { ...state, userSpaces: action.payload };
 
     default:
       return state;

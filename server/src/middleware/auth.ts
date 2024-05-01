@@ -131,15 +131,16 @@ export async function loadUserFromToken(
     if (error instanceof AuthError) {
       console.log("middleware", error.name, error.message, error.status);
 
-      // Check if the error indicates that the token is expired
-      if (error.status === 401) {
+      if (error.message.includes("token is expired ")) {
         console.log("Token expired");
 
         return res.status(401).json({ error: "Token expired" });
       }
     }
 
-    console.log("Error getting user from token");
+    console.log(
+      "Error in loadUserFromToken middleware. Could not load user from token"
+    );
   }
 }
 

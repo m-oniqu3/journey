@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import ButtonLink from "@/components/ButtonLink";
 import useSpaceData from "@/hooks/useSpaceData";
-import { RiMoreLine } from "react-icons/ri";
+import { RiLoader5Fill, RiMoreLine } from "react-icons/ri";
 import { VscAdd } from "react-icons/vsc";
 
 type Props = {
@@ -16,9 +16,10 @@ type Props = {
 
 function SpaceHeader(props: Props) {
   const { name, avatar, members_count, id } = props.space;
-  const { userSpaces, handleJoinLeaveSpace } = useSpaceData();
+  const { userSpaces, handleJoinLeaveSpace, isJoiningSpace, isLeavingSpace } =
+    useSpaceData();
 
-  const isJoined = !!userSpaces[name];
+  const isJoined = userSpaces ? !!userSpaces[name] : false;
 
   return (
     <header className="md:mt-2">
@@ -52,9 +53,15 @@ function SpaceHeader(props: Props) {
 
           <Button
             onClick={() => handleJoinLeaveSpace(isJoined, name)}
-            className="bg-accent text-neutral rounded-full"
+            className="bg-accent text-neutral rounded-full w-24 flex justify-center items-center "
           >
-            {isJoined ? "Joined" : "Join"}
+            {isJoiningSpace || isLeavingSpace ? (
+              <RiLoader5Fill className="animate-spin h-8 w-8" />
+            ) : isJoined ? (
+              "Joined"
+            ) : (
+              "Join"
+            )}
           </Button>
 
           <button
