@@ -16,10 +16,14 @@ body {
 
 /* scrollbar */
 ::-webkit-scrollbar {
-    width: 5px;
-
+    width: 3px;
     background-color: none;
+}
 
+/* scrollbar firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #cbcbcb transparent;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -29,11 +33,14 @@ body {
 
 
 
-
 @layer components {
 
     .input {
-        @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-slate-300 block w-full p-3
+        @apply border border-gray-300 text-gray-900 rounded-lg focus:outline-none focus:border-gray-500 block w-full p-3
+    }
+
+    .textarea {
+        @apply resize-none p-2 h-full pr-10 text-justify border border-gray-300 text-gray-900 rounded-lg w-full focus:outline-none focus:border-gray-500
     }
 
     .wrapper {
@@ -41,13 +48,20 @@ body {
     }
 
     .modal-child {
-        @apply wrapper absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-fit
+        @apply wrapper absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-auto
     }
-
-
 }
 
 @layer utilities {
+    .no-scrollbar {
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
     .page-layout {
         display: grid;
         grid-template-columns: 1fr;
@@ -63,15 +77,14 @@ body {
 
 
     /* media */
-    @screen xl {
-        .page-layout {
-            grid-template-columns: 3fr 1fr;
-            gap: 2rem;
-        }
-
+    @screen md {
         .page-layout .sidebar {
             display: block;
         }
 
+        .page-layout {
+            grid-template-columns: 1fr 315px;
+            gap: 4rem;
+        }
     }
 }

@@ -34,10 +34,10 @@ function SpaceSidebar(props: Props) {
 
       {!isLoading && data && (
         <section className="space-y-2">
-          <h2 className="font-bold text-xl">journey to {data.name}</h2>
-          <p className="leading-relaxed">
+          <h2 className="font-bold text-lg">journey to {data.name}</h2>
+          <p className="leading-relaxed font-medium text-gray-500">
             {data.description ||
-              `Welcome to the ${data.name} community! Whether you've explored out bustling streets, hiked through our rainforests, or soaked up Bahia's sunny beaches, this is the place to share your adventures and travel tips. Join fellow enthusiasts, inspire others with your stories, and immerse yourself in the vibrant culture and natural beauty of Brazil. Let's celebrate the magic of this incredible country together! 🌴`}
+              `welcome to the ${data.name} space! this is a space for ${data.name} enthusiasts to share their knowledge and experiences.`}
           </p>
 
           <p className="flex gap-2">

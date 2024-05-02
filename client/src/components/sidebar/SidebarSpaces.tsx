@@ -27,7 +27,7 @@ function SidebarSpaces(props: Props) {
       >
         <Link
           to={`/s/${space.name}`}
-          className="grid grid-cols-[44px,1fr,40px] gap-1 items-center font-normal"
+          className="grid grid-cols-[44px,1fr,auto] gap-1 items-center font-normal"
         >
           <img
             src={space.avatar || `https://picsum.photos/seed/${space.id}/200`}
@@ -36,7 +36,7 @@ function SidebarSpaces(props: Props) {
 
           <span className="lowercase">{`s/${space.name}`}</span>
 
-          <StarIcon />
+          <StarIcon className="self-center" />
         </Link>
       </li>
     );
@@ -50,7 +50,7 @@ function SidebarSpaces(props: Props) {
           className="flex items-center justify-between text-sm uppercase px-3 h-12 mt-2 tracking-widest text-gray-500 hover:bg-grayscale-100 rounded-xl cursor-pointer"
         >
           spaces
-          {showSpaces ? <ChevronDownIcon /> : <ChevronUpIcon />}
+          {!showSpaces ? <ChevronDownIcon /> : <ChevronUpIcon />}
         </li>
 
         {showSpaces && (
@@ -81,7 +81,7 @@ function SidebarSpaces(props: Props) {
       </ul>
 
       {showSpaces && (
-        <ul className="h-full border-t-[1px] border-slate-200 pt-2">
+        <ul className="border-t-[1px] border-slate-200 py-2 ">
           {renderSpaces}
         </ul>
       )}

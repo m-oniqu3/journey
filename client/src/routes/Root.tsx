@@ -4,15 +4,11 @@ import Navbar from "../components/Navbar";
 
 export default function Root() {
   return (
-    <div className="h-screen">
-      <Navbar className="h-[4.5rem]" />
+    <div className="grid grid-rows-[4rem,calc(100vh-4rem)]">
+      <Navbar className="h-[4rem]" />
 
-      <main
-        className="grid grid-cols-1 lg:grid-cols-[270px,1fr] "
-        style={{ height: "calc(100vh - 4.5rem)" }}
-      >
+      <main className="grid grid-cols-1 lg2:grid-cols-[270px,1fr] ">
         <Sidebar />
-
         <Outlet />
       </main>
     </div>

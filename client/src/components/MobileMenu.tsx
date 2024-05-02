@@ -34,7 +34,7 @@ const MobileMenu = (props: Props) => {
   return (
     <Modal
       closeModal={props.closeMenu}
-      className={openCreateSpace ? "" : "top-[4.5rem]"}
+      className={openCreateSpace ? "" : "top-[4rem]"}
     >
       {!openCreateSpace && (
         <div className="bg-white absolute top-0 left-0 w-[270px] h-full z-20 overflow-y-scroll px-4 py-2">

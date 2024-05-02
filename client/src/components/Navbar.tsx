@@ -1,10 +1,9 @@
 import ButtonLink from "@/components/ButtonLink";
 import MobileMenu from "@/components/MobileMenu";
-import { AddIcon, MenuIcon } from "@/components/icons";
+import { AddIcon, MenuIcon, SolarSystemIcon } from "@/components/icons";
 import { useAuthContext } from "@/context/useAuthContext";
 import { RoutesEnum } from "@/routes";
 import { useState } from "react";
-import { PiMountainsFill } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import Searchbar from "./Searchbar";
 
@@ -34,10 +33,8 @@ function Navbar(props: Props) {
           </div>
 
           <Link to="/" className="flex items-center gap-4 w-full">
-            <PiMountainsFill className="w-9 h-9 text-accent" />
-            <p className="hidden lg:block text-2xl font-bold text-accent">
-              journey
-            </p>
+            <SolarSystemIcon className="w-7 h-7 text-accent" />
+            <p className="hidden lg:block text-2xl  text-accent">journey</p>
           </Link>
 
           <Searchbar className="w-full max-w-lg mx-auto" />
