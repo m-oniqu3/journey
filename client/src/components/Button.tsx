@@ -1,3 +1,5 @@
+import { forwardRef } from "react";
+
 type Props = {
   children: React.ReactNode;
   className?: string;
@@ -6,25 +8,20 @@ type Props = {
   onClick?: () => void | undefined;
 };
 
-function Button(props: Props) {
-  const {
-    children,
-    className = "",
-    type = "button",
-    disabled = false,
-    onClick = () => {},
-  } = props;
-
+const Button = forwardRef((props: Props, ref: React.Ref<HTMLButtonElement>) => {
   return (
     <button
-      type={type}
-      disabled={disabled}
-      className={`${className} rounded-full px-4 h-12 font-semibold `}
-      onClick={onClick}
+      ref={ref}
+      type={props.type}
+      disabled={props.disabled || false}
+      className={`${
+        props.className ?? ""
+      } rounded-full px-4 h-12 font-semibold `}
+      onClick={props.onClick}
     >
-      {children}
+      {props.children}
     </button>
   );
-}
+});
 
 export default Button;

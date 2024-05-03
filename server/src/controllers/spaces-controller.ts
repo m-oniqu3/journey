@@ -150,11 +150,19 @@ export async function joinSpace(req: Request, res: Response) {
       .from("spaces")
       .update({ members_count: space.members_count + 1 })
       .eq("id", space.id)
-      .eq("creator", space.creator)
       .select()
       .single();
 
-    if (updateSpaceError) throw updateSpaceError;
+    if (updateSpaceError) {
+      // rollback the user-space entry
+      await supabase
+        .from("user-spaces")
+        .delete()
+        .eq("user_id", userID)
+        .eq("space_id", space.id);
+
+      throw updateSpaceError;
+    }
 
     const joinedSpace = {
       id: updateSpaceData.id,
