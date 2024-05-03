@@ -13,10 +13,8 @@ const tabs = ["Text", "Images & Video", "Link", "Poll"];
 
 function Submit() {
   const { spaceName } = useParams() as { spaceName: string };
-  const {
-    state: { userspaces },
-  } = useSpacesContext();
-  const values = Object.values(userspaces);
+  const { state } = useSpacesContext();
+  const values = Object.values(state.userspaces);
 
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [openDropDown, setOpenDropDown] = useState(false);

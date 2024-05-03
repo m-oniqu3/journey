@@ -22,12 +22,15 @@ function Modal(props: Props) {
         props.className ?? ""
       }`}
     >
-      <div onClick={(e) => e.stopPropagation()}>{props.children}</div>
+      <div
+        className="relative grid place-items-center h-full"
+        onClick={props.closeModal}
+      >
+        {props.children}
+      </div>
     </div>,
     document.body
   );
 }
 
 export default Modal;
-
-// absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2

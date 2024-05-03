@@ -96,7 +96,7 @@ function LogIn() {
 
   return (
     <div className="wrapper h-[80dvh] grid place-items-center">
-      <form className="max-w-md mx-auto space-y-2" onSubmit={handleSubmit}>
+      <form className="max-w-md mx-auto space-y-4" onSubmit={handleSubmit}>
         <header className="space-y-2 ">
           <h2 className="font-bold text-2xl">Log In</h2>
           <p>

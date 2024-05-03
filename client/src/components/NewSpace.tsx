@@ -116,76 +116,75 @@ function NewSpace(props: Props) {
   });
 
   return (
-    <div className="modal-child">
-      <form
-        className="bg-white rounded-xl p-8 w-full max-w-xl"
-        onSubmit={handleSubmit}
-      >
-        <header className="space-y-2 mb-8 relative">
-          <h1 className="text-2xl font-bold flex items-center gap-4">
-            <span>
-              <PiMountainsFill className="w-9 h-9 text-accent" />
-            </span>
-            Create a space
-          </h1>
+    <form
+      onClick={(e) => e.stopPropagation()}
+      className="bg-white rounded-xl h-auto p-8 w-full max-w-xl  overflow-y-scroll"
+      onSubmit={handleSubmit}
+    >
+      <header className="space-y-2 mb-8 relative">
+        <h1 className="text-2xl font-bold flex items-center gap-4">
+          <span>
+            <PiMountainsFill className="w-9 h-9 text-accent" />
+          </span>
+          Create a space
+        </h1>
 
-          <p className="text-base">
-            Build and grow your community to discuss a place you traveled to or
-            a place you want to travel to.
-          </p>
+        <p className="text-base">
+          Build and grow your community to discuss a place you traveled to or a
+          place you want to travel to.
+        </p>
 
-          <div
-            className="rounded-full bg-grayscale-100 p-1 w-fit absolute -top-2 right-0 cursor-pointer"
-            onClick={props.close}
-          >
-            <VscClose className="w-7 h-7" />
-          </div>
-        </header>
-
-        <div className="space-y-2">
-          <input
-            name="name"
-            type="text"
-            value={name}
-            onChange={handleNameChange}
-            placeholder="Name your space"
-            maxLength={25}
-            className="input"
-          />
-
-          <p className="flex items-center justify-between">
-            <span className="text-sm ">
-              Choose wisely. Once you pick a name, it can't be changed.
-            </span>
-            <span className="text-sm">{characters}</span>
-          </p>
+        <div
+          className="rounded-full bg-grayscale-100 p-1 w-fit absolute -top-2 right-0 cursor-pointer"
+          onClick={props.close}
+        >
+          <VscClose className="w-7 h-7" />
         </div>
+      </header>
 
-        <h2 className="font-bold my-4">Type</h2>
-        <ul>{renderedSpacePrivacys}</ul>
+      <div className="space-y-2">
+        <input
+          name="name"
+          type="text"
+          value={name}
+          onChange={handleNameChange}
+          placeholder="Name your space"
+          maxLength={25}
+          className="input"
+        />
 
-        <hr />
+        <p className="flex items-center justify-between">
+          <span className="text-sm ">
+            Choose wisely. Once you pick a name, it can't be changed.
+          </span>
+          <span className="text-sm">{characters}</span>
+        </p>
+      </div>
 
-        <div className="flex gap-2 justify-end p-4">
-          <Button onClick={props.close} className="bg-grayscale-100">
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            className="bg-accent text-white flex items-center gap-2"
-          >
-            {isLoading ? (
-              <>
-                <VscLoading className="animate-spin w-6 h-6" />
-                Creating
-              </>
-            ) : (
-              "Create Space"
-            )}
-          </Button>
-        </div>
-      </form>
-    </div>
+      <h2 className="font-bold my-4">Type</h2>
+      <ul>{renderedSpacePrivacys}</ul>
+
+      <hr />
+
+      <div className="flex gap-2 justify-end p-4">
+        <Button onClick={props.close} className="bg-grayscale-100">
+          Cancel
+        </Button>
+        <Button
+          type="submit"
+          className="bg-accent text-white flex items-center gap-2"
+        >
+          {isLoading ? (
+            <>
+              <VscLoading className="animate-spin w-6 h-6" />
+              Creating
+            </>
+          ) : (
+            "Create Space"
+          )}
+        </Button>
+      </div>
+    </form>
   );
 }
 

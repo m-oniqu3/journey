@@ -10,7 +10,8 @@ import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 
 type Props = {
-  onClick: () => void;
+  openCreateSpaceModal: () => void;
+  closeSidebar?: () => void;
 };
 
 function SidebarSpaces(props: Props) {
@@ -23,6 +24,7 @@ function SidebarSpaces(props: Props) {
     return (
       <li
         key={space.id}
+        onClick={props.closeSidebar || (() => {})}
         className="px-2 py-1 hover:bg-grayscale-100 rounded-xl hover:px-2"
       >
         <Link
@@ -47,7 +49,8 @@ function SidebarSpaces(props: Props) {
       <ul>
         <li
           onClick={() => setShowSpaces((state) => !state)}
-          className="flex items-center justify-between text-sm uppercase px-3 h-12 mt-2 tracking-widest text-gray-500 hover:bg-grayscale-100 rounded-xl cursor-pointer"
+          className="flex items-center justify-between text-sm uppercase px-3 h-12 mt-2 tracking-widest 
+          text-gray-500 hover:bg-grayscale-100 rounded-xl cursor-pointer"
         >
           spaces
           {!showSpaces ? <ChevronDownIcon /> : <ChevronUpIcon />}
@@ -55,10 +58,11 @@ function SidebarSpaces(props: Props) {
 
         {showSpaces && (
           <>
-            <li>
+            <li onClick={props.closeSidebar || (() => {})}>
               <Link
                 to="/spaces"
-                className="grid grid-cols-[44px,1fr] gap-1 items-center h-12 cursor-pointer px-2 py-1 hover:bg-grayscale-100 rounded-xl hover:px-2"
+                className="grid grid-cols-[44px,1fr] gap-1 items-center h-12 cursor-pointer px-2 py-1
+                 hover:bg-grayscale-100 rounded-xl hover:px-2"
               >
                 <span className="flex justify-center">
                   <GlobeIcon />
@@ -68,7 +72,7 @@ function SidebarSpaces(props: Props) {
             </li>
 
             <li
-              onClick={props.onClick}
+              onClick={props.openCreateSpaceModal}
               className="mb-2 grid grid-cols-[44px,1fr] gap-1 items-center h-12 cursor-pointer px-2 py-1 hover:bg-grayscale-100 rounded-xl hover:px-2"
             >
               <span className="flex justify-center">

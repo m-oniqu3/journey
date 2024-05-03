@@ -15,7 +15,7 @@ function Sidebar() {
     <>
       <aside className="hidden overflow-y-scroll h-full w-full border-r-[1px] border-slate-200 px-4 py-2 lg2:block">
         <SidebarHeader />
-        <SidebarSpaces onClick={handleSpaces} />
+        <SidebarSpaces openCreateSpaceModal={handleSpaces} />
       </aside>
 
       {openCreateSpace && (

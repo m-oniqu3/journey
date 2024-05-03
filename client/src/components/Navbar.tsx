@@ -23,18 +23,18 @@ function Navbar(props: Props) {
     <>
       <header className={`w-full  ${className}`}>
         <nav
-          className={`wrapper h-full border-b-[1px] border-slate-200  grid items-center gap-3 grid-cols-[40px,40px,1fr,auto] lg:grid-cols-[auto,1fr,auto] lg:gap-4 `}
+          className={`wrapper h-full border-b-[1px] border-slate-200  grid items-center gap-3 grid-cols-[40px,40px,1fr,auto] lg2:grid-cols-[auto,1fr,auto] lg2:gap-4 `}
         >
           <div
             onClick={() => setOpenMenu((state) => !state)}
-            className="h-12 w-12 rounded-full hover:bg-grayscale-100 cursor-pointer lg:hidden grid place-items-center"
+            className="h-12 w-12 rounded-full hover:bg-grayscale-100 cursor-pointer lg2:hidden grid place-items-center"
           >
             <MenuIcon />
           </div>
 
           <Link to="/" className="flex items-center gap-4 w-full">
             <SolarSystemIcon className="w-7 h-7 text-accent" />
-            <p className="hidden lg:block text-2xl  text-accent">journey</p>
+            <p className="hidden lg2:block text-2xl  text-accent">journey</p>
           </Link>
 
           <Searchbar className="w-full max-w-lg mx-auto" />

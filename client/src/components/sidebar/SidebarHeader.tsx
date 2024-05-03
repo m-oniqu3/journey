@@ -6,10 +6,14 @@ const links = [
   { title: "Explore", to: "/explore", icon: <UfoIcon /> },
 ];
 
-const SidebarHeader = () => {
+type Props = {
+  closeSidebar?: () => void;
+};
+
+const SidebarHeader = (props: Props) => {
   const renderedLinks = links.map((link) => {
     return (
-      <li key={link.to}>
+      <li key={link.to} onClick={props?.closeSidebar}>
         <Link
           to={link.to}
           className="grid items-center grid-cols-[30px,1fr] h-12 gap-2 font-normal px-2 py-1 hover:bg-grayscale-100 rounded-xl hover:px-2 "

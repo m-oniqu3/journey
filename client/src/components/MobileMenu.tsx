@@ -37,13 +37,14 @@ const MobileMenu = (props: Props) => {
       className={openCreateSpace ? "" : "top-[4rem]"}
     >
       {!openCreateSpace && (
-        <div className="bg-white absolute top-0 left-0 w-[270px] h-full z-20 overflow-y-scroll px-4 py-2">
-          <SidebarHeader />
-
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="bg-white fixed top-[4rem] left-0 w-[270px]  z-20  px-4 py-2 overflow-y-scroll h-[calc(100%-4rem)]"
+        >
+          <SidebarHeader closeSidebar={props.closeMenu} />
           <SidebarSpaces
-            onClick={() => {
-              setOpenCreateSpace((s) => !s);
-            }}
+            openCreateSpaceModal={() => setOpenCreateSpace((s) => !s)}
+            closeSidebar={props.closeMenu}
           />
         </div>
       )}
@@ -54,21 +55,3 @@ const MobileMenu = (props: Props) => {
 };
 
 export default MobileMenu;
-
-/**
- * <Modal
-          className={!openCommunity ? `top-[4.5rem]` : ""}
-          closeModal={() => setOpenMenu(false)}
-        >
-          {!openCommunity && <MobileMenu setOpenCommunity={setOpenCommunity} />}
-
-          {openCommunity && (
-            <NewSpace
-              close={() => {
-                setOpenCommunity(false);
-                setOpenMenu(false);
-              }}
-            />
-          )}
-        </Modal>
- */
