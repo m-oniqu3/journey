@@ -1,23 +1,21 @@
-import {
-  createSpace,
-  getAllSpaces,
-  getSpaceDetails,
-  getUsersSpaces,
-  joinSpace,
-  leaveSpace,
-} from "@/controllers/spaces-controller";
+import controller from "@/controllers/spaces";
 import { requireAuth } from "@/middleware/auth";
 import { checkSpaceExists } from "@/middleware/space";
 import express from "express";
 
 const router = express.Router();
 
-router.get("/", requireAuth, getAllSpaces);
-router.post("/new", requireAuth, createSpace);
-router.get("/user/:userID", requireAuth, getUsersSpaces);
-router.post("/join/:name", requireAuth, checkSpaceExists, joinSpace);
-router.post("/leave/:name", requireAuth, checkSpaceExists, leaveSpace);
+router.get("/", requireAuth, controller.getAllSpaces);
+router.post("/new", requireAuth, controller.createSpace);
+router.get("/user/:userID", requireAuth, controller.getUsersSpaces);
+router.post("/join/:name", requireAuth, checkSpaceExists, controller.joinSpace);
+router.post(
+  "/leave/:name",
+  requireAuth,
+  checkSpaceExists,
+  controller.leaveSpace
+);
 
-router.get("/:name", requireAuth, checkSpaceExists, getSpaceDetails);
+router.get("/:name", requireAuth, checkSpaceExists, controller.getSpaceDetails);
 
 export default router;

@@ -1,6 +1,7 @@
 import Button from "@/components/Button";
 import { DeleteIcon } from "@/components/icons";
-import { RefObject, useEffect, useRef, useState } from "react";
+import { resizeTextarea } from "@/utils/resizeTextarea";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   activeTab: string;
@@ -26,16 +27,6 @@ function CreatePost(props: Props) {
 
   useEffect(() => {
     // resize the textarea based on the content
-    function resizeTextarea(
-      ref: RefObject<HTMLTextAreaElement>,
-      state: string
-    ) {
-      if (ref.current && state.length > 0) {
-        ref.current.style.height = "";
-        ref.current.style.height = ref.current.scrollHeight + "px";
-      }
-    }
-
     resizeTextarea(titleRef, post.title);
     resizeTextarea(bodyRef, post.body);
   }, [post.title, post.body]);

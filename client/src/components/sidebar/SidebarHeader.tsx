@@ -1,9 +1,10 @@
-import { HomeIcon, UfoIcon } from "@/components/icons";
+import { GlobeIcon, HomeIcon, UfoIcon } from "@/components/icons";
 import { Link } from "react-router-dom";
 
 const links = [
   { title: "Home", to: "/", icon: <HomeIcon /> },
   { title: "Explore", to: "/explore", icon: <UfoIcon /> },
+  { title: "Spaces", to: "/spaces", icon: <GlobeIcon /> },
 ];
 
 type Props = {
