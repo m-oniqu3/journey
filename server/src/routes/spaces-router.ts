@@ -17,5 +17,11 @@ router.post(
 );
 
 router.get("/:name", requireAuth, checkSpaceExists, controller.getSpaceDetails);
+router.get(
+  "/tags/:name",
+  requireAuth,
+  checkSpaceExists,
+  controller.getTagsForSpace
+);
 
 export default router;

@@ -27,3 +27,9 @@ export type SpaceSummary = {
   avatar: string;
   isCreator: boolean;
 };
+
+export type SpaceTag = {
+  id: number;
+  name: string;
+  colour: string;
+};

@@ -106,6 +106,48 @@ export type Database = {
           },
         ]
       }
+      tags: {
+        Row: {
+          colour: string
+          created_at: string
+          id: number
+          name: string
+          space_id: number | null
+          user_id: string
+        }
+        Insert: {
+          colour?: string
+          created_at?: string
+          id?: number
+          name?: string
+          space_id?: number | null
+          user_id?: string
+        }
+        Update: {
+          colour?: string
+          created_at?: string
+          id?: number
+          name?: string
+          space_id?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tags_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tags_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       "user-spaces": {
         Row: {
           created_at: string
@@ -129,7 +171,7 @@ export type Database = {
           {
             foreignKeyName: "user-spaces_space_id_fkey"
             columns: ["space_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "spaces"
             referencedColumns: ["id"]
           },

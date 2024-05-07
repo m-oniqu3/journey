@@ -23,7 +23,7 @@ function Modal(props: Props) {
       }`}
     >
       <div
-        className="relative grid place-items-center h-full"
+        className="relative grid place-items-center h-full wrapper"
         onClick={props.closeModal}
       >
         {props.children}

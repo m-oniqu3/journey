@@ -3,6 +3,7 @@ import {
   Space,
   SpacePrivacy,
   SpaceSummary,
+  SpaceTag,
   type UserSpaces,
 } from "@/types/space";
 
@@ -43,4 +44,9 @@ export async function leaveSpace(space: string, userID: string) {
     userID,
   });
   return response.data;
+}
+
+export async function getTagsForSpace(space: string) {
+  const response = await api.get<{ data: SpaceTag[] }>(`spaces/tags/${space}`);
+  return response.data.data;
 }

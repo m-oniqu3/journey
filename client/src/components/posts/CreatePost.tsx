@@ -1,18 +1,39 @@
 import Button from "@/components/Button";
-import { DeleteIcon } from "@/components/icons";
+import Modal from "@/components/Modal";
+import { AddIcon, ChevronDownIcon, DeleteIcon } from "@/components/icons";
+import Tags from "@/components/posts/Tags";
+import useTags from "@/hooks/useTags";
+import { SpaceTag } from "@/types/space";
 import { resizeTextarea } from "@/utils/resizeTextarea";
 import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 
 type Props = {
   activeTab: string;
 };
 
 function CreatePost(props: Props) {
-  const [post, setPost] = useState({ title: "", body: "", image: "" });
+  const { spaceName } = useParams() as { spaceName: string };
+  const { tags, isLoading } = useTags(spaceName);
+
   const [, setMaxTitleLength] = useState(300);
   const titleRef = useRef<HTMLTextAreaElement>(null);
   const bodyRef = useRef<HTMLTextAreaElement>(null);
   const imageRef = useRef<HTMLInputElement>(null);
+  const [openTagModal, setOpenTagModal] = useState(false);
+
+  const [post, setPost] = useState({
+    title: "",
+    body: "",
+    images: [] as string[],
+    selectedTag: {} as SpaceTag,
+  });
+
+  // resize the textarea based on the content
+  useEffect(() => {
+    resizeTextarea(titleRef, post.title);
+    resizeTextarea(bodyRef, post.body);
+  }, [post.title, post.body]);
 
   function handleChanges(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -25,31 +46,67 @@ function CreatePost(props: Props) {
     }
   }
 
-  useEffect(() => {
-    // resize the textarea based on the content
-    resizeTextarea(titleRef, post.title);
-    resizeTextarea(bodyRef, post.body);
-  }, [post.title, post.body]);
-
+  // iterate over the files and add them to the state
   function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
+    const files = e.target.files;
 
-    if (file) {
+    if (!files) return;
+
+    for (const file of files) {
+      if (post.images.length >= 4) {
+        alert("You can only upload up to 4 images");
+        break;
+      }
+
       const reader = new FileReader();
       reader.readAsDataURL(file);
 
       reader.onload = () => {
-        setPost((prev) => ({ ...prev, image: reader.result as string }));
+        setPost((prev) => ({
+          ...prev,
+          image: [...prev.images, reader.result as string],
+        }));
+      };
+
+      reader.onerror = (err) => {
+        console.error(err);
       };
     }
   }
 
-  function removeImage() {
-    setPost((prev) => ({ ...prev, image: "" }));
+  function removeImage(index: number) {
+    const newImages = post.images.filter((_, i) => i !== index);
+
+    setPost((prev) => ({ ...prev, image: newImages }));
   }
 
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    console.log(post);
+  }
+
+  const renderedImages = post.images.map((img, i) => {
+    return (
+      <li key={i} className="relative">
+        <span
+          onClick={() => removeImage(i)}
+          className="z-10 absolute top-1 right-1 bg-white p-2 rounded-lg shadow-md 
+          cursor-pointer hover:bg-gray-200 transition-colors"
+        >
+          <DeleteIcon />
+        </span>
+
+        <img
+          src={img}
+          alt="post"
+          className=" mx-auto rounded-xl object-cover w-32 h-32"
+        />
+      </li>
+    );
+  });
+
   return (
-    <form className="flex flex-col gap-4">
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
       {/* TEXT */}
       {props.activeTab === "Text" && (
         <>
@@ -69,9 +126,33 @@ function CreatePost(props: Props) {
             </p>
           </div>
 
-          <Button className="bg-grayscale-100 text-black w-fit h-9 text-sm">
-            Add flair and tags
+          <Button
+            style={{
+              backgroundColor: post.selectedTag.colour,
+              color: post.selectedTag.name ? "white" : "black",
+            }}
+            type="button"
+            disabled={isLoading || !tags.length}
+            onClick={() => setOpenTagModal((state) => !state)}
+            className="bg-grayscale-100 text-black w-fit h-9 text-sm flex items-center gap-2"
+          >
+            {post.selectedTag.name || "Select Tag"}
+            <ChevronDownIcon />
           </Button>
+
+          {openTagModal && (
+            <Modal closeModal={() => setOpenTagModal(false)}>
+              <Tags
+                tags={tags}
+                isLoading={isLoading}
+                closeModal={() => setOpenTagModal(false)}
+                selectedTag={post.selectedTag}
+                setSelectedTag={(tag) =>
+                  setPost((prev) => ({ ...prev, selectedTag: tag }))
+                }
+              />
+            </Modal>
+          )}
 
           <textarea
             ref={bodyRef}
@@ -100,33 +181,34 @@ function CreatePost(props: Props) {
           />
 
           <div
-            className="border border-dashed border-gray-300 rounded-2xl p-4 flex justify-center 
-          items-center gap-4 min-h-44 "
+            className="border border-dashed border-gray-300 rounded-2xl p-4 gap-4 min-h-44 flex 
+          justify-center items-center "
           >
-            {!post.image && (
+            {!post.images.length && (
               <Button
                 onClick={() => imageRef.current?.click()}
-                className="bg-grayscale-100 text-black w-fit hover:bg-gray-400 hover:text-white transition-colors"
+                className="bg-grayscale-100 text-black w-fit hover:bg-gray-400 hover:text-white 
+                transition-colors"
               >
                 Upload Image
               </Button>
             )}
 
-            {post.image && (
-              <div className="relative">
-                <span
-                  onClick={removeImage}
-                  className="z-10 absolute top-4 right-4 bg-white p-2 rounded-lg shadow-md cursor-pointer hover:bg-gray-200 transition-colors"
-                >
-                  <DeleteIcon />
-                </span>
+            {!!post.images.length && (
+              <ul className="w-full flex items-center gap-2">
+                {renderedImages}
 
-                <img
-                  src={post.image}
-                  alt="post"
-                  className=" mx-auto rounded-xl max-h-72 w-full"
-                />
-              </div>
+                {post.images.length < 4 && (
+                  <li
+                    onClick={() => imageRef.current?.click()}
+                    curson-pointer
+                    className="border border-dashed border-gray-300 rounded-2xl h-32 w-32 flex 
+                items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors"
+                  >
+                    <AddIcon />
+                  </li>
+                )}
+              </ul>
             )}
           </div>
 
@@ -134,6 +216,7 @@ function CreatePost(props: Props) {
             ref={imageRef}
             type="file"
             accept="image/*"
+            multiple
             hidden
             onChange={handleImageChange}
             className="bg-grayscale-100 text-black w-fit h-9 text-sm hidden"

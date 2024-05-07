@@ -1,4 +1,5 @@
 import { createSpace } from "@/controllers/spaces/create-space";
+import { getTagsForSpace } from "@/controllers/spaces/get-tags";
 import { joinSpace } from "@/controllers/spaces/join-space";
 import { leaveSpace } from "@/controllers/spaces/leave-space";
 
@@ -11,4 +12,5 @@ export default {
   getUsersSpaces: spaces.getUsersSpaces,
   joinSpace,
   leaveSpace,
+  getTagsForSpace,
 };
