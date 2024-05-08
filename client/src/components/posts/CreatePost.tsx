@@ -3,6 +3,7 @@ import Modal from "@/components/Modal";
 import { AddIcon, ChevronDownIcon, DeleteIcon } from "@/components/icons";
 import Tags from "@/components/posts/Tags";
 import useTags from "@/hooks/useTags";
+import { createPost } from "@/services/post-services";
 import { SpaceTag } from "@/types/space";
 import { resizeTextarea } from "@/utils/resizeTextarea";
 import { useEffect, useRef, useState } from "react";
@@ -21,6 +22,7 @@ function CreatePost(props: Props) {
   const bodyRef = useRef<HTMLTextAreaElement>(null);
   const imageRef = useRef<HTMLInputElement>(null);
   const [openTagModal, setOpenTagModal] = useState(false);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
 
   const [post, setPost] = useState({
     title: "",
@@ -64,8 +66,9 @@ function CreatePost(props: Props) {
       reader.onload = () => {
         setPost((prev) => ({
           ...prev,
-          image: [...prev.images, reader.result as string],
+          images: [...prev.images, reader.result as string],
         }));
+        setImageFiles((prev) => [...prev, file]);
       };
 
       reader.onerror = (err) => {
@@ -77,12 +80,40 @@ function CreatePost(props: Props) {
   function removeImage(index: number) {
     const newImages = post.images.filter((_, i) => i !== index);
 
-    setPost((prev) => ({ ...prev, image: newImages }));
+    // remove the file from the files array
+    setImageFiles((prev) => prev.filter((_, i) => i !== index));
+
+    setPost((prev) => ({ ...prev, images: newImages }));
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log(post);
+
+    if (!post.title) {
+      console.log("post title is required");
+      return;
+    }
+
+    const data = new FormData();
+    data.append("title", post.title);
+    data.append("body", post.body);
+    data.append(
+      "tag",
+      "id" in post.selectedTag ? `${post.selectedTag.id}` : ""
+    );
+
+    for (const file of imageFiles) {
+      data.append("images", file);
+    }
+
+    console.log(data);
+
+    try {
+      const response = await createPost(data, spaceName);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   const renderedImages = post.images.map((img, i) => {
@@ -201,7 +232,6 @@ function CreatePost(props: Props) {
                 {post.images.length < 4 && (
                   <li
                     onClick={() => imageRef.current?.click()}
-                    curson-pointer
                     className="border border-dashed border-gray-300 rounded-2xl h-32 w-32 flex 
                 items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors"
                   >

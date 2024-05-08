@@ -24,6 +24,100 @@ export type Database = {
         }
         Relationships: []
       }
+      images: {
+        Row: {
+          created_at: string
+          id: number
+          post_id: number
+          url: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          post_id: number
+          url?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          post_id?: number
+          url?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "images_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "images_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          body: string | null
+          created_at: string
+          creator: string | null
+          id: number
+          isEdited: boolean | null
+          space_id: number
+          tag_id: number | null
+          title: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          creator?: string | null
+          id?: number
+          isEdited?: boolean | null
+          space_id: number
+          tag_id?: number | null
+          title?: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          creator?: string | null
+          id?: number
+          isEdited?: boolean | null
+          space_id?: number
+          tag_id?: number | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_creator_fkey"
+            columns: ["creator"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "posts_space_id_fkey"
+            columns: ["space_id"]
+            isOneToOne: false
+            referencedRelation: "spaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "posts_tag_id_fkey"
+            columns: ["tag_id"]
+            isOneToOne: false
+            referencedRelation: "tags"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar: string | null
