@@ -1,4 +1,5 @@
 import Button from "@/components/Button";
+import LoadingBar from "@/components/LoadingBar";
 import Modal from "@/components/Modal";
 import { AddIcon, ChevronDownIcon, DeleteIcon } from "@/components/icons";
 import Tags from "@/components/posts/Tags";
@@ -23,6 +24,8 @@ function CreatePost(props: Props) {
   const imageRef = useRef<HTMLInputElement>(null);
   const [openTagModal, setOpenTagModal] = useState(false);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
+
+  const [isSubmittingPost, setIsSubmittingPost] = useState(false);
 
   const [post, setPost] = useState({
     title: "",
@@ -109,10 +112,13 @@ function CreatePost(props: Props) {
     console.log(data);
 
     try {
+      setIsSubmittingPost(true);
       const response = await createPost(data, spaceName);
       console.log(response);
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsSubmittingPost(false);
     }
   }
 
@@ -137,11 +143,71 @@ function CreatePost(props: Props) {
   });
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-      {/* TEXT */}
-      {props.activeTab === "Text" && (
-        <>
-          <div className="space-y-2">
+    <>
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        {/* TEXT */}
+        {props.activeTab === "Text" && (
+          <>
+            <div className="space-y-2">
+              <textarea
+                ref={titleRef}
+                name="title"
+                value={post.title}
+                onChange={handleChanges}
+                placeholder="Title"
+                maxLength={300}
+                className="textarea rounded-2xl p-4 font-medium h-14 no-scrollbar"
+              />
+
+              <p className="text-sm text-gray-500 ml-auto w-fit">
+                {post.title.length} / 300
+              </p>
+            </div>
+
+            <Button
+              style={{
+                backgroundColor: post.selectedTag.colour,
+                color: post.selectedTag.name ? "white" : "black",
+              }}
+              type="button"
+              disabled={isLoading || !tags.length}
+              onClick={() => setOpenTagModal((state) => !state)}
+              className="bg-grayscale-100 text-black w-fit h-9 text-sm flex items-center gap-2"
+            >
+              {post.selectedTag.name || "Select Tag"}
+              <ChevronDownIcon />
+            </Button>
+
+            {openTagModal && (
+              <Modal closeModal={() => setOpenTagModal(false)}>
+                <Tags
+                  tags={tags}
+                  isLoading={isLoading}
+                  closeModal={() => setOpenTagModal(false)}
+                  selectedTag={post.selectedTag}
+                  setSelectedTag={(tag) =>
+                    setPost((prev) => ({ ...prev, selectedTag: tag }))
+                  }
+                />
+              </Modal>
+            )}
+
+            <textarea
+              ref={bodyRef}
+              rows={6}
+              name="body"
+              placeholder="Text (optional)"
+              value={post.body}
+              onChange={handleChanges}
+              className="textarea rounded-2xl p-4 no-scrollbar"
+              autoFocus
+            />
+          </>
+        )}
+
+        {/* IMAGE  */}
+        {props.activeTab === "Images & Video" && (
+          <div className="space-y-4">
             <textarea
               ref={titleRef}
               name="title"
@@ -152,112 +218,56 @@ function CreatePost(props: Props) {
               className="textarea rounded-2xl p-4 font-medium h-14 no-scrollbar"
             />
 
-            <p className="text-sm text-gray-500 ml-auto w-fit">
-              {post.title.length} / 300
-            </p>
-          </div>
-
-          <Button
-            style={{
-              backgroundColor: post.selectedTag.colour,
-              color: post.selectedTag.name ? "white" : "black",
-            }}
-            type="button"
-            disabled={isLoading || !tags.length}
-            onClick={() => setOpenTagModal((state) => !state)}
-            className="bg-grayscale-100 text-black w-fit h-9 text-sm flex items-center gap-2"
-          >
-            {post.selectedTag.name || "Select Tag"}
-            <ChevronDownIcon />
-          </Button>
-
-          {openTagModal && (
-            <Modal closeModal={() => setOpenTagModal(false)}>
-              <Tags
-                tags={tags}
-                isLoading={isLoading}
-                closeModal={() => setOpenTagModal(false)}
-                selectedTag={post.selectedTag}
-                setSelectedTag={(tag) =>
-                  setPost((prev) => ({ ...prev, selectedTag: tag }))
-                }
-              />
-            </Modal>
-          )}
-
-          <textarea
-            ref={bodyRef}
-            rows={6}
-            name="body"
-            placeholder="Text (optional)"
-            value={post.body}
-            onChange={handleChanges}
-            className="textarea rounded-2xl p-4 no-scrollbar"
-            autoFocus
-          />
-        </>
-      )}
-
-      {/* IMAGE  */}
-      {props.activeTab === "Images & Video" && (
-        <div className="space-y-4">
-          <textarea
-            ref={titleRef}
-            name="title"
-            value={post.title}
-            onChange={handleChanges}
-            placeholder="Title"
-            maxLength={300}
-            className="textarea rounded-2xl p-4 font-medium h-14 no-scrollbar"
-          />
-
-          <div
-            className="border border-dashed border-gray-300 rounded-2xl p-4 gap-4 min-h-44 flex 
+            <div
+              className="border border-dashed border-gray-300 rounded-2xl p-4 gap-4 min-h-44 flex 
           justify-center items-center "
-          >
-            {!post.images.length && (
-              <Button
-                onClick={() => imageRef.current?.click()}
-                className="bg-grayscale-100 text-black w-fit hover:bg-gray-400 hover:text-white 
+            >
+              {!post.images.length && (
+                <Button
+                  onClick={() => imageRef.current?.click()}
+                  className="bg-grayscale-100 text-black w-fit hover:bg-gray-400 hover:text-white 
                 transition-colors"
-              >
-                Upload Image
-              </Button>
-            )}
+                >
+                  Upload Image
+                </Button>
+              )}
 
-            {!!post.images.length && (
-              <ul className="w-full flex items-center gap-2">
-                {renderedImages}
+              {!!post.images.length && (
+                <ul className="w-full flex items-center gap-2">
+                  {renderedImages}
 
-                {post.images.length < 4 && (
-                  <li
-                    onClick={() => imageRef.current?.click()}
-                    className="border border-dashed border-gray-300 rounded-2xl h-32 w-32 flex 
+                  {post.images.length < 4 && (
+                    <li
+                      onClick={() => imageRef.current?.click()}
+                      className="border border-dashed border-gray-300 rounded-2xl h-32 w-32 flex 
                 items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors"
-                  >
-                    <AddIcon />
-                  </li>
-                )}
-              </ul>
-            )}
+                    >
+                      <AddIcon />
+                    </li>
+                  )}
+                </ul>
+              )}
+            </div>
+
+            <input
+              ref={imageRef}
+              type="file"
+              accept="image/*"
+              multiple
+              hidden
+              onChange={handleImageChange}
+              className="bg-grayscale-100 text-black w-fit h-9 text-sm hidden"
+            />
           </div>
+        )}
 
-          <input
-            ref={imageRef}
-            type="file"
-            accept="image/*"
-            multiple
-            hidden
-            onChange={handleImageChange}
-            className="bg-grayscale-100 text-black w-fit h-9 text-sm hidden"
-          />
-        </div>
-      )}
+        <Button type="submit" className=" bg-accent text-white self-end">
+          Post
+        </Button>
+      </form>
 
-      <Button type="submit" className=" bg-accent text-white self-end">
-        Post
-      </Button>
-    </form>
+      {isSubmittingPost && <LoadingBar />}
+    </>
   );
 }
 

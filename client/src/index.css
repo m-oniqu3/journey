@@ -75,6 +75,42 @@ body {
         display: none;
     }
 
+    /* LoadingBar.css */
+
+    .loading-bar {
+        height: 5px;
+        width: 100%;
+        background-color: rgb(4 120 87);
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        animation: loading-progress 4s infinite;
+        margin: 0;
+    }
+
+    @keyframes loading-progress {
+        0% {
+            width: 0%;
+        }
+
+        25% {
+            width: 50%;
+        }
+
+        50% {
+            width: 75%;
+        }
+
+        75% {
+            width: 85%;
+        }
+
+        100% {
+            width: 100%;
+        }
+    }
+
 
     /* media */
     @screen md {

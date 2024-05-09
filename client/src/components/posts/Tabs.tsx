@@ -21,7 +21,7 @@ function Tabs(props: Props) {
       </li>
     );
   });
-  return <ul className="flex flex-wrap gap-4">{renderedTabs}</ul>;
+  return <ul className="flex flex-wrap gap-4 mb-4">{renderedTabs}</ul>;
 }
 
 export default Tabs;

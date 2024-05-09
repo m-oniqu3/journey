@@ -131,7 +131,7 @@ function Submit() {
           </Button>
         )}
 
-        <section className="space-y-4">
+        <section>
           <Tabs tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
           <CreatePost activeTab={activeTab} />
         </section>
