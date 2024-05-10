@@ -40,10 +40,10 @@ function Space() {
     banner: data.banner,
   };
   return (
-    <div>
+    <div className="w-full">
       <SpaceHeader space={space} />
 
-      <div className="wrapper page-layout">
+      <div className="md:wrapper page-layout">
         <div className="main-content ">
           <SpacesContent name={spaceName} />
         </div>

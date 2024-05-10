@@ -17,9 +17,12 @@ export async function createPost(data: FormData, spacename: string) {
 }
 
 export async function getSpacePosts(spacename: string, page: number) {
-  const response = await api.get<{ data: PostSummary }>(`posts/${spacename}`, {
-    params: { range: getRange(page, 10) },
-  });
+  const response = await api.get<{ data: PostSummary[] }>(
+    `posts/${spacename}`,
+    {
+      params: { range: getRange(page, 10) },
+    }
+  );
 
-  return response.data;
+  return response.data.data;
 }

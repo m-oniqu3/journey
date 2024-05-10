@@ -17,7 +17,7 @@ const Button = forwardRef((props: Props, ref: React.Ref<HTMLButtonElement>) => {
       type={props.type ?? "button"}
       disabled={props.disabled || false}
       className={`${props.className ?? ""} 
-      rounded-full px-4 h-12 font-semibold disabled:opacity-50 disabled:cursor-not-allowed`}
+      rounded-full px-4 h-11 font-semibold disabled:opacity-50 disabled:cursor-not-allowed`}
       onClick={props.onClick}
     >
       {props.children}

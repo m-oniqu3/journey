@@ -1,3 +1,4 @@
+import Post from "@/components/posts/Post";
 import { getSpacePosts } from "@/services/post-services";
 import { handleError } from "@/utils/handleError";
 import { useQuery } from "react-query";
@@ -26,14 +27,27 @@ function SpacesContent(props: Props) {
     }
   }
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error: {(error as Error).message}</div>;
+  }
+
+  if (!data) {
+    return <div>No posts found</div>;
+  }
+
+  const renderedPosts = data.map((post) => {
+    return <Post post={post} key={post.id} />;
+  });
+
   return (
-    <div>
-      {isLoading && <div>Loading...</div>}
-      {!isLoading && isError && <div>Error: {(error as Error).message}</div>}
-
-      {!isLoading && !data && <div>No posts found</div>}
-
-      <div>{JSON.stringify(data)}</div>
+    <div className="w-full">
+      <ul className="flex flex-col border-t border-gray-100 py-4 md:wrapper ">
+        {renderedPosts}
+      </ul>
     </div>
   );
 }

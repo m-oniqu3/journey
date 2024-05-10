@@ -29,7 +29,7 @@ function SpaceHeader(props: Props) {
   })();
 
   return (
-    <header className="md:mt-2">
+    <header className="pb-6 md:mt-2">
       <div className="bg-gray-100 h-16 w-full md:wrapper md:h-28 md:rounded-lg" />
       <div className="wrapper mt-6 md:flex md:items-center md:justify-between md:gap-8 md:px-8 md:relative md:-top-10">
         <figure className="flex items-center gap-4 ">
@@ -48,7 +48,7 @@ function SpaceHeader(props: Props) {
           </figcaption>
         </figure>
 
-        <div className="flex items-center gap-4 mt-4 md:mt-0">
+        <div className="flex items-center gap-2 mt-4 md:mt-0 sm:gap-4">
           <ButtonLink
             route={`/s/${name}/submit`}
             className="bg-white  border-[1px] border-gray-500 text-black rounded-full w-fit flex items-center gap-2 "
