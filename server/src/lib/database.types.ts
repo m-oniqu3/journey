@@ -125,7 +125,7 @@ export type Database = {
           bio: string | null
           created_at: string
           display_name: string | null
-          id: string
+          user_id: string
           username: string
         }
         Insert: {
@@ -134,7 +134,7 @@ export type Database = {
           bio?: string | null
           created_at?: string
           display_name?: string | null
-          id: string
+          user_id: string
           username?: string
         }
         Update: {
@@ -143,13 +143,13 @@ export type Database = {
           bio?: string | null
           created_at?: string
           display_name?: string | null
-          id?: string
+          user_id?: string
           username?: string
         }
         Relationships: [
           {
             foreignKeyName: "public_profiles_id_fkey"
-            columns: ["id"]
+            columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]

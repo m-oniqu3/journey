@@ -6,8 +6,6 @@ import { Request, Response } from "express";
 
 export async function createPost(req: Request, res: Response) {
   try {
-    console.log(req.body);
-    console.log(req.files);
     const user = req.user as User;
     const space = req.locals.space;
 

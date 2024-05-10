@@ -40,7 +40,7 @@ body {
     }
 
     .textarea {
-        @apply resize-none p-2 h-full pr-10 text-justify border border-gray-300 text-gray-900 rounded-lg w-full focus:outline-none focus:border-gray-500
+        @apply resize-none p-2 h-full pr-10 text-justify border border-gray-300 text-gray-900 rounded-lg w-full font-normal focus:outline-none focus:border-gray-500
     }
 
     .wrapper {

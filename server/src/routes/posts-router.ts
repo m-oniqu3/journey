@@ -1,4 +1,5 @@
 import { createPost } from "@/controllers/posts/create-post";
+import { getSpacePosts } from "@/controllers/posts/get-space-posts";
 import { requireAuth } from "@/middleware/auth";
 import { checkSpaceExists } from "@/middleware/space";
 import express from "express";
@@ -19,4 +20,6 @@ router.post(
   checkSpaceExists,
   createPost
 );
+
+router.get("/:name", requireAuth, checkSpaceExists, getSpacePosts);
 export default router;

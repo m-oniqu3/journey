@@ -9,3 +9,14 @@ export enum HttpStatusCode {
   BAD_GATEWAY = 502,
   SERVICE_UNAVAILABLE = 503,
 }
+
+export type ProfileSummaryForPost = {
+  user_id: string;
+  username: string;
+  display_name: string;
+  avatar: string;
+};
+
+export type ProfileRecord = {
+  [profileID: string]: ProfileSummaryForPost;
+};

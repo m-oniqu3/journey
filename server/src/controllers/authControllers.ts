@@ -89,7 +89,7 @@ export async function register(req: Request, res: Response) {
     // update the user's username and display_name
     const { error } = await supabase
       .from("profiles")
-      .upsert({ id: data.user.id, username, display_name: base_name })
+      .upsert({ user_id: data.user.id, username, display_name: base_name })
       .select();
 
     if (error) {

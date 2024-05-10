@@ -1,8 +1,9 @@
 import { api } from "@/services/api";
+import { PostSummary } from "@/types/post";
+import { getRange } from "@/utils/paginate";
 
 export async function createPost(data: FormData, spacename: string) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const response = await api.post<{ data: any }>(
+  const response = await api.post<{ data: string }>(
     `posts/new/${spacename}`,
     data,
     {
@@ -11,6 +12,14 @@ export async function createPost(data: FormData, spacename: string) {
       },
     }
   );
+
+  return response.data;
+}
+
+export async function getSpacePosts(spacename: string, page: number) {
+  const response = await api.get<{ data: PostSummary }>(`posts/${spacename}`, {
+    params: { range: getRange(page, 10) },
+  });
 
   return response.data;
 }

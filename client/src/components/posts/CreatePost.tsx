@@ -115,6 +115,13 @@ function CreatePost(props: Props) {
       setIsSubmittingPost(true);
       const response = await createPost(data, spaceName);
       console.log(response);
+
+      setPost({
+        title: "",
+        body: "",
+        images: [],
+        selectedTag: {} as SpaceTag,
+      });
     } catch (error) {
       console.error(error);
     } finally {
