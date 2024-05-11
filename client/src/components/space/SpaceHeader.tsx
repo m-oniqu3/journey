@@ -29,9 +29,10 @@ function SpaceHeader(props: Props) {
   })();
 
   return (
-    <header className="pb-6 md:mt-2">
+    <header className="pb-4 md:mt-2">
       <div className="bg-gray-100 h-16 w-full md:wrapper md:h-28 md:rounded-lg" />
-      <div className="wrapper mt-6 md:flex md:items-center md:justify-between md:gap-8 md:px-8 md:relative md:-top-10">
+
+      <div className="wrapper  mt-6 md:mt-0 md:flex md:items-center md:justify-between md:gap-8 md:px-8 ">
         <figure className="flex items-center gap-4 ">
           <img
             src={avatar || `https://picsum.photos/seed/${id}/200`}

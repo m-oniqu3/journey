@@ -14,7 +14,7 @@ function Post(props: Props) {
       key={post.id}
       className="border-b border-gray-100 py-4 cursor-pointer hover:bg-gray-50"
     >
-      <div className="flex items-center gap-4 wrapper">
+      <div className="flex items-center gap-2 wrapper">
         <img
           src={
             post.creator.avatar || `https://picsum.photos/seed/${post.id}/200`
@@ -37,10 +37,7 @@ function Post(props: Props) {
 
       {/* HEADER & IMAGES */}
       <div className="wrapper flex flex-col gap-1 mt-2">
-        <h2
-          className="font-bold text-[1.05rem] leading-snug  md:text-xl 
-        "
-        >
+        <h2 className="font-bold text-[1.05rem] leading-snug  md:text-xl">
           {post.title}
         </h2>
         <p className="line-clamp-2">{post.body}</p>

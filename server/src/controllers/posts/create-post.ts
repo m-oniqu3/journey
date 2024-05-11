@@ -15,6 +15,7 @@ export async function createPost(req: Request, res: Response) {
       tag: string;
     };
 
+    console.log("body", req.body);
     // Check if the title is empty
     if (!title) {
       return res
@@ -41,6 +42,8 @@ export async function createPost(req: Request, res: Response) {
 
     if (req.files) {
       const images = req.files as Express.Multer.File[];
+
+      console.log("images", images);
 
       // upload images to storage
       const uploadedImages = await uploadImagesToStorage(

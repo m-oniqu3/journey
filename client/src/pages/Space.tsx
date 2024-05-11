@@ -48,7 +48,7 @@ function Space() {
           <SpacesContent name={spaceName} />
         </div>
 
-        <div className="sidebar">
+        <div className="sidebar md:wrapper ">
           <SpaceSidebar name={spaceName} />
         </div>
       </div>

@@ -30,53 +30,51 @@ function PostSlider(props: Props) {
 
   const renderedImages = props.images.map((image) => {
     return (
-      <div className="relative h-full w-full " key={image.id}>
+      <div
+        key={image.id}
+        className="h-full w-full relative z-10 flex-shrink-0 flex-grow-0"
+        style={{
+          translate: `${-100 * selectedImage}%`,
+          transition: "translate 300ms ease-in-out",
+        }}
+      >
         <div
-          style={{
-            backgroundImage: `url(${image.url})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backdropFilter: "blur(50px)",
-            WebkitFilter: "blur(50px)",
-          }}
-          className="absolute top-0 left-0 h-full w-full rounded-2xl z-0  "
+          style={{ backgroundImage: `url(${image.url})` }}
+          className="backdrop absolute top-0 left-0 h-full w-full rounded-2xl z-0  hidden md:block"
         ></div>
 
-        <div className="relative h-full w-full z-10 ">
-          {!isRightDisabled && (
-            <button
-              disabled={isRightDisabled}
-              onClick={handleNextImage}
-              className="absolute top-1/2 right-4 p-2 rounded-full bg-black/50 z-10 "
-            >
-              <ChevronRightIcon />
-            </button>
-          )}
-
-          {!isLeftDisabled && (
-            <button
-              disabled={isLeftDisabled}
-              onClick={handlePreviousImage}
-              className="absolute top-1/2 left-4 p-2 rounded-full bg-black/50 z-10"
-            >
-              <ChevronLeftIcon />
-            </button>
-          )}
-
-          <img
-            loading="lazy"
-            src={image.url}
-            alt="post"
-            className="object-cover h-full w-full rounded-2xl lg:object-contain bg-white/50 z-30"
-          />
-        </div>
+        <img
+          loading="lazy"
+          src={image.url}
+          alt="post"
+          className="object-cover h-full w-full rounded-2xl  z-30 absolute top-0 left-0 md:object-contain"
+        />
       </div>
     );
   });
 
   return (
-    <figure className="overflow-hidden rounded-2xl  relative h-[32rem] w-h-[32rem] md:h-[40rem] md:w-full">
-      <>{renderedImages[selectedImage]}</>
+    <figure className="overflow-hidden relative flex rounded-2xl my-2 h-[32rem] w-h-[32rem] md:h-[40rem] md:w-full">
+      {renderedImages}
+      {!isRightDisabled && (
+        <button
+          disabled={isRightDisabled}
+          onClick={handleNextImage}
+          className="absolute top-1/2 right-4 p-2 rounded-full bg-black/50 z-20 "
+        >
+          <ChevronRightIcon />
+        </button>
+      )}
+
+      {!isLeftDisabled && (
+        <button
+          disabled={isLeftDisabled}
+          onClick={handlePreviousImage}
+          className="absolute top-1/2 left-4 p-2 rounded-full bg-black/50 z-20"
+        >
+          <ChevronLeftIcon />
+        </button>
+      )}
     </figure>
   );
 }
