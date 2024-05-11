@@ -18,6 +18,7 @@ export default {
           100: "rgb(236 239 241)",
         },
         neutral: "#fff",
+        dark: "rgb(55 65 81)",
       },
     },
   },

@@ -6,27 +6,27 @@ type Props = {
 };
 
 function PostSlider(props: Props) {
-  const [selectedImage, setSelectedImage] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   function handleNextImage() {
-    if (selectedImage === props.images.length - 1) {
-      setSelectedImage(0);
+    if (currentIndex === props.images.length - 1) {
+      setCurrentIndex(0);
     }
 
-    setSelectedImage((prev) => prev + 1);
+    setCurrentIndex((prev) => prev + 1);
   }
 
   function handlePreviousImage() {
-    if (selectedImage === 0) {
-      setSelectedImage(props.images.length - 1);
+    if (currentIndex === 0) {
+      setCurrentIndex(props.images.length - 1);
     }
 
-    setSelectedImage((prev) => prev - 1);
+    setCurrentIndex((prev) => prev - 1);
   }
 
   const isRightDisabled =
-    selectedImage === props.images.length - 1 || props.images.length === 1;
-  const isLeftDisabled = selectedImage === 0 || props.images.length === 1;
+    currentIndex === props.images.length - 1 || props.images.length === 1;
+  const isLeftDisabled = currentIndex === 0 || props.images.length === 1;
 
   const renderedImages = props.images.map((image) => {
     return (
@@ -34,20 +34,20 @@ function PostSlider(props: Props) {
         key={image.id}
         className="h-full w-full relative z-10 flex-shrink-0 flex-grow-0"
         style={{
-          translate: `${-100 * selectedImage}%`,
+          translate: `${-100 * currentIndex}%`,
           transition: "translate 300ms ease-in-out",
         }}
       >
         <div
           style={{ backgroundImage: `url(${image.url})` }}
-          className="backdrop absolute top-0 left-0 h-full w-full rounded-2xl z-0  hidden md:block"
+          className="backdrop absolute top-0 left-0 h-full w-full rounded-xl z-0 hidden md:block"
         ></div>
 
         <img
           loading="lazy"
           src={image.url}
           alt="post"
-          className="object-cover h-full w-full rounded-2xl  z-30 absolute top-0 left-0 md:object-contain"
+          className="object-cover h-full w-full rounded-xl z-30 bg-white/30 absolute top-0 left-0 md:object-contain"
         />
       </div>
     );
