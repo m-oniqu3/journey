@@ -26,3 +26,11 @@ export async function getSpacePosts(spacename: string, page: number) {
 
   return response.data.data;
 }
+
+export async function getPosts(page: number) {
+  const response = await api.get<{ data: PostSummary[] }>("posts", {
+    params: { range: getRange(page, 10) },
+  });
+
+  return response.data.data;
+}

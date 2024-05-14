@@ -19,4 +19,5 @@ export type PostSummary = {
   images: { id: number; url: string }[];
   tag: Tag | null;
   creator: ProfileSummaryForPost;
+  space: { id: number; name: string; avatar: string };
 };

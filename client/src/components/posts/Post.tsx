@@ -34,7 +34,7 @@ function Post(props: Props) {
         </p>
 
         <p className="text-gray-600 text-[0.9rem] sm:text-sm">
-          {timeSince(new Date(post.created_at))}
+          {timeSince(new Date(post.created_at))} ago
         </p>
 
         <span className="ml-auto cursor-pointer  p-1 rounded-full hover:bg-gray-50">

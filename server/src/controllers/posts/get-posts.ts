@@ -2,45 +2,32 @@ import { supabase } from "@/lib/supabaseClient";
 import { HttpStatusCode, ProfileRecord, ProfileSummaryForPost } from "@/types";
 import { Request, Response } from "express";
 
-/**
- *
- * @param req Request
- * @param res Response
- * @description Get all posts for a space. Includes post details, creator profile details, images and tags
- */
-export async function getSpacePosts(req: Request, res: Response) {
-  const space = req.locals.space;
+export async function getPosts(req: Request, res: Response) {
   const range = String(req.query.range).split(",").map(Number);
 
-  /**
-   *  join posts, images, tags
-   * tags - name, id, colour
-   * posts - id, title, body, created_at, creator, space_id, tag_id
-   * images - id, post_id, url , user_id
-   */
-
   try {
-    const { data: postData, error: postError } = await supabase
+    const { data, error } = await supabase
       .from("posts")
       .select(
         `
         id, title, body, created_at, creator, 
         images(id, url), 
-        tags(name, id, colour)
-        `
+        tags(name, id, colour),
+        spaces(id, name, avatar) `
       )
-      .eq("space_id", space.id)
       .order("created_at", { ascending: false })
       .range(range[0], range[1]);
 
-    if (postError) throw postError;
+    console.log(req.query.range);
 
-    if (!postData) {
+    if (error) throw error;
+
+    if (!data) {
       return res.status(HttpStatusCode.OK).json({ data: [] });
     }
 
     // get creator IDs
-    const creatorIDs = postData.map((post) => post.creator) as string[];
+    const creatorIDs = data.map((post) => post.creator) as string[];
 
     // get profile details for each post
     const { data: profileData, error: profileError } = await supabase
@@ -58,7 +45,7 @@ export async function getSpacePosts(req: Request, res: Response) {
     }, {} as ProfileRecord);
 
     // add profile details to each post and change tags to tag
-    const postsAndProfiles = postData.map((post) => {
+    const postsAndProfiles = data.map((post) => {
       return {
         id: post.id,
         title: post.title,
@@ -67,13 +54,13 @@ export async function getSpacePosts(req: Request, res: Response) {
         images: post.images,
         tag: post.tags,
         creator: profileMap[post.creator as string],
-        space: { id: space.id, name: space.name, avatar: space.avatar },
+        space: post.spaces,
       };
     });
 
     return res.status(HttpStatusCode.OK).json({ data: postsAndProfiles });
   } catch (error) {
-    console.error("Error getting posts for space:", error);
+    console.error("Error getting all posts :", error);
 
     if (error.code) {
       return res

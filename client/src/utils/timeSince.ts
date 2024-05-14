@@ -2,22 +2,23 @@ export function timeSince(date: Date): string {
   // get the difference in seconds
   const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
 
-  const intervals = {
-    year: 31536000,
-    month: 2592000,
-    week: 604800,
-    day: 86400,
-    hour: 3600,
-    minute: 60,
-  };
+  const intervals = [
+    { name: "year", time: 31536000, type: "yr" },
+    { name: "month", time: 2592000, type: "m" },
+    { name: "week", time: 604800, type: "wk" },
+    { name: "day", time: 86400, type: "d" },
+    { name: "hour", time: 3600, type: "hr." },
+    { name: "minute", time: 60, type: "min" },
+  ];
 
   let intervalType: string = "";
   let timePassed: number = 0;
 
-  for (const [type, secondsPerInterval] of Object.entries(intervals)) {
-    timePassed = Math.floor(seconds / secondsPerInterval);
+  for (const interval of intervals) {
+    timePassed = Math.floor(seconds / interval.time);
     if (timePassed >= 1) {
-      intervalType = type;
+      intervalType = interval.type;
+
       break;
     }
   }
@@ -26,5 +27,5 @@ export function timeSince(date: Date): string {
     return "just now";
   }
 
-  return `${timePassed}${intervalType.charAt(0)}`;
+  return `${timePassed} ${intervalType}`;
 }
