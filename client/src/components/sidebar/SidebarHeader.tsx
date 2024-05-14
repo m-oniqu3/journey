@@ -17,7 +17,7 @@ const SidebarHeader = (props: Props) => {
       <li key={link.to} onClick={props?.closeSidebar}>
         <Link
           to={link.to}
-          className="grid items-center grid-cols-[30px,1fr] h-12 gap-2 font-normal px-2 py-1 hover:bg-grayscale-100 rounded-xl hover:px-2 "
+          className="grid items-center grid-cols-[30px,1fr] h-11 gap-2 font-normal px-2 py-1 pl-4 hover:bg-gray-50 rounded-lg"
         >
           <span className="grid place-items-center">{link.icon}</span>
 

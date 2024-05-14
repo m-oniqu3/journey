@@ -45,31 +45,31 @@ function Post(props: Props) {
 
       {/* HEADER & IMAGES */}
       <div className="wrapper flex flex-col gap-1 mt-2">
-        <h2 className="font-bold text-dark text-[1.05rem] leading-snug sm:text-lg md:text-xl">
+        <h2 className="font-semibold text-dark text-[1.05rem] leading-snug line-clamp-3 sm:line-clamp-none sm:text-lg md:text-[1.4rem]">
           {post.title}
         </h2>
 
         {post.tag && (
           <p
             style={{ backgroundColor: `${post.tag.colour}` }}
-            className="font-medium w-fit text-white px-2 h-6 rounded-md flex items-center justify-center text-sm"
+            className="font-medium w-fit text-white px-3 my-1  h-6 rounded-full flex items-center justify-center text-sm"
           >
             {post.tag.name}
           </p>
         )}
 
-        <p className={`${clamp}`}>{post.body}</p>
+        <p className={`${clamp} leading-relaxed`}>{post.body}</p>
 
         {!!post.images.length && <PostSlider images={post.images} />}
       </div>
 
-      <div className="wrapper flex items-center gap-4 mt-2">
-        <span className="flex items-center gap-2 text-dark font-semibold bg-gray-100 py-2 px-4 rounded-full">
+      <div className="wrapper flex items-center gap-4 mt-4">
+        <span className="flex items-center gap-2 text-dark font-semibold bg-grayscale-100  py-2 px-4 rounded-full">
           <HeartIcon />
           {Math.floor(Math.random() * 1000)}
         </span>
 
-        <span className="flex items-center gap-2 text-dark font-semibold bg-gray-100 py-2 px-4 rounded-full">
+        <span className="flex items-center gap-2 text-dark font-semibold bg-grayscale-100  py-2 px-4 rounded-full">
           <CommentIcon />
           {Math.floor(Math.random() * 1000)}
         </span>

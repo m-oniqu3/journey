@@ -27,17 +27,17 @@ function PostHeader(props: Props) {
         className="h-8 w-8 rounded-full "
       />
 
-      <p className="font-bold text-gray-600 text-[0.9rem] flex items-center gap-1 sm:text-sm">
+      <p className="font-bold text-gray-600 text-[0.9rem] flex items-center gap-1">
         t/{name}
         {username && (
-          <span className="hidden font-normal text-[0.9rem] sm:block sm:text-sm">
+          <span className="hidden font-medium text-[0.9rem] sm:block ">
             @{username}
           </span>
         )}
       </p>
 
-      <p className="text-gray-600 font-medium text-[0.9rem] sm:text-sm">
-        {timeSince(new Date(createdAt))} ago
+      <p className="text-gray-600 text-[0.9rem] ">
+        {timeSince(new Date(createdAt))}
       </p>
 
       <div className="flex items-center gap-2 ml-auto">

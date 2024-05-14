@@ -6,8 +6,8 @@ export function timeSince(date: Date): string {
     { name: "year", time: 31536000, type: "yr" },
     { name: "month", time: 2592000, type: "m" },
     { name: "week", time: 604800, type: "wk" },
-    { name: "day", time: 86400, type: "d" },
-    { name: "hour", time: 3600, type: "hr." },
+    { name: "day", time: 86400, type: "day" },
+    { name: "hour", time: 3600, type: "hr" },
     { name: "minute", time: 60, type: "min" },
   ];
 
@@ -17,7 +17,7 @@ export function timeSince(date: Date): string {
   for (const interval of intervals) {
     timePassed = Math.floor(seconds / interval.time);
     if (timePassed >= 1) {
-      intervalType = interval.type;
+      intervalType = interval.type + ". ago";
 
       break;
     }
@@ -27,5 +27,5 @@ export function timeSince(date: Date): string {
     return "just now";
   }
 
-  return `${timePassed}${intervalType}`;
+  return `${timePassed} ${intervalType}`;
 }
