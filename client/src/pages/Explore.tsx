@@ -1,3 +1,4 @@
+import Post from "@/components/posts/Post";
 import { getPosts } from "@/services/post-services";
 import { handleError } from "@/utils/handleError";
 import { useQuery } from "react-query";
@@ -30,9 +31,25 @@ function Explore() {
     return <div>{(error as Error).message}</div>;
   }
 
-  console.log(data);
+  if (!data) {
+    return <div>No posts found</div>;
+  }
 
-  return <div>{JSON.stringify(data)}</div>;
+  const renderedPosts = data.map((post) => {
+    return <Post post={post} key={post.id} headerType="space" />;
+  });
+
+  return (
+    <>
+      <div className="page-layout">
+        <ul className="main-content flex flex-col border-t border-gray-100 py-4 md:wrapper ">
+          {renderedPosts}
+        </ul>
+
+        <div className="sidebar">recommended spaces</div>
+      </div>
+    </>
+  );
 }
 
 export default Explore;

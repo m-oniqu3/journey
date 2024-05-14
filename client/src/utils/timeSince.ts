@@ -27,5 +27,5 @@ export function timeSince(date: Date): string {
     return "just now";
   }
 
-  return `${timePassed} ${intervalType}`;
+  return `${timePassed}${intervalType}`;
 }

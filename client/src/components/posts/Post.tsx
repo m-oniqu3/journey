@@ -1,50 +1,51 @@
-import { CommentIcon, HeartIcon, HorizonalEllipsis } from "@/components/icons";
+import { CommentIcon, HeartIcon } from "@/components/icons";
+import PostHeader from "@/components/posts/PostHeader";
 import PostSlider from "@/components/posts/PostSlider";
 import { PostSummary } from "@/types/post";
-import { timeSince } from "@/utils/timeSince";
 
 type Props = {
   post: PostSummary;
+  headerType?: "space" | "user";
 };
 
 function Post(props: Props) {
-  const { post } = props;
+  const { post, headerType = "user" } = props;
 
   const clamp = post.images.length ? "line-clamp-2" : "line-clamp-4";
+
+  const spaceHeader = (
+    <PostHeader
+      avatar={post.space.avatar}
+      createdAt={post.created_at}
+      id={post.id}
+      name={post.space.name}
+      type="space"
+    />
+  );
+
+  const userHeader = (
+    <PostHeader
+      avatar={post.creator.avatar}
+      createdAt={post.created_at}
+      id={post.id}
+      name={post.creator.display_name || post.creator.username}
+      username={post.creator.username}
+      type="user"
+    />
+  );
+
+  const header = headerType === "space" ? spaceHeader : userHeader;
 
   return (
     <li
       key={post.id}
-      className="border-b border-gray-100 py-4  cursor-pointer hover:bg-gray-50"
+      className="border-b border-gray-100 py-4 cursor-pointer hover:bg-gray-50 md:wrapper"
     >
-      <div className="flex items-center gap-2 wrapper">
-        <img
-          src={
-            post.creator.avatar || `https://picsum.photos/seed/${post.id}/200`
-          }
-          alt="avatar"
-          className="h-8 w-8 rounded-full "
-        />
-
-        <p className="font-bold text-gray-600 text-[0.9rem] flex items-center gap-1 sm:text-sm">
-          t/{post.creator.display_name || post.creator.username}
-          <span className="hidden font-normal text-[0.9rem] sm:block sm:text-sm">
-            @{post.creator.username}
-          </span>
-        </p>
-
-        <p className="text-gray-600 text-[0.9rem] sm:text-sm">
-          {timeSince(new Date(post.created_at))} ago
-        </p>
-
-        <span className="ml-auto cursor-pointer  p-1 rounded-full hover:bg-gray-50">
-          <HorizonalEllipsis />
-        </span>
-      </div>
+      <>{header}</>
 
       {/* HEADER & IMAGES */}
       <div className="wrapper flex flex-col gap-1 mt-2">
-        <h2 className="font-bold text-dark text-[1.05rem] leading-snug sm:text-lg">
+        <h2 className="font-bold text-dark text-[1.05rem] leading-snug sm:text-lg md:text-xl">
           {post.title}
         </h2>
 
@@ -63,12 +64,12 @@ function Post(props: Props) {
       </div>
 
       <div className="wrapper flex items-center gap-4 mt-2">
-        <span className="flex items-center gap-2 text-gray-600 font-semibold bg-gray-100 py-1 px-4 rounded-lg">
+        <span className="flex items-center gap-2 text-dark font-semibold bg-gray-100 py-2 px-4 rounded-full">
           <HeartIcon />
           {Math.floor(Math.random() * 1000)}
         </span>
 
-        <span className="flex items-center gap-2 text-gray-600 font-semibold bg-gray-100 py-1 px-4 rounded-lg">
+        <span className="flex items-center gap-2 text-dark font-semibold bg-gray-100 py-2 px-4 rounded-full">
           <CommentIcon />
           {Math.floor(Math.random() * 1000)}
         </span>
