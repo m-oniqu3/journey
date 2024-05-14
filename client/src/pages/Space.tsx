@@ -27,7 +27,7 @@ function Space() {
   }
 
   if (isLoading) return <div>Loading...</div>;
-  if (!isLoading && isError && error)
+  if (!isLoading && isError)
     return <div>Error: {(error as Error).message}</div>;
 
   if (!isLoading && !data) return <div>Space not found</div>;

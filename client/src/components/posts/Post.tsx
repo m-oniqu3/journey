@@ -66,12 +66,12 @@ function Post(props: Props) {
       <div className="wrapper flex items-center gap-4 mt-4">
         <span className="flex items-center gap-2 text-dark font-semibold bg-grayscale-100  py-2 px-4 rounded-full">
           <HeartIcon />
-          {Math.floor(Math.random() * 1000)}
+          {post.id * 1080}
         </span>
 
         <span className="flex items-center gap-2 text-dark font-semibold bg-grayscale-100  py-2 px-4 rounded-full">
           <CommentIcon />
-          {Math.floor(Math.random() * 1000)}
+          {Math.floor(post.id * 1440)}
         </span>
       </div>
     </li>

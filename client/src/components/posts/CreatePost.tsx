@@ -8,6 +8,7 @@ import { createPost } from "@/services/post-services";
 import { SpaceTag } from "@/types/space";
 import { resizeTextarea } from "@/utils/resizeTextarea";
 import { useEffect, useRef, useState } from "react";
+import { useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
 
 type Props = {
@@ -26,6 +27,7 @@ function CreatePost(props: Props) {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
 
   const [isSubmittingPost, setIsSubmittingPost] = useState(false);
+  const queryClient = useQueryClient();
 
   const [post, setPost] = useState({
     title: "",
@@ -113,15 +115,23 @@ function CreatePost(props: Props) {
 
     try {
       setIsSubmittingPost(true);
+
       const response = await createPost(data, spaceName);
       console.log(response);
-
-      setPost({ title: "", body: "", images: [], selectedTag: {} as SpaceTag });
-      setImageFiles([]);
     } catch (error) {
       console.error(error);
     } finally {
       setIsSubmittingPost(false);
+
+      // invalidate the query to refetch the posts
+      queryClient.invalidateQueries(["space-posts", spaceName]);
+
+      // reset the form
+      titleRef.current?.style.setProperty("height", "");
+      bodyRef.current?.style.setProperty("height", "");
+
+      setPost({ title: "", body: "", images: [], selectedTag: {} as SpaceTag });
+      setImageFiles([]);
     }
   }
 
@@ -202,7 +212,7 @@ function CreatePost(props: Props) {
               placeholder="Text (optional)"
               value={post.body}
               onChange={handleChanges}
-              className="textarea rounded-2xl p-4 no-scrollbar"
+              className="textarea rounded-2xl p-4 no-scrollbar h-14"
               autoFocus
             />
           </>

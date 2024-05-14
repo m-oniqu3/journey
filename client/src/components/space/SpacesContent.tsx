@@ -1,24 +1,32 @@
 import Post from "@/components/posts/Post";
+import InfiniteScroll from "@/components/space/InfiniteScroll";
 import { getSpacePosts } from "@/services/post-services";
 import { handleError } from "@/utils/handleError";
-import { useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 
 type Props = {
   name: string;
 };
 
 function SpacesContent(props: Props) {
-  const { error, isError, data, isLoading } = useQuery({
-    queryKey: ["space-posts", props.name],
-    queryFn: () => getSpacePost(props.name),
-    retry: false,
-  });
+  const { error, isError, data, isLoading, fetchNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["space-posts", props.name],
+      queryFn: ({ pageParam = 0 }) => getSpacePost(props.name, pageParam),
+      retry: false,
 
-  async function getSpacePost(name: string) {
+      getNextPageParam: (lastPage, allPages) => {
+        const nextPage: number | undefined = lastPage?.length
+          ? allPages.length
+          : undefined;
+
+        return nextPage;
+      },
+    });
+
+  async function getSpacePost(name: string, page: number) {
     try {
-      const response = await getSpacePosts(name, 0);
-      console.log(response);
-
+      const response = await getSpacePosts(name, page);
       return response;
     } catch (error) {
       const message = handleError(error);
@@ -35,18 +43,26 @@ function SpacesContent(props: Props) {
     return <div>Error: {(error as Error).message}</div>;
   }
 
-  if (!data) {
+  if (!data?.pages) {
     return <div>No posts found</div>;
   }
 
-  const renderedPosts = data.map((post) => {
+  const pages = data.pages.flat();
+
+  const renderedPosts = pages.map((post) => {
     return <Post post={post} key={post.id} />;
   });
 
   return (
     <div className="w-full">
       <ul className="flex flex-col border-t border-gray-100 py-4 md:wrapper ">
-        {renderedPosts}
+        <InfiniteScroll
+          isLoadingIntial={isLoading}
+          isLoadingMore={isFetchingNextPage}
+          loadMore={fetchNextPage}
+        >
+          <>{renderedPosts}</>
+        </InfiniteScroll>
       </ul>
     </div>
   );

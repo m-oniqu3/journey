@@ -118,8 +118,6 @@ function useSpaceData() {
         if (!user) return;
 
         const response = await getUsersSpaces(user.id);
-        console.log(response);
-
         dispatch({ type: SpacesEnum.SET_SPACES, payload: response });
       } catch (error) {
         console.log(error);
