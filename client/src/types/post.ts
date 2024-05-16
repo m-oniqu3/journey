@@ -18,6 +18,16 @@ export type PostSummary = {
   created_at: string;
   images: { id: number; url: string }[];
   tag: Tag | null;
-  creator: ProfileSummaryForPost;
+  creator?: ProfileSummaryForPost;
   space: { id: number; name: string; avatar: string };
 };
+
+export type FeedPost = {
+  id: number;
+  title: string;
+  body: string;
+  created_at: string;
+  images: { id: number; url: string }[];
+  tag: { name: string; id: number; colour: string };
+  space: { id: number; name: string; avatar: string | null };
+}[];

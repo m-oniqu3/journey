@@ -7,8 +7,8 @@ import useTags from "@/hooks/useTags";
 import { createPost } from "@/services/post-services";
 import { SpaceTag } from "@/types/space";
 import { resizeTextarea } from "@/utils/resizeTextarea";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-import { useQueryClient } from "react-query";
 import { useParams } from "react-router-dom";
 
 type Props = {

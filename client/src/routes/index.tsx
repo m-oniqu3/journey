@@ -2,6 +2,7 @@ import AllSpaces from "@/components/space/AllSpaces";
 import ErrorPage from "@/error-page";
 import EditProfile from "@/pages/EditProfile";
 import Explore from "@/pages/Explore";
+import Feed from "@/pages/Feed";
 import LogIn from "@/pages/LogIn";
 import LogOut from "@/pages/LogOut";
 import PostDetails from "@/pages/PostDetails";
@@ -49,7 +50,7 @@ const router = createBrowserRouter([
     element: <Root />,
     errorElement: <ErrorPage />,
     children: [
-      { path: RoutesEnum.HOME, element: <p>home page</p> },
+      { path: RoutesEnum.HOME, element: <Feed /> },
       { path: RoutesEnum.EXPLORE, element: <Explore /> },
       { path: "/about", element: <p>about page</p> },
       { path: "/profile", element: <Profile /> },

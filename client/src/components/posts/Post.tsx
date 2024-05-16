@@ -4,8 +4,8 @@ import PostHeader from "@/components/posts/PostHeader";
 import PostSlider from "@/components/posts/PostSlider";
 import { getPostById } from "@/services/post-services";
 import { PostSummary } from "@/types/post";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { useQueryClient } from "react-query";
 import { Link, useNavigate } from "react-router-dom";
 
 type Props = {
@@ -33,11 +33,11 @@ function Post(props: Props) {
 
   const userHeader = (
     <PostHeader
-      avatar={post.creator.avatar}
+      avatar={post.creator?.avatar || ""}
       createdAt={post.created_at}
       id={post.id}
-      name={post.creator.display_name || post.creator.username}
-      username={post.creator.username}
+      name={post.creator?.display_name || post.creator?.username || ""}
+      username={post.creator?.username || ""}
       type="user"
     />
   );
@@ -77,7 +77,7 @@ function Post(props: Props) {
 
   return (
     <>
-      <li
+      <div
         key={post.id}
         className="border-b border-gray-100 py-4  hover:bg-gray-50 md:wrapper"
       >
@@ -108,7 +108,7 @@ function Post(props: Props) {
         </div>
 
         <PostButtons postID={post.id} />
-      </li>
+      </div>
 
       {isLoading && <LoadingBar />}
     </>

@@ -41,9 +41,7 @@ function InfiniteScroll(props: Props) {
 
       <div ref={observerElement} id="obs">
         {props.isLoadingMore && !props.isLoadingIntial && (
-          <div className="text-center h-10">
-            <div className="">Loading...</div>
-          </div>
+          <p className="text-center h-10">Loading...</p>
         )}
       </div>
     </>

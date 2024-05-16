@@ -1,18 +1,11 @@
 import { ActionEnum } from "@/context/reducer";
 import { useAuthContext } from "@/context/useAuthContext";
 import router from "@/routes";
-import { useEffect } from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { RouterProvider } from "react-router-dom";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-// Create a client
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-  },
-});
+import { useEffect } from "react";
+
+import { RouterProvider } from "react-router-dom";
 
 function App() {
   const { dispatch } = useAuthContext();
@@ -33,9 +26,14 @@ function App() {
   }, [dispatch]);
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
       <RouterProvider router={router} />
-    </QueryClientProvider>
+      <ReactQueryDevtools
+        initialIsOpen={false}
+        buttonPosition="bottom-right"
+        position="right"
+      />
+    </>
   );
 }
 

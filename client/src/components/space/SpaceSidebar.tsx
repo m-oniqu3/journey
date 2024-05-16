@@ -1,18 +1,27 @@
+import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import { EditIcon } from "@/components/icons";
 import EditSpace from "@/components/space/EditSpace";
 import { useAuthContext } from "@/context/useAuthContext";
+import { useSpacesContext } from "@/context/useSpacesContext";
 import { getSpace } from "@/services/space-services";
 import { handleError } from "@/utils/handleError";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { useQuery } from "react-query";
 
 type Props = {
   name: string;
+  showHeader?: boolean;
 };
 
 function SpaceSidebar(props: Props) {
   const { state } = useAuthContext();
+  const spaceContext = useSpacesContext();
+
+  const userspaces = spaceContext.state.userspaces;
+
+  const isJoined = props.name in userspaces;
+
   const { error, isError, isLoading, data } = useQuery({
     queryKey: ["space", props.name],
     queryFn: () => getSpaceDetails(props.name),
@@ -45,6 +54,16 @@ function SpaceSidebar(props: Props) {
 
         {!isLoading && data && (
           <section className="space-y-2 relative">
+            {props.showHeader && (
+              <header className="flex items-center justify-between">
+                <h2 className="font-bold text-2xl">s/{data.name}</h2>
+
+                <Button className="bg-white h-9 border-[1px] border-gray-500 text-black rounded-full w-fit flex items-center gap-2">
+                  {isJoined ? "Joined" : "Join"}
+                </Button>
+              </header>
+            )}
+
             {isCreator && (
               <span
                 onClick={() => setOpenEditSpaceModal((state) => !state)}

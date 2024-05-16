@@ -41,9 +41,9 @@ function PostHeader(props: Props) {
       </p>
 
       <div className="flex items-center gap-2 ml-auto">
-        {type === "space" && (
+        {type === "space" && !isJoined && (
           <Button className="ml-auto cursor-pointer text-white h-8 py-1 px-2 rounded-full bg-accent flex items-center justify-center">
-            {isJoined ? "Joined" : "Join"}
+            Join
           </Button>
         )}
 

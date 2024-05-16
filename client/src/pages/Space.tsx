@@ -3,7 +3,7 @@ import SpaceSidebar from "@/components/space/SpaceSidebar";
 import SpacesContent from "@/components/space/SpacesContent";
 import { getSpace } from "@/services/space-services";
 import { handleError } from "@/utils/handleError";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 
 function Space() {
@@ -31,6 +31,8 @@ function Space() {
     return <div>Error: {(error as Error).message}</div>;
 
   if (!isLoading && !data) return <div>Space not found</div>;
+
+  if (!data) return <div>Space not found</div>;
 
   const space = {
     id: data.id,

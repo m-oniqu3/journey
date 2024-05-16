@@ -1,6 +1,7 @@
 import { createPost } from "@/controllers/posts/create-post";
 import { getPostById } from "@/controllers/posts/get-post";
 import { getPosts } from "@/controllers/posts/get-posts";
+import { getPostsForJoinedSpaces } from "@/controllers/posts/get-posts-joined-spaces";
 import { getSpacePosts } from "@/controllers/posts/get-space-posts";
 import { requireAuth } from "@/middleware/auth";
 import { checkSpaceExists } from "@/middleware/space";
@@ -16,6 +17,10 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 router.get("/", requireAuth, getPosts);
+
+// get posts for spaces that the user is a member of
+router.get("/joined", requireAuth, getPostsForJoinedSpaces);
+
 router.post(
   "/new/:name",
   upload.array("images", 4),

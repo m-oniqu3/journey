@@ -66,3 +66,16 @@ export async function getPostById(id: number) {
 
   return response.data.data;
 }
+
+/**
+ * @param page number
+ * @description Get posts for spaces that the user is a member of
+ * @returns PostSummary[]
+ */
+export async function getPostsForJoinedSpaces(page: number) {
+  const response = await api.get<{ data: PostSummary[] }>("posts/joined", {
+    params: { range: getRange(page, 10) },
+  });
+
+  return response.data.data;
+}

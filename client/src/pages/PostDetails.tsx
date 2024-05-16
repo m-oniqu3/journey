@@ -1,13 +1,15 @@
 import { ArrowLeftIcon, HorizonalEllipsis } from "@/components/icons";
 import PostButtons from "@/components/posts/PostButtons";
 import PostSlider from "@/components/posts/PostSlider";
+import SpaceSidebar from "@/components/space/SpaceSidebar";
 import { getPostById } from "@/services/post-services";
 import { handleError } from "@/utils/handleError";
 import { timeSince } from "@/utils/timeSince";
-import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 function PostDetails() {
+  const navigate = useNavigate();
   const { postID } = useParams() as {
     spaceName: string;
     postID: string;
@@ -28,6 +30,11 @@ function PostDetails() {
       const message = handleError(error);
       throw new Error(message);
     }
+  }
+
+  // navigate to previous page
+  function handlePreviousPage() {
+    navigate(-1);
   }
 
   if (!postID) {
@@ -51,9 +58,12 @@ function PostDetails() {
 
   return (
     <section className="page-layout wrapper py-6">
-      <article className="main-content space-y-4">
+      <article className="main-content space-y-4 md:wrapper">
         <header className="flex items-center gap-2">
-          <span className="hidden">
+          <span
+            onClick={handlePreviousPage}
+            className="hidden cursor-pointer bg-gray-200 h-9 w-9 place-items-center rounded-full md:grid"
+          >
             <ArrowLeftIcon />
           </span>
 
@@ -66,17 +76,22 @@ function PostDetails() {
           />
 
           <div className="flex flex-col h-9">
-            <p className="font-semibold text-sm flex gap-1 items-center">
-              s/{data.space.name}
+            <p className="flex gap-1 items-center h-1/2">
+              <Link
+                to={`/s/${data.space.name}`}
+                className="cursor-pointer font-semibold text-sm"
+              >
+                s/{data.space.name}
+              </Link>
               <span className="text-gray-400"> &#xb7;</span>
               <span className="font-normal text-gray-600 text-sm">
                 {timeSince(new Date(data.created_at))}
               </span>
             </p>
 
-            <p className="text-sm">
+            <p className="text-sm h-1/2">
               <span className="text-xs">@</span>
-              {data.creator.username}
+              {data.creator?.username}
             </p>
           </div>
 
@@ -105,7 +120,9 @@ function PostDetails() {
         <PostButtons postID={data.id} />
       </article>
 
-      <div className="sidebar">sidebar</div>
+      <div className="sidebar">
+        <SpaceSidebar name={data.space.name} showHeader={true} />
+      </div>
     </section>
   );
 }
