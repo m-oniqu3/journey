@@ -1,7 +1,12 @@
-import { CommentIcon, HeartIcon } from "@/components/icons";
+import LoadingBar from "@/components/LoadingBar";
+import PostButtons from "@/components/posts/PostButtons";
 import PostHeader from "@/components/posts/PostHeader";
 import PostSlider from "@/components/posts/PostSlider";
+import { getPostById } from "@/services/post-services";
 import { PostSummary } from "@/types/post";
+import { useState } from "react";
+import { useQueryClient } from "react-query";
+import { Link, useNavigate } from "react-router-dom";
 
 type Props = {
   post: PostSummary;
@@ -10,6 +15,9 @@ type Props = {
 
 function Post(props: Props) {
   const { post, headerType = "user" } = props;
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [isLoading, setIsLoading] = useState(false);
 
   const clamp = post.images.length ? "line-clamp-2" : "line-clamp-4";
 
@@ -34,47 +42,76 @@ function Post(props: Props) {
     />
   );
 
-  const header = headerType === "space" ? spaceHeader : userHeader;
+  const titleSlug = post.title
+    .toLowerCase()
+    .replace(/[^a-zA-Z0-9]+/g, "_")
+    .split("_")
+    .slice(0, 7)
+    .join("_");
+
+  const route = `/s/${post.space.name}/${post.id}/${titleSlug}`;
+
+  const postHeader = headerType === "space" ? spaceHeader : userHeader;
+
+  async function handleNavigateToPost() {
+    await prefetchPost();
+    navigate(route);
+  }
+
+  async function prefetchPost() {
+    setIsLoading(true);
+
+    // The results of this query will be cached like a normal query
+    await queryClient.prefetchQuery({
+      queryKey: ["post", post.id],
+      queryFn: fetchPost,
+    });
+
+    setIsLoading(false);
+  }
+
+  async function fetchPost() {
+    const response = await getPostById(post.id);
+    return response;
+  }
 
   return (
-    <li
-      key={post.id}
-      className="border-b border-gray-100 py-4 cursor-pointer hover:bg-gray-50 md:wrapper"
-    >
-      <>{header}</>
+    <>
+      <li
+        key={post.id}
+        className="border-b border-gray-100 py-4  hover:bg-gray-50 md:wrapper"
+      >
+        <>{postHeader}</>
 
-      {/* HEADER & IMAGES */}
-      <div className="wrapper flex flex-col gap-1 mt-2">
-        <h2 className="font-semibold text-dark text-[1.05rem] leading-snug line-clamp-3 sm:line-clamp-none sm:text-lg md:text-[1.4rem]">
-          {post.title}
-        </h2>
-
-        {post.tag && (
-          <p
-            style={{ backgroundColor: `${post.tag.colour}` }}
-            className="font-medium w-fit text-white px-3 my-1  h-6 rounded-full flex items-center justify-center text-sm"
+        <div className="wrapper flex flex-col gap-1 mt-2">
+          <Link
+            to=""
+            onMouseDown={handleNavigateToPost}
+            className="cursor-pointer font-semibold text-dark text-[1.05rem] leading-snug 
+            line-clamp-3 sm:line-clamp-none sm:text-lg md:text-[1.4rem]"
           >
-            {post.tag.name}
-          </p>
-        )}
+            {post.title}
+          </Link>
 
-        <p className={`${clamp} leading-relaxed`}>{post.body}</p>
+          {post.tag && (
+            <p
+              style={{ backgroundColor: `${post.tag.colour}` }}
+              className="font-medium w-fit text-white px-3 my-1  h-6 rounded-full flex items-center justify-center text-sm"
+            >
+              {post.tag.name}
+            </p>
+          )}
 
-        {!!post.images.length && <PostSlider images={post.images} />}
-      </div>
+          <p className={`${clamp} leading-relaxed`}>{post.body}</p>
 
-      <div className="wrapper flex items-center gap-4 mt-4">
-        <span className="flex items-center gap-2 text-dark font-semibold bg-grayscale-100  py-2 px-4 rounded-full">
-          <HeartIcon />
-          {post.id * 1080}
-        </span>
+          {!!post.images.length && <PostSlider images={post.images} />}
+        </div>
 
-        <span className="flex items-center gap-2 text-dark font-semibold bg-grayscale-100  py-2 px-4 rounded-full">
-          <CommentIcon />
-          {Math.floor(post.id * 1440)}
-        </span>
-      </div>
-    </li>
+        <PostButtons postID={post.id} />
+      </li>
+
+      {isLoading && <LoadingBar />}
+    </>
   );
 }
 

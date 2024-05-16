@@ -4,6 +4,7 @@ import EditProfile from "@/pages/EditProfile";
 import Explore from "@/pages/Explore";
 import LogIn from "@/pages/LogIn";
 import LogOut from "@/pages/LogOut";
+import PostDetails from "@/pages/PostDetails";
 
 import Profile from "@/pages/Profile";
 import Register from "@/pages/Register";
@@ -21,6 +22,7 @@ export enum RoutesEnum {
   REGISTER = "/register",
   LOGIN = "/login",
   EXPLORE = "/explore",
+  POSTDETAILS = "/s/:spaceName/:postID/:postSlug",
 }
 
 // const router = createBrowserRouter(
@@ -54,6 +56,7 @@ const router = createBrowserRouter([
       { path: "/profile/edit", element: <EditProfile /> },
       { path: "/s/:spaceName", element: <Space /> },
       { path: "/s/:spaceName/submit", element: <Submit /> },
+      { path: RoutesEnum.POSTDETAILS, element: <PostDetails /> },
     ],
   },
   {

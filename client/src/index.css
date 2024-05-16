@@ -50,6 +50,10 @@ body {
     .modal-child {
         @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-pink-500
     }
+
+    .avatar {
+        @apply h-8 w-8 rounded-full
+    }
 }
 
 @layer utilities {
@@ -88,7 +92,7 @@ body {
     /* LoadingBar.css */
 
     .loading-bar {
-        height: 5px;
+        height: 3px;
         width: 100%;
         background-color: rgb(4 120 87);
         position: fixed;

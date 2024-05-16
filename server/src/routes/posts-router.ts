@@ -1,4 +1,5 @@
 import { createPost } from "@/controllers/posts/create-post";
+import { getPostById } from "@/controllers/posts/get-post";
 import { getPosts } from "@/controllers/posts/get-posts";
 import { getSpacePosts } from "@/controllers/posts/get-space-posts";
 import { requireAuth } from "@/middleware/auth";
@@ -23,5 +24,10 @@ router.post(
   createPost
 );
 
-router.get("/:name", requireAuth, checkSpaceExists, getSpacePosts);
+// get single post by id, use /post/:id to avoid conflict with /:name
+router.get("/post/:id", requireAuth, getPostById);
+
+// get posts by space name
+router.get("/space/:name", requireAuth, checkSpaceExists, getSpacePosts);
+
 export default router;

@@ -22,7 +22,6 @@ function Explore() {
   async function fetchExplorePosts(page: number) {
     try {
       const response = await getPosts(page);
-      console.log(response);
       return response;
     } catch (error) {
       const message = handleError(error);
@@ -47,27 +46,24 @@ function Explore() {
 
   const pages = data.pages.flat();
 
-  const renderedPosts = pages.map((post) => {
-    // console.log(post);
-    return <Post post={post} key={post.id} headerType="space" />;
+  const renderedPosts = pages.map((post, i) => {
+    return <Post post={post} key={i} headerType="space" />;
   });
 
   return (
-    <>
-      <div className="page-layout">
-        <ul className="main-content flex flex-col border-t border-gray-100 py-4 md:wrapper ">
-          <InfiniteScroll
-            isLoadingIntial={isLoading}
-            isLoadingMore={isFetchingNextPage}
-            loadMore={fetchNextPage}
-          >
-            <> {renderedPosts}</>
-          </InfiniteScroll>
-        </ul>
+    <div className="page-layout">
+      <ul className="main-content flex flex-col border-t border-gray-100 py-4 md:wrapper ">
+        <InfiniteScroll
+          isLoadingIntial={isLoading}
+          isLoadingMore={isFetchingNextPage}
+          loadMore={fetchNextPage}
+        >
+          <> {renderedPosts}</>
+        </InfiniteScroll>
+      </ul>
 
-        <div className="sidebar">recommended spaces</div>
-      </div>
-    </>
+      <div className="sidebar">recommended spaces</div>
+    </div>
   );
 }
 

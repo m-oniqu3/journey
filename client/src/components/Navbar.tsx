@@ -58,7 +58,11 @@ function Navbar(props: Props) {
               </p>
 
               <Link to={RoutesEnum.PROFILE}>
-                <div className="w-10 h-10 rounded-full bg-sky-300" />
+                <img
+                  src="https://picsum.photos/seed/1/200"
+                  alt="avatar"
+                  className="w-10 h-10 rounded-full"
+                />
               </Link>
             </div>
           )}
