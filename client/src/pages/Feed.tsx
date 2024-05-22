@@ -30,7 +30,7 @@ function Feed() {
 
       return nextPage;
     },
-    retry: 1,
+    retry: false,
   });
 
   async function fetchPostsForJoinedSpaces(page: number) {

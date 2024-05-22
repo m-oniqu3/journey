@@ -1,4 +1,4 @@
-import spacesReducer, {
+  import spacesReducer, {
   SpaceActions,
   SpacesState,
   initalSpacesState,

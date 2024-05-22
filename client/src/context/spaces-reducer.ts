@@ -48,8 +48,6 @@ function spacesReducer(state: SpacesState, action: SpaceActions) {
     case SpacesEnum.LEAVE_SPACE: {
       const newSpaces = { ...state.userspaces };
 
-      console.log("space to delete", action.payload);
-
       delete newSpaces[action.payload];
       return { ...state, userspaces: newSpaces };
     }
