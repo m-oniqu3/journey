@@ -24,7 +24,7 @@ export async function getSpacePosts(req: Request, res: Response) {
       .from("posts")
       .select(
         `
-        id, title, body, created_at, creator, 
+        id, title, body, created_at, creator, likes,
         images(id, url), 
         tags(name, id, colour)
         `
@@ -64,6 +64,7 @@ export async function getSpacePosts(req: Request, res: Response) {
         title: post.title,
         body: post.body,
         created_at: post.created_at,
+        likes: post.likes,
         images: post.images,
         tag: post.tags,
         creator: profileMap[post.creator as string],

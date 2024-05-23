@@ -70,6 +70,7 @@ export type Database = {
           creator: string | null
           id: number
           isEdited: boolean | null
+          likes: number | null
           space_id: number
           tag_id: number | null
           title: string
@@ -80,6 +81,7 @@ export type Database = {
           creator?: string | null
           id?: number
           isEdited?: boolean | null
+          likes?: number | null
           space_id: number
           tag_id?: number | null
           title?: string
@@ -90,6 +92,7 @@ export type Database = {
           creator?: string | null
           id?: number
           isEdited?: boolean | null
+          likes?: number | null
           space_id?: number
           tag_id?: number | null
           title?: string

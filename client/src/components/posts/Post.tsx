@@ -107,7 +107,7 @@ function Post(props: Props) {
           {!!post.images.length && <PostSlider images={post.images} />}
         </div>
 
-        <PostButtons postID={post.id} />
+        <PostButtons postID={post.id} postLikes={post.likes} />
       </div>
 
       {isLoading && <LoadingBar />}

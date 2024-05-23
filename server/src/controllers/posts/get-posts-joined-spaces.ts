@@ -25,14 +25,15 @@ export async function getPostsForJoinedSpaces(req: Request, res: Response) {
       .from("posts")
       .select(
         `
-        id, title, body, created_at, creator, space_id,
+        id, title, body, created_at, creator, space_id, likes,
         images(id, url),
         tags(name, id, colour)
        `
       )
       .in("space_id", spaceIDs)
       .order("created_at", { ascending: false })
-      .range(range[0], range[1]);
+      .range(range[0], range[1])
+      .gt("likes", 3500);
 
     if (error) throw error;
 
@@ -54,6 +55,7 @@ export async function getPostsForJoinedSpaces(req: Request, res: Response) {
         title: post.title,
         body: post.body,
         created_at: post.created_at,
+        likes: post.likes,
         images: post.images,
         tag: post.tags,
         space: spaceMap[post.space_id],

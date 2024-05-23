@@ -18,7 +18,7 @@ export async function getPostById(req: Request, res: Response) {
       .from("posts")
       .select(
         `
-        id, title, body, created_at, creator, 
+        id, title, body, created_at, creator, likes,
         images(id, url), 
         tags(name, id, colour),
         spaces(id, name, avatar) `
@@ -45,6 +45,7 @@ export async function getPostById(req: Request, res: Response) {
       title: data.title,
       body: data.body,
       created_at: data.created_at,
+      likes: data.likes,
       images: data.images,
       tag: data.tags,
       creator: profileData as ProfileSummaryForPost,

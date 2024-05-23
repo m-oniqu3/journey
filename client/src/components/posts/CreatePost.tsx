@@ -124,7 +124,9 @@ function CreatePost(props: Props) {
       setIsSubmittingPost(false);
 
       // invalidate the query to refetch the posts
-      queryClient.invalidateQueries(["space-posts", spaceName]);
+      queryClient.invalidateQueries({
+        queryKey: ["space-posts", spaceName],
+      });
 
       // reset the form
       titleRef.current?.style.setProperty("height", "");

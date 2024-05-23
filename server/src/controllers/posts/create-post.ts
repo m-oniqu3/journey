@@ -23,6 +23,9 @@ export async function createPost(req: Request, res: Response) {
         .json({ error: "Post title is required" });
     }
 
+    // random likes count
+    const likes = Math.floor(Math.random() * 20000);
+
     // create a new post
     const post = await supabase
       .from("posts")
@@ -33,6 +36,7 @@ export async function createPost(req: Request, res: Response) {
           tag_id: +tag || null,
           space_id: space.id as number,
           creator: user.id,
+          likes,
         },
       ])
       .select("id")

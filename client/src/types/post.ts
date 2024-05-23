@@ -16,6 +16,7 @@ export type PostSummary = {
   title: string;
   body: string;
   created_at: string;
+  likes: number;
   images: { id: number; url: string }[];
   tag: Tag | null;
   creator?: ProfileSummaryForPost;
@@ -27,6 +28,7 @@ export type FeedPost = {
   title: string;
   body: string;
   created_at: string;
+  likes: number;
   images: { id: number; url: string }[];
   tag: { name: string; id: number; colour: string };
   space: { id: number; name: string; avatar: string | null };

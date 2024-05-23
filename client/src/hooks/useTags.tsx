@@ -1,12 +1,8 @@
 import { getTagsForSpace } from "@/services/space-services";
-import { SpaceTag } from "@/types/space";
 import { handleError } from "@/utils/handleError";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 
 function useTags(spacename: string) {
-  const [tags, setTags] = useState<SpaceTag[]>([]);
-
   const { isLoading, data } = useQuery({
     queryKey: ["tags", spacename],
     queryFn: () => fetchTags(spacename),
@@ -14,6 +10,8 @@ function useTags(spacename: string) {
 
   async function fetchTags(name: string) {
     try {
+      if (!name) return [];
+
       const response = await getTagsForSpace(name);
       console.log(response);
       return response;
@@ -23,11 +21,7 @@ function useTags(spacename: string) {
     }
   }
 
-  if (!data) setTags([]);
-
-  if (data) {
-    setTags(data);
-  }
+  const tags = data ?? [];
 
   return { tags, isLoading };
 }
