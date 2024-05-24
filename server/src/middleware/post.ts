@@ -8,16 +8,11 @@ export async function checkIfPostExists(
   next: NextFunction
 ) {
   try {
-    const { postID } = req.body as {
-      content: string;
-      postID: number;
-      userID: string;
-    };
+    console.log("Checking if post exists", req.body);
+    const { postID } = req.body as { postID: number };
 
     if (!postID) {
-      return res
-        .status(400)
-        .json({ message: "Post ID is required to create comment" });
+      return res.status(400).json({ message: "Post ID is required" });
     }
 
     const { data, error } = await supabase
@@ -27,8 +22,6 @@ export async function checkIfPostExists(
       .single();
 
     if (error) throw error;
-
-    console.log("data from checkIfPostExists:", data);
 
     if (!data) {
       return res

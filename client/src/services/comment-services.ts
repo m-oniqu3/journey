@@ -1,8 +1,12 @@
 import { api } from "@/services/api";
-import { NewComment } from "@/types/comment";
+import { Comment, NewComment } from "@/types/comment";
 
 export async function createComment(comment: NewComment) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const response = await api.post<{ data: any }>("comments", comment);
+  const response = await api.post<{ data: string }>("comments", comment);
+  return response.data.data;
+}
+
+export async function getCommentsForPost(postID: number) {
+  const response = await api.get<{ data: Comment[] }>(`comments/${postID}`);
   return response.data.data;
 }
