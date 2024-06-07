@@ -105,9 +105,9 @@ function Post(props: Props) {
           <p className={`${clamp} leading-relaxed`}>{post.body}</p>
 
           {!!post.images.length && <PostSlider images={post.images} />}
-        </div>
 
-        <PostButtons postID={post.id} postLikes={post.likes} />
+          <PostButtons postID={post.id} postLikes={post.likes} />
+        </div>
       </div>
 
       {isLoading && <LoadingBar />}

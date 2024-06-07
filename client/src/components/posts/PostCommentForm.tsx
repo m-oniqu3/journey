@@ -4,6 +4,7 @@ import { useAuthContext } from "@/context/useAuthContext";
 import { createComment } from "@/services/comment-services";
 import { NewComment } from "@/types/comment";
 import { handleError } from "@/utils/handleError";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 type Props = {
@@ -15,6 +16,7 @@ function PostCommentForm(props: Props) {
   const [isCommenting, setIsCommenting] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { state } = useAuthContext();
+  const queryClient = useQueryClient();
 
   function handleTextArea() {
     setIsCommenting((state) => !state);
@@ -38,6 +40,12 @@ function PostCommentForm(props: Props) {
       setIsLoading(true);
       const response = await createComment(data);
       console.log(response);
+
+      // invalidate the query to refetch the comments
+
+      queryClient.invalidateQueries({
+        queryKey: ["comments", props.postID],
+      });
     } catch (error) {
       const message = handleError(error);
       console.error(message);
@@ -56,7 +64,7 @@ function PostCommentForm(props: Props) {
             type="button"
             disabled={isCommenting}
             onClick={handleTextArea}
-            className="bg-white h-12 border-[1px] border-gray-400 text-gray-400 text-left rounded-full w-full cursor-text !font-normal"
+            className="bg-white h-12 border-[1px] border-gray-300 text-gray-400 text-left rounded-full w-full cursor-text !font-normal"
           >
             Add Comment
           </Button>

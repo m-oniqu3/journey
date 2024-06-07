@@ -84,7 +84,7 @@ export async function getComments(req: Request, res: Response) {
       return {
         ...comment,
         repliesCount: countsMap[comment.id] || 0,
-        profile: profilesMap[comment.user_id],
+        creator: profilesMap[comment.user_id],
       };
     });
 

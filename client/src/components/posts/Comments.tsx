@@ -35,10 +35,10 @@ function Comments(props: Props) {
   if (!data) return <div>No comments</div>;
 
   return (
-    <>
+    <section className="space-y-4 md:wrapper">
       <PostCommentForm postID={props.postID} />
       <CommentList postID={props.postID} comments={data} />
-    </>
+    </section>
   );
 }
 

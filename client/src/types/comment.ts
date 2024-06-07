@@ -13,4 +13,10 @@ export type Comment = {
   created_at: string;
   is_edited: boolean;
   repliesCount: number;
+  creator: {
+    username: string;
+    avatar: string;
+    display_name: string;
+    user_id: string;
+  };
 };
