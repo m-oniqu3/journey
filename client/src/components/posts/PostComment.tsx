@@ -5,11 +5,12 @@ import {
   MinusCircleIcon,
 } from "@/components/icons";
 import CommentList from "@/components/posts/CommentList";
+import CommentTextArea from "@/components/posts/CommentTextArea";
 import { getRepliesForComment } from "@/services/comment-services";
 import { Comment } from "@/types/comment";
 import { handleError } from "@/utils/handleError";
 import { timeSince } from "@/utils/timeSince";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 type Props = {
@@ -23,20 +24,37 @@ function PostComment(props: Props) {
   } = props;
 
   const [isShowingReplies, setIsShowingReplies] = useState(false);
+  const [isReplyingToComment, setIsReplyingToComment] = useState(false);
+
+  const [reply, setReply] = useState("");
+
   const {
     data: replies,
     isLoading,
     isError,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
     refetch,
-  } = useQuery({
+  } = useInfiniteQuery({
     queryKey: ["replies", comment.id],
-    queryFn: () => fetchReplies(comment.id, comment.post_id),
+    queryFn: ({ pageParam }) =>
+      fetchReplies(comment.id, comment.post_id, pageParam),
     enabled: false,
+    initialPageParam: 0,
+
+    getNextPageParam: (lastPage, allPages) => {
+      const nextPage: number | undefined = lastPage?.length
+        ? allPages.length
+        : undefined;
+
+      return nextPage;
+    },
   });
 
-  async function fetchReplies(commentID: number, postID: number) {
+  async function fetchReplies(commentID: number, postID: number, page: number) {
     try {
-      const response = await getRepliesForComment(commentID, postID);
+      const response = await getRepliesForComment(commentID, postID, page);
       return response;
     } catch (error) {
       const message = handleError(error);
@@ -56,6 +74,8 @@ function PostComment(props: Props) {
   function handleHideReplies() {
     setIsShowingReplies(false);
   }
+
+  const allReplies = replies?.pages?.flat() || [];
 
   return (
     <>
@@ -118,13 +138,27 @@ function PostComment(props: Props) {
               <HeartIcon />0
             </p>
 
-            <p className="flex items-center gap-1 font-medium text-sm text-dark">
+            <p
+              className="flex items-center gap-1 font-medium text-sm text-dark cursor-pointer"
+              onClick={() => setIsReplyingToComment(true)}
+            >
               <CommentIcon />
               Reply
             </p>
           </div>
         </div>
       </li>
+
+      {/* reply textarea */}
+      {isReplyingToComment && (
+        <form className="ml-10">
+          <CommentTextArea
+            comment={reply}
+            setComment={setReply}
+            cancelComment={() => setIsReplyingToComment(false)}
+          />
+        </form>
+      )}
 
       {/* replies */}
 
@@ -136,14 +170,26 @@ function PostComment(props: Props) {
 
       {replies && isShowingReplies && (
         <div className="ml-10">
-          <CommentList comments={replies} postID={comment.post_id} />
+          <CommentList comments={allReplies} postID={comment.post_id} />
 
-          <p
-            className="text-sm font-medium text-dark cursor-pointer py-4 underline-offset-2 hover:underline w-fit"
-            onClick={handleHideReplies}
-          >
-            Hide replies
-          </p>
+          <div className="flex gap-2 items-center">
+            {hasNextPage && (
+              <button
+                className="text-sm font-medium text-dark cursor-pointer py-4 w-fit"
+                onClick={() => fetchNextPage()}
+                disabled={isFetchingNextPage}
+              >
+                {isFetchingNextPage ? "Loading..." : "Load more"}
+              </button>
+            )}
+
+            <p
+              className="text-sm font-medium text-dark cursor-pointer py-4 w-fit"
+              onClick={handleHideReplies}
+            >
+              Hide replies
+            </p>
+          </div>
         </div>
       )}
     </>

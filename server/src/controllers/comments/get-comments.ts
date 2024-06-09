@@ -13,7 +13,8 @@ export async function getComments(req: Request, res: Response) {
       .select("*")
       .eq("post_id", +postID)
       .is("reply_id", null)
-      .range(range[0], range[1]);
+      .range(range[0], range[1])
+      .order("created_at", { ascending: false });
 
     if (error) throw error;
 
