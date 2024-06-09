@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import LoadingBar from "@/components/LoadingBar";
+import CommentTextArea from "@/components/posts/CommentTextArea";
 import { useAuthContext } from "@/context/useAuthContext";
 import { createComment } from "@/services/comment-services";
 import { NewComment } from "@/types/comment";
@@ -71,28 +72,11 @@ function PostCommentForm(props: Props) {
         )}
 
         {isCommenting && (
-          <div className="border border-gray-400 rounded-2xl p-2">
-            <textarea
-              className="textarea h-14 no-scrollbar border-none"
-              placeholder="Add a comment"
-              autoFocus
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
-
-            <div className="flex justify-end gap-2">
-              <Button
-                type="button"
-                className="bg-grayscale-100 text-dark text-sm h-9 "
-                onClick={() => setIsCommenting(false)}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" className="bg-dark text-white text-sm h-9">
-                Comment
-              </Button>
-            </div>
-          </div>
+          <CommentTextArea
+            comment={comment}
+            setComment={setComment}
+            cancelComment={() => setIsCommenting(false)}
+          />
         )}
       </form>
 

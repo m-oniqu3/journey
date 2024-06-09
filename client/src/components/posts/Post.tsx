@@ -17,7 +17,7 @@ function Post(props: Props) {
   const { post, headerType = "user" } = props;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPrefetching, setIsPrefetching] = useState(false);
 
   const clamp = post.images.length ? "line-clamp-2" : "line-clamp-4";
 
@@ -59,7 +59,7 @@ function Post(props: Props) {
   }
 
   async function prefetchPost() {
-    setIsLoading(true);
+    setIsPrefetching(true);
 
     // The results of this query will be cached like a normal query
     await queryClient.prefetchQuery({
@@ -67,9 +67,10 @@ function Post(props: Props) {
       queryFn: fetchPost,
     });
 
-    setIsLoading(false);
+    setIsPrefetching(false);
   }
 
+  // todo - add try catch
   async function fetchPost() {
     const response = await getPostById(post.id);
     return response;
@@ -110,7 +111,7 @@ function Post(props: Props) {
         </div>
       </div>
 
-      {isLoading && <LoadingBar />}
+      {isPrefetching && <LoadingBar />}
     </>
   );
 }
