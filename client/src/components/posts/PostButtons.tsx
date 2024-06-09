@@ -28,7 +28,7 @@ function PostButtons(props: Props) {
   }
 
   const commentContent = (() => {
-    if (isLoading) return <VscLoading className="animate-spin w-6 h-6" />;
+    if (isLoading) return <VscLoading className="animate-spin w-4 h-4" />;
     return data?.length || 0;
   })();
 

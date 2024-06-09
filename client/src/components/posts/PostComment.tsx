@@ -1,9 +1,16 @@
-import { AddCircleIcon, CommentIcon, HeartIcon } from "@/components/icons";
+import {
+  AddCircleIcon,
+  CommentIcon,
+  HeartIcon,
+  MinusCircleIcon,
+} from "@/components/icons";
+import CommentList from "@/components/posts/CommentList";
 import { getRepliesForComment } from "@/services/comment-services";
 import { Comment } from "@/types/comment";
 import { handleError } from "@/utils/handleError";
 import { timeSince } from "@/utils/timeSince";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 
 type Props = {
   comment: Comment;
@@ -15,7 +22,13 @@ function PostComment(props: Props) {
     comment: { creator },
   } = props;
 
-  const { isLoading, isError, refetch } = useQuery({
+  const [isShowingReplies, setIsShowingReplies] = useState(false);
+  const {
+    data: replies,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
     queryKey: ["replies", comment.id],
     queryFn: () => fetchReplies(comment.id, comment.post_id),
     enabled: false,
@@ -24,7 +37,6 @@ function PostComment(props: Props) {
   async function fetchReplies(commentID: number, postID: number) {
     try {
       const response = await getRepliesForComment(commentID, postID);
-      console.log(response);
       return response;
     } catch (error) {
       const message = handleError(error);
@@ -35,6 +47,15 @@ function PostComment(props: Props) {
 
   // replace new lines with line breaks
   const updatedComment = comment.comment.replace(/\n/g, "<br />");
+
+  function handleGetReplies() {
+    refetch();
+    setIsShowingReplies(true);
+  }
+
+  function handleHideReplies() {
+    setIsShowingReplies(false);
+  }
 
   return (
     <>
@@ -54,9 +75,18 @@ function PostComment(props: Props) {
           {!!comment.repliesCount && (
             <>
               <div className=" h-full border-l-[1px] border-gray-200"></div>
-              <div className="" onClick={() => refetch()}>
-                <AddCircleIcon className="h-5 w-5 text-dark" />
-              </div>
+
+              {!isShowingReplies && (
+                <div className="cursor-pointer" onClick={handleGetReplies}>
+                  <AddCircleIcon className="h-5 w-5 text-dark" />
+                </div>
+              )}
+
+              {isShowingReplies && (
+                <div className="cursor-pointer" onClick={handleHideReplies}>
+                  <MinusCircleIcon className="h-5 w-5 text-dark" />
+                </div>
+              )}
             </>
           )}
         </div>
@@ -98,9 +128,24 @@ function PostComment(props: Props) {
 
       {/* replies */}
 
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <p className="ml-10">Loading...</p>}
 
-      {isError && <p> Could not get replies for this comment.</p>}
+      {isError && (
+        <p className="ml-10"> Could not get replies for this comment.</p>
+      )}
+
+      {replies && isShowingReplies && (
+        <div className="ml-10">
+          <CommentList comments={replies} postID={comment.post_id} />
+
+          <p
+            className="text-sm font-medium text-dark cursor-pointer py-4 underline-offset-2 hover:underline w-fit"
+            onClick={handleHideReplies}
+          >
+            Hide replies
+          </p>
+        </div>
+      )}
     </>
   );
 }

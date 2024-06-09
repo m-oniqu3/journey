@@ -13,12 +13,12 @@ export async function getCommentsForPost(postID: number) {
 }
 
 export async function getRepliesForComment(commentID: number, postID: number) {
-  const response = await api.get<{ data: string }>(
+  const response = await api.get<{ data: Comment[] }>(
     `comments/replies/${commentID}`,
     {
       params: {
         postID,
-        range: getRange(0, 2),
+        range: getRange(0, 3),
       },
     }
   );
