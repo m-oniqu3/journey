@@ -33,3 +33,8 @@ export async function getRepliesForComment(
   );
   return response.data.data;
 }
+
+export async function getCommentsCount(postID: number) {
+  const response = await api.get<{ data: number }>(`comments/count/${postID}`);
+  return response.data.data;
+}
