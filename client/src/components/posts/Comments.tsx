@@ -1,8 +1,9 @@
 import CommentList from "@/components/posts/CommentList";
 import PostCommentForm from "@/components/posts/PostCommentForm";
+import InfiniteScroll from "@/components/space/InfiniteScroll";
 import { getCommentsForPost } from "@/services/comment-services";
 import { handleError } from "@/utils/handleError";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 type Props = {
   postID: number;
@@ -10,17 +11,35 @@ type Props = {
 };
 
 function Comments(props: Props) {
-  const { data, isLoading, isError, error } = useQuery({
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery({
     queryKey: ["comments", props.postID],
-    queryFn: () => fetchComments(props.postID),
+    queryFn: ({ pageParam }) => fetchComments(props.postID, pageParam),
     retry: false,
     // only fetch comments when the post has been fetched
     enabled: !props.isFetchingPost,
+
+    initialPageParam: 0,
+
+    getNextPageParam: (lastPage, allPages) => {
+      const nextPage: number | undefined = lastPage?.length
+        ? allPages.length
+        : undefined;
+
+      return nextPage;
+    },
   });
 
-  async function fetchComments(postID: number) {
+  async function fetchComments(postID: number, page: number) {
     try {
-      const response = await getCommentsForPost(postID);
+      const response = await getCommentsForPost(postID, page);
       return response;
     } catch (error) {
       const message = handleError(error);
@@ -32,12 +51,24 @@ function Comments(props: Props) {
 
   if (isError) return <div>Error: {error.message}</div>;
 
-  if (!data) return <div>No comments</div>;
+  if (!data?.pages) return <div>No comments</div>;
+
+  const pages = data.pages.flat();
+
+  const renderedComments = (
+    <CommentList postID={props.postID} comments={pages} />
+  );
 
   return (
     <section className="space-y-4 md:wrapper">
       <PostCommentForm postID={props.postID} />
-      <CommentList postID={props.postID} comments={data} />
+      <InfiniteScroll
+        isLoadingIntial={isLoading}
+        isLoadingMore={isFetchingNextPage}
+        loadMore={() => hasNextPage && fetchNextPage()}
+      >
+        <>{renderedComments}</>
+      </InfiniteScroll>
     </section>
   );
 }

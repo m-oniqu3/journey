@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 
 export async function getComments(req: Request, res: Response) {
   const { postID } = req.params as { postID: string };
-  const range = String([0, 10]).split(",").map(Number);
+  const range = String(req.query.range).split(",").map(Number);
 
   try {
     //   get comments that aren't replies to other comments

@@ -7,8 +7,13 @@ export async function createComment(comment: NewComment) {
   return response.data.data;
 }
 
-export async function getCommentsForPost(postID: number) {
-  const response = await api.get<{ data: Comment[] }>(`comments/${postID}`);
+export async function getCommentsForPost(postID: number, page: number) {
+  const response = await api.get<{ data: Comment[] }>(`comments/${postID}`, {
+    params: {
+      range: getRange(page, 10),
+    },
+  });
+
   return response.data.data;
 }
 
