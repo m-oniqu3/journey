@@ -1,4 +1,6 @@
+import LoadingSpinner from "@/components/LoadingSpinner";
 import CommentList from "@/components/posts/CommentList";
+import NoComments from "@/components/posts/NoComments";
 import PostCommentForm from "@/components/posts/PostCommentForm";
 import InfiniteScroll from "@/components/space/InfiniteScroll";
 import { getCommentsForPost } from "@/services/comment-services";
@@ -23,9 +25,6 @@ function Comments(props: Props) {
     queryKey: ["comments", props.postID],
     queryFn: ({ pageParam }) => fetchComments(props.postID, pageParam),
     retry: false,
-    // only fetch comments when the post has been fetched
-    enabled: !props.isFetchingPost,
-
     initialPageParam: 0,
 
     getNextPageParam: (lastPage, allPages) => {
@@ -35,6 +34,9 @@ function Comments(props: Props) {
 
       return nextPage;
     },
+
+    // only fetch comments when the post has been fetched
+    enabled: !props.isFetchingPost,
   });
 
   async function fetchComments(postID: number, page: number) {
@@ -47,7 +49,7 @@ function Comments(props: Props) {
     }
   }
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingSpinner />;
 
   if (isError) return <div>Error: {error.message}</div>;
 
@@ -60,15 +62,20 @@ function Comments(props: Props) {
   );
 
   return (
-    <section className="space-y-4 md:wrapper">
+    <section className="space-y-4 pt-2 md:wrapper">
       <PostCommentForm postID={props.postID} />
-      <InfiniteScroll
-        isLoadingIntial={isLoading}
-        isLoadingMore={isFetchingNextPage}
-        loadMore={() => hasNextPage && fetchNextPage()}
-      >
-        <>{renderedComments}</>
-      </InfiniteScroll>
+
+      {!pages.length && <NoComments />}
+
+      {pages && (
+        <InfiniteScroll
+          isLoadingIntial={isLoading}
+          isLoadingMore={isFetchingNextPage}
+          loadMore={() => hasNextPage && fetchNextPage()}
+        >
+          <>{renderedComments}</>
+        </InfiniteScroll>
+      )}
     </section>
   );
 }

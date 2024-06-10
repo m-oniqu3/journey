@@ -1,3 +1,4 @@
+import { SolarSystemIcon } from "@/components/icons";
 import React, { useEffect, useRef } from "react";
 
 type Props = {
@@ -24,7 +25,7 @@ function InfiniteScroll(props: Props) {
 
     const observer = new IntersectionObserver(handleIntersection, {
       root: null,
-      rootMargin: "500px",
+      rootMargin: "100px",
       threshold: 0,
     });
 
@@ -41,7 +42,9 @@ function InfiniteScroll(props: Props) {
 
       <div ref={observerElement} id="obs">
         {props.isLoadingMore && !props.isLoadingIntial && (
-          <p className="text-center h-10">Loading...</p>
+          <div className="flex justify-center items-center h-20">
+            <SolarSystemIcon className="animate-spin h-7 w-7 text-accent" />
+          </div>
         )}
       </div>
     </>

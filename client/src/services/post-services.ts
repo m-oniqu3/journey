@@ -10,7 +10,7 @@ import { getRange } from "@/utils/paginate";
  * @returns { data: string }
  */
 export async function createPost(data: FormData, spacename: string) {
-  const response = await api.post<{ data: string }>(
+  const response = await api.post<{ data: number }>(
     `posts/new/${spacename}`,
     data,
     {
@@ -20,7 +20,7 @@ export async function createPost(data: FormData, spacename: string) {
     }
   );
 
-  return response.data;
+  return response.data.data;
 }
 
 /**

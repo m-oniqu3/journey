@@ -24,7 +24,7 @@ export async function createPost(req: Request, res: Response) {
     }
 
     // random likes count
-    const likes = Math.floor(Math.random() * 20000);
+    const likes = Math.floor(Math.random() * 20);
 
     // create a new post
     const post = await supabase
@@ -60,7 +60,7 @@ export async function createPost(req: Request, res: Response) {
       await insertImagesToPost(uploadedImages, post.data.id, user);
     }
 
-    return res.status(201).json({ message: "Post created" });
+    return res.status(201).json({ data: post.data.id });
   } catch (error) {
     console.error("Error creating space:", error);
 

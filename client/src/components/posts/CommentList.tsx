@@ -9,7 +9,7 @@ type Props = {
 function CommentList(props: Props) {
   const { comments } = props;
 
-  const renderedList = comments.map((comment, index) => {
+  const renderedList = comments.map((comment) => {
     return <PostComment key={comment.id} comment={comment} />;
   });
 

@@ -32,8 +32,8 @@ export async function getPostsForJoinedSpaces(req: Request, res: Response) {
       )
       .in("space_id", spaceIDs)
       .order("created_at", { ascending: false })
-      .range(range[0], range[1])
-      .gt("likes", 3500);
+      .range(range[0], range[1]);
+    //.gt("likes", 3500);
 
     if (error) throw error;
 

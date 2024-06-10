@@ -9,7 +9,7 @@ import { SpaceTag } from "@/types/space";
 import { resizeTextarea } from "@/utils/resizeTextarea";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 type Props = {
   activeTab: string;
@@ -28,6 +28,7 @@ function CreatePost(props: Props) {
 
   const [isSubmittingPost, setIsSubmittingPost] = useState(false);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const [post, setPost] = useState({
     title: "",
@@ -118,6 +119,17 @@ function CreatePost(props: Props) {
 
       const response = await createPost(data, spaceName);
       console.log(response);
+
+      // navigate to the post
+      const titleSlug = post.title
+        .toLowerCase()
+        .replace(/[^a-zA-Z0-9]+/g, "_")
+        .split("_")
+        .slice(0, 7)
+        .join("_");
+
+      const route = `/s/${spaceName}/${response}/${titleSlug}`;
+      navigate(route);
     } catch (error) {
       console.error(error);
     } finally {

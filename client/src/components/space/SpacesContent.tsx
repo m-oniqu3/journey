@@ -1,3 +1,5 @@
+import LoadingSpinner from "@/components/LoadingSpinner";
+import NoPost from "@/components/posts/NoPost";
 import Post from "@/components/posts/Post";
 import InfiniteScroll from "@/components/space/InfiniteScroll";
 import { getSpacePosts } from "@/services/post-services";
@@ -44,7 +46,7 @@ function SpacesContent(props: Props) {
   }
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   if (isError) {
@@ -63,15 +65,19 @@ function SpacesContent(props: Props) {
 
   return (
     <div className="w-full">
-      <div className="flex flex-col border-t border-gray-100 py-4 md:wrapper ">
-        <InfiniteScroll
-          isLoadingIntial={isLoading}
-          isLoadingMore={isFetchingNextPage}
-          loadMore={() => hasNextPage && fetchNextPage()}
-        >
-          <>{renderedPosts}</>
-        </InfiniteScroll>
-      </div>
+      {!pages.length && <NoPost />}
+
+      {!!pages.length && (
+        <div className="flex flex-col border-t border-gray-100 py-4 md:wrapper ">
+          <InfiniteScroll
+            isLoadingIntial={isLoading}
+            isLoadingMore={isFetchingNextPage}
+            loadMore={() => hasNextPage && fetchNextPage()}
+          >
+            <>{renderedPosts}</>
+          </InfiniteScroll>
+        </div>
+      )}
     </div>
   );
 }
