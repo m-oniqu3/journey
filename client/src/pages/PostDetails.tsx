@@ -1,3 +1,4 @@
+import LoadingSpinner from "@/components/LoadingSpinner";
 import Comments from "@/components/posts/Comments";
 import PostContent from "@/components/posts/PostContent";
 import SpaceSidebar from "@/components/space/SpaceSidebar";
@@ -30,7 +31,7 @@ function PostDetails() {
     }
   }
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingSpinner />;
 
   if (isError) return <div>Error: {error.message}</div>;
 

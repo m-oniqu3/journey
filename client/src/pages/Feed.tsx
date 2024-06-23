@@ -1,3 +1,4 @@
+import LoadingSpinner from "@/components/LoadingSpinner";
 import Post from "@/components/posts/Post";
 import InfiniteScroll from "@/components/space/InfiniteScroll";
 import { getPostsForJoinedSpaces } from "@/services/post-services";
@@ -54,7 +55,7 @@ function Feed() {
   }, [data, page]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   if (isError) {

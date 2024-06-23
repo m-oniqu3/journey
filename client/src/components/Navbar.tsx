@@ -51,17 +51,17 @@ function Navbar(props: Props) {
           {/* logged in */}
 
           {isLoggedIn && (
-            <div className="flex items-center gap-8  ">
+            <div className="flex items-center gap-2 md:gap-8  ">
               <p className="flex gap-2 items-center">
                 <AddIcon />
                 <span className="font-semibold">Create</span>
               </p>
 
-              <Link to={RoutesEnum.PROFILE}>
+              <Link to={RoutesEnum.PROFILE} className="w-10 h-10">
                 <img
                   src="https://picsum.photos/seed/1/200"
                   alt="avatar"
-                  className="w-10 h-10 rounded-full"
+                  className=" rounded-full"
                 />
               </Link>
             </div>
