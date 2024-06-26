@@ -57,6 +57,7 @@ const router = createBrowserRouter([
       { path: "/profile/edit", element: <EditProfile /> },
       { path: "/s/:spaceName", element: <Space /> },
       { path: "/s/:spaceName/submit", element: <Submit /> },
+      { path: "/submit", element: <Submit /> },
       { path: RoutesEnum.POSTDETAILS, element: <PostDetails /> },
     ],
   },

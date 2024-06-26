@@ -95,6 +95,11 @@ function CreatePost(props: Props) {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
+    if (!spaceName) {
+      console.log("space name is required to submit a post");
+      return;
+    }
+
     if (!post.title) {
       console.log("post title is required");
       return;
@@ -288,7 +293,11 @@ function CreatePost(props: Props) {
           </div>
         )}
 
-        <Button type="submit" className=" bg-accent text-white self-end">
+        <Button
+          disabled={!spaceName}
+          type="submit"
+          className=" bg-accent text-white self-end"
+        >
           Post
         </Button>
       </form>

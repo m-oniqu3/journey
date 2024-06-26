@@ -1,8 +1,9 @@
 import ButtonLink from "@/components/ButtonLink";
 import MobileMenu from "@/components/MobileMenu";
+import Overlay from "@/components/Overlay";
 import { AddIcon, MenuIcon, SolarSystemIcon } from "@/components/icons";
+import ProfileMenu from "@/components/profile/ProfileMenu";
 import { useAuthContext } from "@/context/useAuthContext";
-import { RoutesEnum } from "@/routes";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Searchbar from "./Searchbar";
@@ -12,12 +13,44 @@ interface Props {
 }
 function Navbar(props: Props) {
   const [openMenu, setOpenMenu] = useState(false);
+  const [openProfileMenu, setOpenProfileMenu] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const { className = "" } = props;
 
   const {
     state: { isLoggedIn },
   } = useAuthContext();
+
+  function handleProfileMenu(e: React.MouseEvent<HTMLButtonElement>) {
+    // prevent the menu from going off the screen
+    const screenWidth = window.innerWidth;
+    const overlayWidth = 340;
+
+    if (screenWidth - e.currentTarget.offsetLeft < overlayWidth) {
+      // position on the left side of the screen
+      const position = {
+        x:
+          e.currentTarget.offsetLeft -
+          overlayWidth +
+          e.currentTarget.offsetWidth,
+        y: e.currentTarget.offsetTop + e.currentTarget.offsetHeight + 15,
+      };
+
+      setPosition(position);
+      setOpenProfileMenu((state) => !state);
+      return;
+    }
+
+    // position on the right side of the screen
+    const position = {
+      x: e.currentTarget.offsetLeft,
+      y: e.currentTarget.offsetTop + e.currentTarget.offsetHeight + 15,
+    };
+
+    setPosition(position);
+    setOpenProfileMenu((state) => !state);
+  }
 
   return (
     <>
@@ -57,19 +90,28 @@ function Navbar(props: Props) {
                 <span className="font-semibold">Create</span>
               </p>
 
-              <Link to={RoutesEnum.PROFILE} className="w-10 h-10">
+              <button onClick={handleProfileMenu} className="w-10 h-10">
                 <img
                   src="https://picsum.photos/seed/1/200"
                   alt="avatar"
                   className=" rounded-full"
                 />
-              </Link>
+              </button>
             </div>
           )}
         </nav>
       </header>
 
       {openMenu && <MobileMenu closeMenu={() => setOpenMenu(false)} />}
+
+      {openProfileMenu && (
+        <Overlay
+          position={position}
+          closeOverlay={() => setOpenProfileMenu(false)}
+        >
+          <ProfileMenu />
+        </Overlay>
+      )}
     </>
   );
 }

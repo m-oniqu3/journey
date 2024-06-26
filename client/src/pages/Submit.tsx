@@ -5,7 +5,6 @@ import CreatePost from "@/components/posts/CreatePost";
 import Tabs from "@/components/posts/Tabs";
 import SpaceSidebar from "@/components/space/SpaceSidebar";
 import { useSpacesContext } from "@/context/useSpacesContext";
-import useDetectClickOutside from "@/hooks/useDetectClickOutside";
 import { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -14,30 +13,38 @@ const tabs = ["Text", "Images & Video", "Link", "Poll"];
 function Submit() {
   const { spaceName } = useParams() as { spaceName: string };
   const { state } = useSpacesContext();
-  const values = Object.values(state.userspaces);
+  const userspaces = Object.values(state.userspaces);
 
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [openDropDown, setOpenDropDown] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [search, setSearch] = useState("");
-  const [filteredSpaces, setFilteredSpaces] = useState(values);
+  const [filteredSpaces, setFilteredSpaces] = useState<
+    {
+      id: number;
+      name: string;
+      avatar: string;
+      isCreator: boolean;
+    }[]
+  >([]);
 
   const buttonRef = useRef<HTMLButtonElement>(null);
   const navigate = useNavigate();
 
-  const dropDownRef = useDetectClickOutside<HTMLDivElement>({
-    closeMenu: () => setOpenDropDown(false),
-  });
-
   function handleDropDown() {
     setOpenDropDown((state) => !state);
 
+    if (userspaces) {
+      setFilteredSpaces(userspaces);
+    }
+
     // get the position of the button
-    if (buttonRef.current)
+    if (buttonRef.current) {
       setPosition({
         x: buttonRef.current.offsetLeft,
         y: buttonRef.current.offsetTop + buttonRef.current.offsetHeight + 10,
       });
+    }
   }
 
   function handleSpaceClick(name: string) {
@@ -49,10 +56,10 @@ function Submit() {
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     setSearch(e.target.value);
 
-    if (!e.target.value) setFilteredSpaces(values);
+    if (!e.target.value) setFilteredSpaces(userspaces);
 
     setFilteredSpaces(
-      values.filter((space) => space.name.includes(e.target.value))
+      userspaces.filter((space) => space.name.includes(e.target.value))
     );
   }
 
@@ -86,7 +93,7 @@ function Submit() {
         <h1 className="text-2xl font-bold">Create post</h1>
 
         {openDropDown ? (
-          <div ref={dropDownRef} className="relative z-100">
+          <div className="relative z-100">
             <form>
               <input
                 value={search}
@@ -94,11 +101,14 @@ function Submit() {
                 type="text"
                 placeholder="Search your spaces"
                 autoFocus
-                className="input h-12 rounded-full px-4 w-full max-w-96 bg-grayscale-100"
+                className="input border-none h-11 rounded-full px-4 w-full max-w-96 bg-grayscale-100"
               />
             </form>
 
-            <Overlay position={position}>
+            <Overlay
+              position={position}
+              closeOverlay={() => setOpenDropDown(false)}
+            >
               <ul
                 onMouseDown={(e) => e.stopPropagation()}
                 className="h-72 overflow-y-scroll p-3"
@@ -117,13 +127,19 @@ function Submit() {
             onClick={handleDropDown}
             className="flex items-center gap-2 bg-grayscale-100 rounded-full p-2"
           >
-            <img
-              src={` https://picsum.photos/seed/200/200`}
-              alt="name"
-              className="h-8 w-8 rounded-full border-2 border-white shadow-sm"
-            />
+            {spaceName && (
+              <>
+                <img
+                  src={` https://picsum.photos/seed/200/200`}
+                  alt="name"
+                  className="h-8 w-8 rounded-full border-2 border-white shadow-sm"
+                />
 
-            <p className="font-medium">s/{spaceName}</p>
+                <p className="font-medium">s/{spaceName}</p>
+              </>
+            )}
+
+            {!spaceName && <p className="font-medium">Select a space</p>}
 
             <span className="pr-2">
               <ChevronDownIcon />
@@ -137,9 +153,11 @@ function Submit() {
         </section>
       </main>
 
-      <div className="sidebar">
-        <SpaceSidebar name={spaceName} />
-      </div>
+      {spaceName && (
+        <div className="sidebar">
+          <SpaceSidebar name={spaceName} />
+        </div>
+      )}
     </div>
   );
 }
