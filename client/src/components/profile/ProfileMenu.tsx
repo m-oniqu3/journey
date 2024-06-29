@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 function ProfileMenu() {
   return (
-    <ul>
-      <li className="px-3 py-3 hover:bg-gray-100 cursor-pointer rounded-t-2xl">
+    <ul className="p-2">
+      <li className="px-3 py-3 hover:bg-gray-100 cursor-pointer rounded-xl">
         <Link to="/profile">
           <figure className="flex gap-2 items-center">
             <img
@@ -21,7 +21,7 @@ function ProfileMenu() {
         </Link>
       </li>
 
-      <li className="px-3 py-3 hover:bg-gray-100 cursor-pointer rounded-b-2xl">
+      <li className="px-3 py-3 hover:bg-gray-100 cursor-pointer rounded-xl">
         <Link to="/logout" className="flex gap-2  ">
           <span className="w-10 h-10 flex items-center justify-center ">
             <LogoutIcon />

@@ -25,7 +25,7 @@ function Navbar(props: Props) {
   function handleProfileMenu(e: React.MouseEvent<HTMLButtonElement>) {
     // prevent the menu from going off the screen
     const screenWidth = window.innerWidth;
-    const overlayWidth = 340;
+    const overlayWidth = 180;
 
     if (screenWidth - e.currentTarget.offsetLeft < overlayWidth) {
       // position on the left side of the screen
@@ -85,10 +85,13 @@ function Navbar(props: Props) {
 
           {isLoggedIn && (
             <div className="flex items-center gap-2 md:gap-8  ">
-              <p className="flex gap-2 items-center">
+              <Link
+                to={"/submit"}
+                className="flex gap-2 items-center px-4 h-11 rounded-full hover:bg-grayscale-100"
+              >
                 <AddIcon />
                 <span className="font-semibold">Create</span>
-              </p>
+              </Link>
 
               <button onClick={handleProfileMenu} className="w-10 h-10">
                 <img
