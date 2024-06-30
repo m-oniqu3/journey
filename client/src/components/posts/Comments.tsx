@@ -62,7 +62,7 @@ function Comments(props: Props) {
   );
 
   return (
-    <section className="space-y-4 pt-2 md:wrapper">
+    <section className="space-y-4 pt-2">
       <PostCommentForm postID={props.postID} />
 
       {!pages.length && <NoComments />}

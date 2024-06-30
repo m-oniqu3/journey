@@ -1,5 +1,6 @@
 import LoadingSpinner from "@/components/LoadingSpinner";
 import Post from "@/components/posts/Post";
+import RecentPosts from "@/components/posts/RecentPosts";
 import InfiniteScroll from "@/components/space/InfiniteScroll";
 import { getPostsForJoinedSpaces } from "@/services/post-services";
 import { PostSummary } from "@/types/post";
@@ -76,8 +77,8 @@ function Feed() {
 
   return (
     <div>
-      <div className="page-layout">
-        <div className="main-content">
+      <div className="page-layout wrapper">
+        <main className="main">
           <InfiniteScroll
             isLoadingIntial={isLoading}
             isLoadingMore={isFetchingNextPage}
@@ -85,9 +86,11 @@ function Feed() {
           >
             <>{renderedPosts}</>
           </InfiniteScroll>
-        </div>
+        </main>
 
-        <div className="sidebar">sidebar</div>
+        <div className="sidebar">
+          <RecentPosts />
+        </div>
       </div>
     </div>
   );

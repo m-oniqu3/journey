@@ -60,7 +60,7 @@ function Explore() {
 
   return (
     <div className="page-layout">
-      <div className="main-content flex flex-col border-t border-gray-100 py-4 md:wrapper ">
+      <div className="main flex flex-col border-t border-gray-100 py-4 md:wrapper ">
         <InfiniteScroll
           isLoadingIntial={isLoading}
           isLoadingMore={isFetchingNextPage}

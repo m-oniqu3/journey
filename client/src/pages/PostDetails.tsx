@@ -39,10 +39,10 @@ function PostDetails() {
 
   return (
     <section className="page-layout wrapper py-6">
-      <div className="main-content space-y-4">
+      <main className="main space-y-4">
         <PostContent post={data} />
         <Comments postID={+postID} isFetchingPost={isLoading} />
-      </div>
+      </main>
 
       <div className="sidebar">
         <SpaceSidebar name={spaceName} showHeader={true} />

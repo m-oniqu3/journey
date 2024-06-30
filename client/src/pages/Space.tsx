@@ -46,9 +46,9 @@ function Space() {
       <SpaceHeader space={space} />
 
       <div className="md:wrapper page-layout">
-        <div className="main-content ">
+        <main className="main">
           <SpacesContent name={spaceName} />
-        </div>
+        </main>
 
         <div className="sidebar md:wrapper ">
           <SpaceSidebar name={spaceName} />

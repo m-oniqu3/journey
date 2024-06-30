@@ -80,7 +80,7 @@ function Post(props: Props) {
     <>
       <div
         key={post.id}
-        className="border-b border-gray-100 py-4  hover:bg-gray-50 md:wrapper"
+        className="border-b border-gray-100 py-4  hover:bg-gray-50"
       >
         <>{postHeader}</>
 
