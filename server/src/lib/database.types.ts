@@ -17,6 +17,7 @@ export type Database = {
           is_edited: boolean | null
           post_id: number
           reply_id: number | null
+          updated_at: string
           user_id: string
         }
         Insert: {
@@ -26,6 +27,7 @@ export type Database = {
           is_edited?: boolean | null
           post_id: number
           reply_id?: number | null
+          updated_at?: string
           user_id?: string
         }
         Update: {
@@ -35,6 +37,7 @@ export type Database = {
           is_edited?: boolean | null
           post_id?: number
           reply_id?: number | null
+          updated_at?: string
           user_id?: string
         }
         Relationships: [
@@ -199,6 +202,42 @@ export type Database = {
             foreignKeyName: "public_profiles_id_fkey"
             columns: ["user_id"]
             isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      "recent-posts": {
+        Row: {
+          created_at: string
+          id: number
+          post_id: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          post_id: number
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          post_id?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recent-posts_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recent-posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           },

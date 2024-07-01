@@ -1,5 +1,5 @@
 import { api } from "@/services/api";
-import { PostSummary } from "@/types/post";
+import { PostSummary, RecentPost } from "@/types/post";
 import { getRange } from "@/utils/paginate";
 
 /**
@@ -77,5 +77,25 @@ export async function getPostsForJoinedSpaces(page: number) {
     params: { range: getRange(page, 10) },
   });
 
+  return response.data.data;
+}
+
+/**
+ *
+ * @param postID number
+ * @description Add a post to recent posts
+ * @returns string
+ */
+
+export async function addRecentPost(postID: number) {
+  const response = await api.post<{ data: string }>("posts/recent", {
+    postID,
+  });
+
+  return response.data.data;
+}
+
+export async function getRecentPosts() {
+  const response = await api.get<{ data: RecentPost[] }>("posts/recent");
   return response.data.data;
 }

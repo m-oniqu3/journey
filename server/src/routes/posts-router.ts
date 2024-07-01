@@ -1,7 +1,9 @@
+import { addRecentPost } from "@/controllers/posts/add-recent-post";
 import { createPost } from "@/controllers/posts/create-post";
 import { getPostById } from "@/controllers/posts/get-post";
 import { getPosts } from "@/controllers/posts/get-posts";
 import { getPostsForJoinedSpaces } from "@/controllers/posts/get-posts-joined-spaces";
+import { getRecentPosts } from "@/controllers/posts/get-recent-post";
 import { getSpacePosts } from "@/controllers/posts/get-space-posts";
 import { requireAuth } from "@/middleware/auth";
 import { checkSpaceExists } from "@/middleware/space";
@@ -34,5 +36,10 @@ router.get("/post/:id", requireAuth, getPostById);
 
 // get posts by space name
 router.get("/space/:name", requireAuth, checkSpaceExists, getSpacePosts);
+
+// add recent posts
+router.post("/recent", requireAuth, addRecentPost);
+
+router.get("/recent", requireAuth, getRecentPosts);
 
 export default router;

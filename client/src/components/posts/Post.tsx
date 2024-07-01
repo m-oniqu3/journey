@@ -2,7 +2,7 @@ import LoadingBar from "@/components/LoadingBar";
 import PostButtons from "@/components/posts/PostButtons";
 import PostHeader from "@/components/posts/PostHeader";
 import PostSlider from "@/components/posts/PostSlider";
-import { getPostById } from "@/services/post-services";
+import { addRecentPost, getPostById } from "@/services/post-services";
 import { PostSummary } from "@/types/post";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -55,6 +55,16 @@ function Post(props: Props) {
 
   async function handleNavigateToPost() {
     await prefetchPost();
+
+    // add to recent posts in db
+    addRecentPost(post.id)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
     navigate(route);
   }
 

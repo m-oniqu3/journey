@@ -33,3 +33,10 @@ export type FeedPost = {
   tag: { name: string; id: number; colour: string };
   space: { id: number; name: string; avatar: string | null };
 }[];
+
+export type RecentPost = {
+  id: number;
+  title: string;
+  likes: number;
+  space: { id: number; name: string; avatar: string | null };
+};

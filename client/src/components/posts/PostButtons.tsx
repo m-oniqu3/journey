@@ -18,7 +18,6 @@ function PostButtons(props: Props) {
   async function fetchCommentsCount(postID: number) {
     try {
       const response = await getCommentsCount(postID);
-      console.log("Comments count for post:", response);
       return response;
     } catch (error) {
       const message = handleError(error);
