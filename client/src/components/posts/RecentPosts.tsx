@@ -1,8 +1,8 @@
 import LoadingSpinner from "@/components/LoadingSpinner";
-import { getRecentPosts } from "@/services/post-services";
+import { clearRecentPosts, getRecentPosts } from "@/services/post-services";
 import { RecentPost } from "@/types/post";
 import { handleError } from "@/utils/handleError";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
 async function fetchRecentPosts() {
@@ -23,12 +23,27 @@ function RecentPosts() {
     refetchOnMount: false,
   });
 
+  const queryClient = useQueryClient();
+
+  async function handleClearRecentPosts() {
+    try {
+      const response = await clearRecentPosts();
+      console.log(response);
+
+      queryClient.invalidateQueries({ queryKey: ["recent-posts"] });
+    } catch (error) {
+      const message = handleError(error);
+      console.error(message);
+    }
+  }
+
   const renderContent = (() => {
     if (isLoading) return <LoadingSpinner />;
 
-    if (isError) return <div>Error: {error.message}</div>;
+    if (isError) return <p className="p-4">Error: {error.message}</p>;
 
-    if (!data) return <div>Post not found</div>;
+    if (!data || !data.length)
+      return <p className="p-4">No recent posts to show. Start exploring!</p>;
 
     return data.map((post: RecentPost, index) => {
       const titleSlug = post.title
@@ -84,7 +99,9 @@ function RecentPosts() {
     <aside className="bg-gray-50 rounded-xl ">
       <header className="flex items-center justify-between mb-4 px-4 pt-4">
         <h2 className="text-lg text-gray-600 font-medium">Recent Posts</h2>
-        <p className="text-gray-500">Clear</p>
+        <button className="text-gray-500" onClick={handleClearRecentPosts}>
+          Clear
+        </button>
       </header>
 
       <ul>{renderContent}</ul>

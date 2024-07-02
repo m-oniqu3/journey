@@ -1,4 +1,5 @@
 import { addRecentPost } from "@/controllers/posts/add-recent-post";
+import { clearRecentPost } from "@/controllers/posts/clear-recent-post";
 import { createPost } from "@/controllers/posts/create-post";
 import { getPostById } from "@/controllers/posts/get-post";
 import { getPosts } from "@/controllers/posts/get-posts";
@@ -41,5 +42,7 @@ router.get("/space/:name", requireAuth, checkSpaceExists, getSpacePosts);
 router.post("/recent", requireAuth, addRecentPost);
 
 router.get("/recent", requireAuth, getRecentPosts);
+
+router.delete("/recent", requireAuth, clearRecentPost);
 
 export default router;

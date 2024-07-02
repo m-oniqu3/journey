@@ -162,7 +162,7 @@ function CreatePost(props: Props) {
           className="z-10 absolute top-1 right-1 bg-white p-2 rounded-lg shadow-md 
           cursor-pointer hover:bg-gray-200 transition-colors"
         >
-          <DeleteIcon />
+          <DeleteIcon className="w-6 h-6" />
         </span>
 
         <img

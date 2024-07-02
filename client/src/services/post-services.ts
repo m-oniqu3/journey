@@ -99,3 +99,8 @@ export async function getRecentPosts() {
   const response = await api.get<{ data: RecentPost[] }>("posts/recent");
   return response.data.data;
 }
+
+export async function clearRecentPosts() {
+  const response = await api.delete<{ data: string }>("posts/recent");
+  return response.data.data;
+}
