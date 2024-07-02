@@ -230,7 +230,7 @@ export type Database = {
           {
             foreignKeyName: "recent-posts_post_id_fkey"
             columns: ["post_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "posts"
             referencedColumns: ["id"]
           },
@@ -370,7 +370,19 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      cleanup_recent_posts:
+        | {
+            Args: {
+              userid: string
+            }
+            Returns: undefined
+          }
+        | {
+            Args: {
+              userid: string
+            }
+            Returns: undefined
+          }
     }
     Enums: {
       [_ in never]: never

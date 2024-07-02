@@ -39,8 +39,6 @@ function Feed() {
     setPage(page);
     try {
       const response = await getPostsForJoinedSpaces(page);
-      console.log("fetching page", page);
-      console.log(response);
       return response;
     } catch (error) {
       const message = handleError(error);

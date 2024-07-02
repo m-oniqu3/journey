@@ -10,23 +10,16 @@ export async function addRecentPost(req: Request, res: Response) {
     const { postID } = req.body as { postID: number };
 
     if (!postID) {
-      return res
-        .status(HttpStatusCode.BAD_REQUEST)
-        .json({
-          error: "Post ID is required to save this post to recent posts.",
-        });
+      return res.status(HttpStatusCode.BAD_REQUEST).json({
+        error: "Post ID is required to save this post to recent posts.",
+      });
     }
 
     console.log("Adding post to recent posts", postID, user.id);
 
     const { error } = await supabase
       .from("recent-posts")
-      .insert([
-        {
-          user_id: user.id,
-          post_id: +postID,
-        },
-      ])
+      .insert([{ user_id: user.id, post_id: +postID }])
       .select();
 
     if (error) throw error;

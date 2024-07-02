@@ -1,4 +1,5 @@
 import Post from "@/components/posts/Post";
+import RecentPosts from "@/components/posts/RecentPosts";
 import InfiniteScroll from "@/components/space/InfiniteScroll";
 import { getPosts } from "@/services/post-services";
 import { handleError } from "@/utils/handleError";
@@ -59,18 +60,20 @@ function Explore() {
   });
 
   return (
-    <div className="page-layout">
-      <div className="main flex flex-col border-t border-gray-100 py-4 md:wrapper ">
+    <div className="page-layout wrapper">
+      <div className="main flex flex-col border-t border-gray-100 py-4 ">
         <InfiniteScroll
           isLoadingIntial={isLoading}
           isLoadingMore={isFetchingNextPage}
           loadMore={() => hasNextPage && fetchNextPage()}
         >
-          <> {renderedPosts}</>
+          <>{renderedPosts}</>
         </InfiniteScroll>
       </div>
 
-      <div className="sidebar">recommended spaces</div>
+      <div className="sidebar">
+        <RecentPosts />
+      </div>
     </div>
   );
 }

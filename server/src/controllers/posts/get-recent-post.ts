@@ -11,8 +11,8 @@ export async function getRecentPosts(req: Request, res: Response) {
       .from("recent-posts")
       .select("post_id")
       .eq("user_id", user.id)
-      .order("created_at", { ascending: false })
-      .range(0, 9);
+      .order("created_at", { ascending: false });
+    //.range(0, 9);
 
     if (postsError) throw postsError;
 
@@ -24,26 +24,30 @@ export async function getRecentPosts(req: Request, res: Response) {
     // from posts - id, title, likes, space_id
     // from spaces -id, name, avatar
 
-    const { data, error } = await supabase
-      .from("posts")
-      .select(
-        `
+    // use promise.all instead of in filter to maintain order
+
+    const promises = postIDs.map(async (postID) => {
+      const { data, error } = await supabase
+        .from("posts")
+        .select(
+          `
         id, title, creator, likes,
         spaces(id, name, avatar) `
-      )
-      .in("id", postIDs)
-      .order("created_at", { ascending: false });
+        )
+        .eq("id", postID)
+        .single();
 
-    if (error) throw error;
+      if (error) throw error;
 
-    const recentPosts = data.map((post) => {
       return {
-        id: post.id,
-        title: post.title,
-        likes: post.likes,
-        space: post.spaces,
+        id: data.id,
+        title: data.title,
+        likes: data.likes,
+        space: data.spaces,
       };
     });
+
+    const recentPosts = await Promise.all(promises);
 
     return res.status(HttpStatusCode.OK).json({ data: recentPosts });
   } catch (error) {
