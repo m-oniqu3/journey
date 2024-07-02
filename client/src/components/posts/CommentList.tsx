@@ -13,7 +13,7 @@ function CommentList(props: Props) {
     return <PostComment key={comment.id} comment={comment} />;
   });
 
-  return <ul className="space-y-6">{renderedList}</ul>;
+  return <ul className="space-y-8">{renderedList}</ul>;
 }
 
 export default CommentList;

@@ -17,7 +17,7 @@ function Overlay(props: Props) {
     <div
       // ref={dropDownRef}
       style={{ top: props.position.y, left: props.position.x }}
-      className={`absolute z-50 rounded-2xl border border-gray-200 bg-white shadow-sm ${props.className}`}
+      className={`fixed z-50 rounded-2xl border border-gray-200 bg-white shadow-sm ${props.className}`}
     >
       {props.children}
     </div>,

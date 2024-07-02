@@ -131,7 +131,7 @@ function PostContent(props: Props) {
 
       {isMenuOpen && (
         <Overlay position={position} closeOverlay={() => setIsMenuOpen(false)}>
-          <PostMenu />
+          <PostMenu creator={post.creator.user_id} />
         </Overlay>
       )}
     </>

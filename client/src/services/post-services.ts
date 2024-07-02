@@ -104,3 +104,11 @@ export async function clearRecentPosts() {
   const response = await api.delete<{ data: string }>("posts/recent");
   return response.data.data;
 }
+
+export async function savePost(postID: number) {
+  const response = await api.post<{ data: string }>("posts/save", {
+    postID,
+  });
+
+  return response.data.data;
+}

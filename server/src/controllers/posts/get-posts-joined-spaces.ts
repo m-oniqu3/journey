@@ -21,6 +21,7 @@ export async function getPostsForJoinedSpaces(req: Request, res: Response) {
 
     const spaceIDs = spaceData.map((space) => space.space_id);
 
+    // get posts for spaces that the user joined
     const { data, error } = await supabase
       .from("posts")
       .select(
@@ -33,7 +34,7 @@ export async function getPostsForJoinedSpaces(req: Request, res: Response) {
       .in("space_id", spaceIDs)
       .order("created_at", { ascending: false })
       .range(range[0], range[1]);
-    //.gt("likes", 3500);
+    // .gt("likes", 3500);
 
     if (error) throw error;
 
@@ -48,6 +49,23 @@ export async function getPostsForJoinedSpaces(req: Request, res: Response) {
       return acc;
     }, {} as Record<string, { id: number; name: string; avatar: string | null }>);
 
+    //get profile details for each post
+    const { data: profileData, error: profileError } = await supabase
+      .from("profiles")
+      .select("user_id, username, display_name, avatar")
+      .in(
+        "user_id",
+        data.map((post) => post.creator as string)
+      );
+
+    if (profileError) throw profileError;
+
+    // hashmap of user id to profile details
+    const profileMap = profileData.reduce((acc, cur) => {
+      acc[cur.user_id] = cur;
+      return acc;
+    }, {} as Record<string, { user_id: string; username: string; display_name: string | null; avatar: string | null }>);
+
     // include space details for each post
     const postsAndSpaces = data.map((post) => {
       return {
@@ -59,6 +77,7 @@ export async function getPostsForJoinedSpaces(req: Request, res: Response) {
         images: post.images,
         tag: post.tags,
         space: spaceMap[post.space_id],
+        creator: profileMap[post.creator as string],
       };
     });
 

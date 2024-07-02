@@ -19,7 +19,7 @@ export type PostSummary = {
   likes: number;
   images: { id: number; url: string }[];
   tag: Tag | null;
-  creator?: ProfileSummaryForPost;
+  creator: ProfileSummaryForPost;
   space: { id: number; name: string; avatar: string };
 };
 

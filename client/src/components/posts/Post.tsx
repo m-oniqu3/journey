@@ -23,6 +23,7 @@ function Post(props: Props) {
 
   const spaceHeader = (
     <PostHeader
+      creator={post.creator.user_id}
       avatar={post.space.avatar}
       createdAt={post.created_at}
       id={post.id}
@@ -33,6 +34,7 @@ function Post(props: Props) {
 
   const userHeader = (
     <PostHeader
+      creator={post.creator.user_id}
       avatar={post.creator?.avatar || ""}
       createdAt={post.created_at}
       id={post.id}

@@ -6,6 +6,7 @@ import { getPosts } from "@/controllers/posts/get-posts";
 import { getPostsForJoinedSpaces } from "@/controllers/posts/get-posts-joined-spaces";
 import { getRecentPosts } from "@/controllers/posts/get-recent-post";
 import { getSpacePosts } from "@/controllers/posts/get-space-posts";
+import { savePost } from "@/controllers/posts/save-post";
 import { requireAuth } from "@/middleware/auth";
 import { checkSpaceExists } from "@/middleware/space";
 import express from "express";
@@ -44,5 +45,7 @@ router.post("/recent", requireAuth, addRecentPost);
 router.get("/recent", requireAuth, getRecentPosts);
 
 router.delete("/recent", requireAuth, clearRecentPost);
+
+router.post("/save", requireAuth, savePost);
 
 export default router;

@@ -14,6 +14,7 @@ type Props = {
   username?: string;
   createdAt: string;
   type: "space" | "user";
+  creator: string;
 };
 
 function PostHeader(props: Props) {
@@ -100,7 +101,7 @@ function PostHeader(props: Props) {
 
       {isMenuOpen && (
         <Overlay position={position} closeOverlay={() => setIsMenuOpen(false)}>
-          <PostMenu />
+          <PostMenu creator={props.creator} />
         </Overlay>
       )}
     </>
