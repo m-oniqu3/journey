@@ -65,6 +65,9 @@ body {
         -webkit-filter: blur(90px);
         filter: blur(90px);
 
+        /* -webkit-backdrop-filter: blur(90px);
+        backdrop-filter: blur(90px); */
+
     }
 
     .no-scrollbar {

@@ -1,4 +1,5 @@
 import Overlay from "@/components/Overlay";
+import ScrollToTop from "@/components/ScrollToTop";
 import { ArrowLeftIcon, HorizonalEllipsis } from "@/components/icons";
 import PostButtons from "@/components/posts/PostButtons";
 import PostMenu from "@/components/posts/PostMenu";
@@ -63,12 +64,13 @@ function PostContent(props: Props) {
 
   return (
     <>
+      <ScrollToTop />
       <article className=" space-y-4 ">
         <header className="flex items-center gap-2">
           <span
             onClick={handlePreviousPage}
             ref={menuButtonRef}
-            className="hidden cursor-pointer bg-gray-200 h-9 w-9 place-items-center rounded-full md:grid"
+            className="hidden w-0 cursor-pointer bg-gray-200 md:grid md:place-items-center md:rounded-full md:h-9 md:w-9"
           >
             <ArrowLeftIcon />
           </span>

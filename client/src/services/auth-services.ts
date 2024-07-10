@@ -1,5 +1,6 @@
 import { api } from "@/services/api";
 import { User } from "@/types/auth";
+import axios from "axios";
 
 type LoginResponse = {
   user: User;
@@ -24,6 +25,7 @@ export async function register(credentials: {
 
 export async function logout() {
   delete api.defaults.headers.common["Authorization"];
-  const response = await api.delete<{ data: string }>("auth");
+  const response = await axios.delete<{ data: string }>("api/auth");
+  // api.delete<{ data: string }>("auth");
   return response;
 }

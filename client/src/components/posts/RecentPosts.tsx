@@ -21,6 +21,7 @@ function RecentPosts() {
     queryFn: fetchRecentPosts,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
+    retry: false,
   });
 
   const queryClient = useQueryClient();

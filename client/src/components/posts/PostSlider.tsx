@@ -32,7 +32,7 @@ function PostSlider(props: Props) {
     return (
       <div
         key={image.id}
-        className="h-full w-full relative z-10 flex-shrink-0 flex-grow-0"
+        className="h-full w-full relative z-10 flex-shrink-0 flex-grow-0 rounded-xl "
         style={{
           translate: `${-100 * currentIndex}%`,
           transition: "translate 300ms ease-in-out",
@@ -40,7 +40,7 @@ function PostSlider(props: Props) {
       >
         <div
           style={{ backgroundImage: `url(${image.url})` }}
-          className="backdrop absolute top-0 left-0 h-full w-full rounded-xl z-0 hidden md:block"
+          className="backdrop absolute top-0 left-0 h-full w-full rounded-xl z-0  md:block"
         ></div>
 
         <img

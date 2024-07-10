@@ -25,7 +25,10 @@ export async function loadUserFromToken(
     //verify token with supabase
     const { data, error } = await supabase.auth.getUser(token);
 
-    if (error) throw error;
+    if (error) {
+      console.log("didnt user from token", error);
+      throw error;
+    }
 
     const user = data.user;
     console.log("user from token", user.email);
@@ -44,6 +47,7 @@ export async function loadUserFromToken(
         throw sessionerror;
       }
 
+      console.log("session from middlewware " + session.session);
       if (session.session) return next();
 
       //try to refresh the session
@@ -67,11 +71,19 @@ export async function loadUserFromToken(
 
         return res.status(401).json({ error: "Token expired" });
       }
-    }
 
-    console.log(
-      "Error in loadUserFromToken middleware. Could not load user from token"
-    );
+      if (error.status === 403) {
+        console.log("Forbidden");
+
+        return res
+          .status(403)
+          .json({ error: "Could not authorize this request" });
+      }
+
+      console.log(
+        "Error in loadUserFromToken middleware. Could not load user from token"
+      );
+    }
   }
 }
 

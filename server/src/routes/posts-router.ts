@@ -1,6 +1,7 @@
 import { addRecentPost } from "@/controllers/posts/add-recent-post";
 import { clearRecentPost } from "@/controllers/posts/clear-recent-post";
 import { createPost } from "@/controllers/posts/create-post";
+import { getAuthoredPosts } from "@/controllers/posts/get-authored-posts";
 import { getPostById } from "@/controllers/posts/get-post";
 import { getPosts } from "@/controllers/posts/get-posts";
 import { getPostsForJoinedSpaces } from "@/controllers/posts/get-posts-joined-spaces";
@@ -47,5 +48,6 @@ router.get("/recent", requireAuth, getRecentPosts);
 router.delete("/recent", requireAuth, clearRecentPost);
 
 router.post("/save", requireAuth, savePost);
+router.get("/authored", requireAuth, getAuthoredPosts);
 
 export default router;

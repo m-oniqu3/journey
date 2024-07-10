@@ -112,3 +112,11 @@ export async function savePost(postID: number) {
 
   return response.data.data;
 }
+
+export async function getAuthoredPosts(page: number) {
+  const response = await api.get<{ data: PostSummary[] }>("posts/authored", {
+    params: { range: getRange(page, 10) },
+  });
+
+  return response.data.data;
+}

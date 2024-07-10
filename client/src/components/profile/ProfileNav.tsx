@@ -11,8 +11,10 @@ function ProfileNav() {
   const { pathname } = useLocation();
 
   function handleActiveClass(isActive: boolean, url: string) {
-    const activeClass = "bg-grayscale-100  font-medium rounded-full  h-full";
-    const defaultClass = "cursor-pointer font-medium hover:bg-grayscale-100  ";
+    const commonStyles =
+      "cursor-pointer font-medium h-11 rounded-full px-4 flex items-center text-dark";
+    const activeClass = `${commonStyles} bg-grayscale-100`;
+    const defaultClass = `${commonStyles}+ " hover:bg-grayscale-100`;
 
     if (url === "posts" && (pathname === "/profile" || isActive)) {
       return activeClass;
@@ -23,7 +25,7 @@ function ProfileNav() {
 
   const renderedLinks = profileLinks.map((link) => {
     return (
-      <li key={link.id} className="px-4 h-11">
+      <li key={link.id} className="">
         <NavLink
           to={`/profile/${link.url}`}
           className={({ isActive }) => handleActiveClass(isActive, link.url)}
@@ -48,17 +50,9 @@ function ProfileNav() {
         </figcaption>
       </figure>
 
-      <ul className="mt-4 flex gap-2 overflow-x-scroll h-20 ">
+      <ul className="mt-4 flex items-center gap-4 overflow-x-scroll h-20">
         {renderedLinks}
       </ul>
-
-      {/* <ButtonLink
-        route={`/submit`}
-        className="bg-white h-9 border-[1px] border-gray-500 text-black rounded-full w-fit flex items-center gap-2 !font-medium "
-      >
-        <VscAdd className="h-6 w-6" />
-        Create a post
-      </ButtonLink> */}
     </nav>
   );
 }
