@@ -53,7 +53,18 @@ const router = createBrowserRouter([
       { path: RoutesEnum.HOME, element: <Feed /> },
       { path: RoutesEnum.EXPLORE, element: <Explore /> },
       { path: "/about", element: <p>about page</p> },
-      { path: "/profile", element: <Profile /> },
+      {
+        path: "/profile",
+        element: <Profile />,
+
+        children: [
+          { path: "/profile", element: <p>posts</p> },
+          { path: "posts", element: <p>posts</p> },
+          { path: "comments", element: <p>comments</p> },
+          { path: "saved", element: <p>saved</p> },
+          { path: "likes", element: <p>likes</p> },
+        ],
+      },
       { path: "/profile/edit", element: <EditProfile /> },
       { path: "/s/:spaceName", element: <Space /> },
       { path: "/s/:spaceName/submit", element: <Submit /> },

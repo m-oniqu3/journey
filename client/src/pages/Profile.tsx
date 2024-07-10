@@ -1,13 +1,14 @@
-const Profile = () => {
+import ProfileNav from "@/components/profile/ProfileNav";
+import { Outlet } from "react-router-dom";
+
+function Profile() {
   return (
-    <div>
-      Profile
-      {/*     
-    <ButtonLink >
-      Edit Profile
-    </ButtonLink> */}
+    <div className="wrapper py-4">
+      <ProfileNav />
+
+      <Outlet />
     </div>
   );
-};
+}
 
 export default Profile;

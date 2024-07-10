@@ -87,13 +87,16 @@ function Navbar(props: Props) {
             <div className="flex items-center gap-2 md:gap-8  ">
               <Link
                 to={"/submit"}
-                className="flex gap-2 items-center px-4 h-11 rounded-full hover:bg-grayscale-100"
+                className="flex gap-2 items-center px-2 h-11 md:px-4 rounded-full hover:bg-grayscale-100"
               >
                 <AddIcon />
                 <span className="font-semibold">Create</span>
               </Link>
 
-              <button onClick={handleProfileMenu} className="w-10 h-10">
+              <button
+                onClick={handleProfileMenu}
+                className="w-9 h-9  md:w-10 md:h-10"
+              >
                 <img
                   src="https://picsum.photos/seed/1/200"
                   alt="avatar"
@@ -112,7 +115,7 @@ function Navbar(props: Props) {
           position={position}
           closeOverlay={() => setOpenProfileMenu(false)}
         >
-          <ProfileMenu />
+          <ProfileMenu closeProfileMenu={() => setOpenProfileMenu(false)} />
         </Overlay>
       )}
     </>

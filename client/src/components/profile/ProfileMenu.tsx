@@ -1,9 +1,19 @@
 import { LogoutIcon } from "@/components/icons";
 import { Link } from "react-router-dom";
 
-function ProfileMenu() {
+import useDetectClickOutside from "@/hooks/useDetectClickOutside";
+
+type Props = {
+  closeProfileMenu: () => void;
+};
+
+function ProfileMenu(props: Props) {
+  const profileMenu = useDetectClickOutside<HTMLUListElement>({
+    closeMenu: props.closeProfileMenu,
+  });
+
   return (
-    <ul className="p-2">
+    <ul className="p-2" ref={profileMenu}>
       <li className="px-3 py-3 hover:bg-gray-100 cursor-pointer rounded-xl">
         <Link to="/profile">
           <figure className="flex gap-2 items-center">
