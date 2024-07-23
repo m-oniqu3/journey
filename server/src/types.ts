@@ -20,3 +20,29 @@ export type ProfileSummaryForPost = {
 export type ProfileRecord = {
   [profileID: string]: ProfileSummaryForPost;
 };
+
+export type UniquePosts = {
+  [postID: number]: {
+    id: number;
+    title: string;
+    spaces: {
+      id: number;
+      name: string;
+      avatar: string | null;
+    } | null;
+  };
+};
+
+export type UniqueReplies = Record<
+  number,
+  {
+    id: number;
+    commentBeingRepliedTo: string;
+    post_id: number;
+    user: {
+      username: string;
+      display_name: string | null;
+      user_id: string;
+    };
+  }
+>;

@@ -47,10 +47,10 @@ export async function loadUserFromToken(
         throw sessionerror;
       }
 
-      console.log("session from middlewware " + session.session);
       if (session.session) return next();
 
       //try to refresh the session
+      console.log("COOKIE", req.cookies.jrt);
       const { error: refresherror } = await supabase.auth.setSession({
         access_token: token,
         refresh_token: req.cookies.jrt,

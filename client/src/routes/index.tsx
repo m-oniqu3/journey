@@ -1,3 +1,4 @@
+import ProfileComments from "@/components/profile/ProfileComments";
 import ProfilePosts from "@/components/profile/ProfilePosts";
 import AllSpaces from "@/components/space/AllSpaces";
 import ErrorPage from "@/error-page";
@@ -61,7 +62,7 @@ const router = createBrowserRouter([
         children: [
           { path: "/profile", element: <ProfilePosts /> },
           { path: "posts", element: <ProfilePosts /> },
-          { path: "comments", element: <p>comments</p> },
+          { path: "comments", element: <ProfileComments /> },
           { path: "saved", element: <p>saved</p> },
           { path: "likes", element: <p>likes</p> },
         ],
