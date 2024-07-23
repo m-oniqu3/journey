@@ -1,12 +1,21 @@
+import RecentPosts from "@/components/posts/RecentPosts";
 import ProfileNav from "@/components/profile/ProfileNav";
 import { Outlet } from "react-router-dom";
 
 function Profile() {
   return (
-    <div className="wrapper py-4">
+    <div className="py-4">
       <ProfileNav />
 
-      <Outlet />
+      <div className="page-layout sm:wrapper">
+        <div className="main">
+          <Outlet />
+        </div>
+
+        <div className="sidebar">
+          <RecentPosts />
+        </div>
+      </div>
     </div>
   );
 }

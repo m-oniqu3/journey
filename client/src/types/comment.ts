@@ -20,3 +20,38 @@ export type Comment = {
     user_id: string;
   };
 };
+
+type Reply = {
+  id: number;
+  body: string;
+  post_id: number;
+  user: {
+    username: string;
+    display_name: string | null;
+    user_id: string;
+  };
+};
+
+// type for authored comments
+export type AuthoredComments = {
+  user: {
+    username: string;
+    display_name: string | null;
+    user_id: string;
+  };
+  comments: {
+    id: number;
+    body: string;
+    created_at: string;
+    post: {
+      id: number;
+      title: string;
+      spaces: {
+        id: number;
+        name: string;
+        avatar: string | null;
+      } | null;
+    };
+    repliedTo: Reply | null;
+  }[];
+};

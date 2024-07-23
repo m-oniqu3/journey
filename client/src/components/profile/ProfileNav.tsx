@@ -36,7 +36,7 @@ function ProfileNav() {
     );
   });
   return (
-    <nav className="">
+    <nav className="wrapper">
       <figure className="flex gap-2">
         <img
           src="https://picsum.photos/seed/1/200"

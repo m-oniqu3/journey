@@ -1,5 +1,5 @@
 import { api } from "@/services/api";
-import { Comment, NewComment } from "@/types/comment";
+import { AuthoredComments, Comment, NewComment } from "@/types/comment";
 import { getRange } from "@/utils/paginate";
 
 export async function createComment(comment: NewComment) {
@@ -43,10 +43,13 @@ export async function getCommentsCount(postID: number) {
 }
 
 export async function getAuthoredComments(page: number) {
-  const response = await api.get<{ data: string }>("comments/authored", {
-    params: {
-      range: getRange(page, 10),
-    },
-  });
+  const response = await api.get<{ data: AuthoredComments }>(
+    "comments/authored",
+    {
+      params: {
+        range: getRange(page, 10),
+      },
+    }
+  );
   return response.data.data;
 }

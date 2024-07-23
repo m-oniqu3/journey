@@ -56,7 +56,7 @@ export async function getAuthoredComments(req: Request, res: Response) {
     //   };
     // });
 
-    //   if a comment is a reply, get the user details of the original comment
+    // if a comment is a reply, get the user details of the original comment
     // if it has a reply_id, it is a reply to a comment
     const replyPromise = allIDs.map(async (entry) => {
       if (entry.replyIDs.replyToComment) {
@@ -81,7 +81,7 @@ export async function getAuthoredComments(req: Request, res: Response) {
 
         return {
           id: data.id,
-          commentBeingRepliedTo: data.comment,
+          body: data.comment,
           post_id: data.post_id,
           user: profileData,
         };
@@ -108,6 +108,7 @@ export async function getAuthoredComments(req: Request, res: Response) {
     //post hashmap - the key is the post id
     const postsMap = posts.reduce((acc, post) => {
       if (!post) return acc;
+
       if (!acc[post.id]) {
         acc[post.id] = post;
       }
@@ -118,20 +119,18 @@ export async function getAuthoredComments(req: Request, res: Response) {
     // hashmap of commentID to reply details
     const repliesMap = replies.reduce((acc, curr) => {
       if (!curr) return acc;
+
       acc[curr.id] = curr;
       return acc;
     }, {} as UniqueReplies);
 
-    // add repliedToUser to each comment & add OP profile details
     const commentsAndPosts = data.map((comment) => {
-      const repliedTo = comment.reply_id ? repliesMap[comment.reply_id] : null;
-
       return {
         id: comment.id,
         body: comment.comment,
         created_at: comment.created_at,
         post: postsMap[comment.post_id] || null,
-        repliedTo,
+        repliedTo: comment.reply_id ? repliesMap[comment.reply_id] : null,
       };
     });
 

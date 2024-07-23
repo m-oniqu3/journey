@@ -37,7 +37,7 @@ export type UniqueReplies = Record<
   number,
   {
     id: number;
-    commentBeingRepliedTo: string;
+    body: string;
     post_id: number;
     user: {
       username: string;

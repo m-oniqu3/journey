@@ -1,6 +1,5 @@
 import LoadingSpinner from "@/components/LoadingSpinner";
 import Post from "@/components/posts/Post";
-import RecentPosts from "@/components/posts/RecentPosts";
 import InfiniteScroll from "@/components/space/InfiniteScroll";
 import { getAuthoredPosts } from "@/services/post-services";
 import { handleError } from "@/utils/handleError";
@@ -72,14 +71,7 @@ function ProfilePosts() {
     );
   }
 
-  return (
-    <div className="page-layout">
-      <div className="main">{renderContent()}</div>
-      <div className="sidebar">
-        <RecentPosts />
-      </div>
-    </div>
-  );
+  return renderContent();
 }
 
 export default ProfilePosts;
