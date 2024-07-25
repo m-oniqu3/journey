@@ -1,14 +1,15 @@
 import { CommentIcon, HeartIcon, HorizonalEllipsis } from "@/components/icons";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import InfiniteScroll from "@/components/space/InfiniteScroll";
 import { getAuthoredComments } from "@/services/comment-services";
 import { handleError } from "@/utils/handleError";
 import { timeSince } from "@/utils/timeSince";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 
-async function fetchProfileComments() {
+async function fetchProfileComments(page: number) {
   try {
-    const response = await getAuthoredComments(0);
-    console.log(response);
+    const response = await getAuthoredComments(page);
     return response;
   } catch (error) {
     const message = handleError(error);
@@ -21,9 +22,27 @@ type Details =
   | { userName: string; date: string; replyTo: string };
 
 function ProfileComments() {
-  const { data, isError, error, isLoading } = useQuery({
+  const {
+    data,
+    isError,
+    error,
+    isLoading,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
+  } = useInfiniteQuery({
     queryKey: ["profileComments"],
-    queryFn: fetchProfileComments,
+    initialPageParam: 0,
+
+    queryFn: ({ pageParam }) => fetchProfileComments(pageParam),
+    getNextPageParam: (lastPage, allPages) => {
+      const nextPage: number | undefined = lastPage?.comments.length
+        ? allPages.length
+        : undefined;
+
+      return nextPage;
+    },
+    retry: false,
   });
 
   function renderCommentDate(details: Details) {
@@ -34,7 +53,7 @@ function ProfileComments() {
       return (
         <p className="text-sm">
           <span className="font-medium">{userName}</span> replied to
-          {details.replyTo} {time}
+          <span className="font-medium">&nbsp;{details.replyTo}</span> {time}
         </p>
       );
     } else {
@@ -59,48 +78,65 @@ function ProfileComments() {
       return <div>No comments found</div>;
     }
 
-    const comments = data;
+    const comments = data.pages.flatMap((page) => page.comments);
+    const user = data.pages[0].user;
 
-    const renderedComments = comments.comments.map((comment) => {
+    const renderedComments = comments.map((comment) => {
       const { id, body, created_at, post, repliedTo } = comment;
+
+      const titleSlug = post.title
+        .toLowerCase()
+        .replace(/[^a-zA-Z0-9]+/g, "_")
+        .split("_")
+        .slice(0, 7)
+        .join("_");
+
+      const route = `/s/${post.spaces.name}/${post.id}/${titleSlug}`;
 
       return (
         <article
           key={id}
           className="p-4 grid grid-cols-[30px,1fr] gap-2 border-t-[1px] border-gray-100 hover:bg-gray-50"
         >
-          <figure>
+          <Link to={`/s/${post.spaces.name}`}>
             <img
               src={
-                post.spaces?.avatar ||
+                post.spaces.avatar ||
                 `https://picsum.photos/seed/${comment.id}/200`
               }
-              alt={post.spaces?.name}
+              alt={post.spaces.name}
               className="avatar h-7 w-7"
             />
-          </figure>
+          </Link>
 
           <div className="flex flex-col gap-3">
-            <p className="text-sm">
-              <span className="font-medium">s/{post.spaces?.name}</span>
+            <p className="text-sm ">
+              <Link
+                to={`/s/${post.spaces.name}`}
+                className="font-medium underline-offset-2 hover:underline"
+              >
+                s/{post.spaces.name}
+              </Link>
               &nbsp;&#xb7;&nbsp;
-              {post.title}
+              <Link to={route} className="underline-offset-2 hover:underline">
+                {post.title}
+              </Link>
             </p>
 
             {!repliedTo &&
               renderCommentDate({
-                userName: comments.user.display_name || comments.user.username,
+                userName: user.display_name || user.username,
                 date: created_at,
               })}
 
             {repliedTo &&
               renderCommentDate({
-                userName: comments.user.display_name || comments.user.username,
+                userName: user.display_name || user.username,
                 date: created_at,
                 replyTo: repliedTo.user.display_name || repliedTo.user.username,
               })}
 
-            <p className="">{body}</p>
+            <p>{body}</p>
 
             <div className=" flex items-center gap-6">
               <span className="flex items-center gap-2 text-dark font-medium text-sm">
@@ -125,7 +161,15 @@ function ProfileComments() {
     return renderedComments;
   }
 
-  return <section className="">{renderContent()}</section>;
+  return (
+    <InfiniteScroll
+      isLoadingIntial={isLoading}
+      isLoadingMore={isFetchingNextPage}
+      loadMore={() => hasNextPage && fetchNextPage()}
+    >
+      {renderContent()}
+    </InfiniteScroll>
+  );
 }
 
 export default ProfileComments;

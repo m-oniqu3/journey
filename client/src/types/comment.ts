@@ -50,7 +50,7 @@ export type AuthoredComments = {
         id: number;
         name: string;
         avatar: string | null;
-      } | null;
+      };
     };
     repliedTo: Reply | null;
   }[];

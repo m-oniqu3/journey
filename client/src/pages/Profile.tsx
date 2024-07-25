@@ -4,17 +4,14 @@ import { Outlet } from "react-router-dom";
 
 function Profile() {
   return (
-    <div className="py-4">
-      <ProfileNav />
+    <div className=" py-4 page-layout sm:wrapper">
+      <div className="main">
+        <ProfileNav />
+        <Outlet />
+      </div>
 
-      <div className="page-layout sm:wrapper">
-        <div className="main">
-          <Outlet />
-        </div>
-
-        <div className="sidebar">
-          <RecentPosts />
-        </div>
+      <div className="sidebar">
+        <RecentPosts />
       </div>
     </div>
   );

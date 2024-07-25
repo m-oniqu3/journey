@@ -80,7 +80,7 @@ function RecentPosts() {
 
           <Link
             to={route}
-            className="font-medium text-[1.1rem] text-gray-600 leading-tight underline-offset-2 hover:underline"
+            className="font-medium text-gray-600 leading-tight underline-offset-2 hover:underline"
           >
             {post.title}
           </Link>
