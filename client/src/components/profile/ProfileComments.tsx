@@ -1,10 +1,19 @@
-import { CommentIcon, HeartIcon, HorizonalEllipsis } from "@/components/icons";
+import {
+  CommentIcon,
+  DeleteIcon,
+  HeartIcon,
+  HorizonalEllipsis,
+  PropertyEditIcon,
+} from "@/components/icons";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import Overlay from "@/components/Overlay";
 import InfiniteScroll from "@/components/space/InfiniteScroll";
+import { useAuthContext } from "@/context/useAuthContext";
 import { getAuthoredComments } from "@/services/comment-services";
 import { handleError } from "@/utils/handleError";
 import { timeSince } from "@/utils/timeSince";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 async function fetchProfileComments(page: number) {
@@ -22,15 +31,7 @@ type Details =
   | { userName: string; date: string; replyTo: string };
 
 function ProfileComments() {
-  const {
-    data,
-    isError,
-    error,
-    isLoading,
-    fetchNextPage,
-    isFetchingNextPage,
-    hasNextPage,
-  } = useInfiniteQuery({
+  const query = useInfiniteQuery({
     queryKey: ["profileComments"],
     initialPageParam: 0,
 
@@ -45,6 +46,94 @@ function ProfileComments() {
     retry: false,
   });
 
+  const { state } = useAuthContext();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const options = [
+    {
+      id: 1,
+      name: "Edit",
+      icon: PropertyEditIcon,
+      className: "w-6 h-6",
+      display: state.user?.id === query.data?.pages[0].user.user_id,
+    },
+    {
+      id: 2,
+      name: "Delete",
+      icon: DeleteIcon,
+      className: "w-6 h-6",
+      display: state.user?.id === query.data?.pages[0].user.user_id,
+    },
+  ];
+
+  async function handlePostAction(action: string) {
+    switch (action) {
+      case "Edit":
+        console.log("Edit post");
+        break;
+      case "Delete":
+        console.log("Delete post");
+        break;
+      default:
+        console.log("Invalid action");
+    }
+  }
+
+  const renderedOptions = options.map((option) => {
+    return (
+      <li
+        key={option.id}
+        className="hover:bg-gray-100 rounded-xl"
+        style={{ display: option.display ? "block" : "none" }}
+      >
+        <button
+          className="grid grid-cols-[30px,1fr] gap-4 items-center  p-2 w-full"
+          onClick={() => handlePostAction(option.name)}
+        >
+          <span className="flex items-center justify-center">
+            <option.icon className={option.className || ""} />
+          </span>
+          <span className="text-left">{option.name}</span>
+        </button>
+      </li>
+    );
+  });
+
+  function handleMenu(e: React.MouseEvent<HTMLSpanElement, MouseEvent>) {
+    // menu size is 120px
+    // prevent the menu from going off the screen
+
+    const screenWidth = window.innerWidth;
+    const overlayWidth = 115;
+
+    if (screenWidth - e.currentTarget.offsetLeft < overlayWidth) {
+      // position on the left side of the screen
+      setPosition({
+        x:
+          e.currentTarget.offsetLeft -
+          overlayWidth +
+          e.currentTarget.offsetWidth,
+        y: e.currentTarget.offsetTop,
+      });
+
+      setIsMenuOpen((state) => !state);
+      return;
+    }
+
+    setPosition({
+      x: e.currentTarget.offsetLeft,
+      y: e.currentTarget.offsetTop,
+    });
+
+    setIsMenuOpen((state) => !state);
+  }
+
+  /**
+   *
+   * @param details
+   * @returns Sentences like: "user commented 2 hours ago" or "user replied to user2 2 hours ago"
+   */
   function renderCommentDate(details: Details) {
     const { userName, date } = details;
     const time = timeSince(new Date(date));
@@ -66,20 +155,20 @@ function ProfileComments() {
   }
 
   function renderContent() {
-    if (isLoading) {
+    if (query.isLoading) {
       return <LoadingSpinner />;
     }
 
-    if (isError) {
-      return <div>Error: {error.message}</div>;
+    if (query.isError) {
+      return <div>Error: {query.error.message}</div>;
     }
 
-    if (!data) {
+    if (!query.data) {
       return <div>No comments found</div>;
     }
 
-    const comments = data.pages.flatMap((page) => page.comments);
-    const user = data.pages[0].user;
+    const comments = query.data.pages.flatMap((page) => page.comments);
+    const user = query.data.pages[0].user;
 
     const renderedComments = comments.map((comment) => {
       const { id, body, created_at, post, repliedTo } = comment;
@@ -149,10 +238,22 @@ function ProfileComments() {
                 Reply
               </span>
 
-              <span className="hover:bg-gray-200 p-1 rounded-full cursor-pointer">
+              <span
+                className="hover:bg-gray-200 p-1 rounded-full cursor-pointer"
+                onClick={handleMenu}
+              >
                 <HorizonalEllipsis className="w-5 h-5" />
               </span>
             </div>
+
+            {isMenuOpen && (
+              <Overlay
+                position={position}
+                closeOverlay={() => setIsMenuOpen(false)}
+              >
+                <ul className="p-2">{renderedOptions}</ul>
+              </Overlay>
+            )}
           </div>
         </article>
       );
@@ -163,9 +264,9 @@ function ProfileComments() {
 
   return (
     <InfiniteScroll
-      isLoadingIntial={isLoading}
-      isLoadingMore={isFetchingNextPage}
-      loadMore={() => hasNextPage && fetchNextPage()}
+      isLoadingIntial={query.isLoading}
+      isLoadingMore={query.isFetchingNextPage}
+      loadMore={() => query.hasNextPage && query.fetchNextPage()}
     >
       {renderContent()}
     </InfiniteScroll>

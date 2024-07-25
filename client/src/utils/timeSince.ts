@@ -4,7 +4,7 @@ export function timeSince(date: Date): string {
 
   const intervals = [
     { name: "year", time: 31536000, type: "yr" },
-    { name: "month", time: 2592000, type: "m" },
+    { name: "month", time: 2592000, type: "mon" },
     { name: "week", time: 604800, type: "wk" },
     { name: "day", time: 86400, type: "day" },
     { name: "hour", time: 3600, type: "hr" },
